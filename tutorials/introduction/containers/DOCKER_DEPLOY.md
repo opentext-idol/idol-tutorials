@@ -29,7 +29,7 @@ By default, in the `basic-idol` deployment, only NiFi and IDOL Find are accessib
   docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml up
   ```
 
-- When the containers start, you can point to IDOL Admin for Content on http://idol-docker-host:9100/a=admin or IDOL Community on http://idol-docker-host:9080/a=admin.
+- When the containers start, you can point to IDOL Admin for Content on http://idol-docker-host:9100/a=admin or IDOL Community on http://idol-docker-host:9030/a=admin.
 
 ## Mount a shared folder
 
