@@ -124,7 +124,7 @@ Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set th
 + LICENSESERVER_IP=172.18.96.1
 ```
 
-> NOTE: You must set this configuration to the IP address and not the hostname. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](./DOCKER_WINDOWS_WSL.md#network-access).
+> NOTE: You must set this configuration to the IP address and not the hostname. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access).
 
 Also update the IDOL version to the latest, currently 24.3:
 
