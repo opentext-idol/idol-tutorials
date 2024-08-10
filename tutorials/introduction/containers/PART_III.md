@@ -78,7 +78,7 @@ Monitor some of the files as they pass from processor to processor:
 - A new tab opens, showing the document metadata and content for this file, including any PII detections:
     ![nifi-view-document](figs/nifi-view-document.png)
 
-> TIP: If you cannot open a queued document, you might need to reconfigure your setup. To monitor documents flowing through NiFi, you must connect to NiFi by using an explicit IP address, not `localhost`. If you are using WSL and following this tutorial to the letter, you will have no problem. You have already found your WSL (guest) IP address in the [WSL guide](./DOCKER_WINDOWS_WSL.md#network-access) and possibly set a friendly hostname for it (`idol-docker-host`) in your Windows `hosts` file.
+> TIP: If you cannot open a queued document, you might need to reconfigure your setup. To monitor documents flowing through NiFi, you must connect to NiFi by using an explicit IP address, not `localhost`. If you are using WSL and following this tutorial to the letter, you will have no problem. You have already found your WSL (guest) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access) and possibly set a friendly hostname for it (`idol-docker-host`) in your Windows `hosts` file.
 
 ## Explore documents in IDOL Find
 
