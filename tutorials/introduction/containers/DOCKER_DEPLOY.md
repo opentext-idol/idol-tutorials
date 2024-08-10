@@ -53,7 +53,7 @@ Next, you can run another system modification to configure a shared folder where
     +     device: /mnt/c/OpenText/hotfolder
     ```
 
-    > NOTE: If you are using WSL, you already know that your Windows paths are accessible from WSL via the `/mnt/` parent directory from the [WSL guide](./DOCKER_WINDOWS_WSL.md#file-system-access).
+    > NOTE: If you are using WSL, you already know that your Windows paths are accessible from WSL via the `/mnt/` parent directory from the [WSL guide](./SETUP_WINDOWS_WSL.md#file-system-access).
 
 - To run with these changes to the Docker volume `idol-ingest-volume`, you must first remove the existing volume:
 
