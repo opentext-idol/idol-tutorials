@@ -126,28 +126,14 @@ Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set th
 
 > NOTE: You must set this configuration to the IP address and not the hostname. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access).
 
-Also update the IDOL version to the latest, currently 24.3:
+Also note the IDOL version and update to the latest if required, currently 24.3:
 
-```diff
+```
 # Version of IDOL images to use
-- IDOL_SERVER_VERSION=23.3
-+ IDOL_SERVER_VERSION=24.3
+IDOL_SERVER_VERSION=24.3
 ```
 
 > NOTE: If you upgrade in the future, you must ensure that the version of your external IDOL License Server matches the version of your containers.
-
-Finally, update the file `docker-compose.yml` to update an environment variable:
-
-```diff
-idol-nifi:
-  image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose nifi-minimal or nifi-full
-  environment:
-    - NIFI_WEB_PROXY_CONTEXT_PATH=/idol-nifi
-    - NIFI_WEB_HTTP_PORT=8081
-+   - NIFI_SENSITIVE_PROPS_KEY=my_nifi_sensitive_props_key
-```
-
-> NOTE: To understand when to choose `nifi-full` over `nifi-minimal`, please see the [advanced ingest tutorials](../../README.md#ingest-and-enrichment). 
 
 ### Deploy
 
