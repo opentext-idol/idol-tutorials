@@ -146,6 +146,14 @@ docker compose up
 
 ![docker-up](figs/docker-up.png)
 
+Monitor the start of the NiFi container with:
+
+```
+docker logs basic-idol-idol-nifi-1 -f
+```
+
+Wait for the log message "NiFi has started".
+
 ## First look at NiFi
 
 When the system is running, open NiFi on http://idol-docker-host:8080/idol-nifi/nifi/.  
