@@ -30,9 +30,6 @@ Set up IDOL Conversation Server to enable a chat-style interaction that helps us
 
 <!-- Start [here](./PART_IV.md). -->
 
-- [ ] Add Find
-- [ ] Add Conversation Server
-
 *COMING SOON*
 
 ## Next steps

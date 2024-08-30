@@ -118,7 +118,7 @@ Within the above, showcase some enrichment tasks
 
 Do you want an answer, not a list of search results?  Excited about what you can do with LLMs and *your* data?
 
-Get started with [IDOL Answer](advanced/answer/README.md).
+Get started with [IDOL Answer](./retrieval/answer/README.md).
 
 ### Administration
 
