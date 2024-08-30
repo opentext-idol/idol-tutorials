@@ -23,11 +23,11 @@ In this lesson, you will:
 
 ## Reconfigure IDOL License Server
 
-IDOL components running in Docker containers need access to an external License Server in exactly the same as natively-running IDOL components. You can use the instance you set up in the first lesson.
+IDOL components running in Docker containers need access to an external License Server in exactly the same way as natively-running IDOL components. You can use the instance you set up in the first lesson.
 
 ### Allow remote access
 
-In a containerized deployment, IDOL License Server receives requests from external machines. The default configuration locks the server down to accept requests from `localhost` only, so you need to modify it to add the additional host name. The following configuration assumes you use the hostname `idol-docker-host` for your WSL environment.
+In a containerized deployment, IDOL License Server receives requests from external machines. The default configuration locks the server down to accept requests from `localhost` only, so you need to modify it to add additional host names as required. The following configuration assumes you use the host name `idol-docker-host` for your WSL environment.
 
 Edit the file `idol.common.cfg` under `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64`, then restart License Server:
 
@@ -124,20 +124,20 @@ Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set th
 + LICENSESERVER_IP=172.18.96.1
 ```
 
-> NOTE: You must set this configuration to the IP address and not the hostname. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access).
+> NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access).
 
-Also note the IDOL version and update to the latest if required, currently 24.3:
-
-```
-# Version of IDOL images to use
-IDOL_SERVER_VERSION=24.3
-```
-
-> NOTE: If you upgrade in the future, you must ensure that the version of your external IDOL License Server matches the version of your containers.
+> NOTE: The same `.env` file is used to specify the IDOL version, currently 24.3:
+>
+> ```
+> # Version of IDOL images to use
+> IDOL_SERVER_VERSION=24.3
+> ```
+>
+> If you upgrade in the future, you must ensure that the version of your external IDOL License Server matches the version of your containers.
 
 ### Deploy
 
-To launch the system, type the following commands:
+To launch the system, run the following commands from Ubuntu:
 
 ```
 cd /opt/idol/idol-containers-toolkit/basic-idol
@@ -169,7 +169,7 @@ The NiFi container comes with a pre-loaded ingest flow, which will:
 
 ![nifi-flow-enrich](figs/nifi-flow-enrich.png)
 
-> NOTE: Not shown in the above screenshot, this NiFi flow also includes a FileSystem Connector Group, which facilitates the capture of files from disk for both the initial indexing and later on-demand viewing, for example when a user wants to open a document in IDOL Find.
+> NOTE: Not shown in the above screenshot, this NiFi flow also includes a FileSystem Connector Group that facilitates the capture of files from disk for both the initial indexing and later on-demand viewing, for example when a user wants to open a document in IDOL Find.
 
 ## First look at Find
 
@@ -179,8 +179,8 @@ It is empty for now, so you can move on to the next section.
 
 ## Conclusions
 
-You now understand how to deploy and run IDOL components in containers. You have an initial understanding of a NiFi ingest flow.
+You now understand how to deploy and run IDOL components in containers. You have an initial understanding of a NiFi ingest flow and you have IDOL Find running.
 
 ## Next step
 
-You are ready to go to [Part III](./PART_III.md).
+Now, you are ready to customize your deployment for your data.  Go to [Part III](./PART_III.md).

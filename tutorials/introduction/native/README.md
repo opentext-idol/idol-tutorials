@@ -101,8 +101,7 @@ If you are reusing an existing License Server, try deleting the `license` and `u
 
 #### (*Optionally*) Run as a service
 
-<details>
-<summary>Click me for instructions.</summary>
+<details><summary>Click me for instructions.</summary><p>
 
 It can be convenient to configure IDOL License Server to run as a service, for example so it will start up on system boot.
 
@@ -126,7 +125,7 @@ Successfully installed "licenseserver.exe" as a service.
 
 > NOTE: IDOL components also work well with common init systems on Linux, for example `systemd`.  For details, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_3/LicenseServer_24.3_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_LinuxStartup.htm).
 
-</details>
+<p></details>
 
 ### IDOL Content
 

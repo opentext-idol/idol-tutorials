@@ -3,12 +3,14 @@
 In this lesson, you will:
 
 - Set up your machine for Docker.
-- Download the [IDOL Containers Toolkit](https://github.com/opentext-idol/idol-containers-toolkit).
+- Download the IDOL Containers Toolkit.
 - Log in to gain access to IDOL containers.
 
 ---
 
 - [Third-party dependencies](#third-party-dependencies)
+  - [Docker](#docker)
+  - [Git](#git)
 - [IDOL containers toolkit](#idol-containers-toolkit)
   - [Obtain a copy of the toolkit](#obtain-a-copy-of-the-toolkit)
   - [Log in to the IDOL Docker repository](#log-in-to-the-idol-docker-repository)
@@ -25,16 +27,26 @@ A containerized deployment of IDOL has a few prerequisites:
 
 - Git: The version control system required to download the IDOL configuration tool for use with Docker.
 
-Docker has both free and premium tiers. To run the free tier requires a Linux system. If you work on Windows, you have a few other options, including:
+Docker has both free and premium tiers. To run the free tier requires a Linux system. If you work on Windows you have a few options, including:
 - Set up a cloud virtual environment, for example, using AWS.
 - Set up a local virtual environment, for example, using VirtualBox.
 - Set up WSL, a feature of Microsoft Windows that allows developers to run a Linux environment without the need for a separate virtual machine or dual booting.
 
 For this guide, we recommend that you follow [these steps](./SETUP_WINDOWS_WSL.md) to configure WSL to set up a local Linux environment. This option is the quickest and easiest setup to support your own learning.
 
-Next, follow [these steps](./DOCKER_LINUX_APT.md) to install Docker on your WSL system.
+### Docker
 
-Finally, to install Git on your WSL system, run `sudo apt-get install git`.
+Follow [these steps](./DOCKER_LINUX_APT.md) to install Docker on your WSL system.
+
+### Git
+
+To install Git on your WSL system, open a new Ubuntu tab in Windows Terminal and run: 
+
+```
+sudo apt-get install git
+```
+
+![wsl-install-git](figs/wsl-install-git.png)
 
 ## IDOL containers toolkit
 
@@ -56,7 +68,7 @@ git clone https://github.com/opentext-idol/idol-containers-toolkit.git
 
 ### Log in to the IDOL Docker repository
 
-Official IDOL software containers are distributed in a Docker repository.  A personal key is required to access them.  To request a key, contact OpenText support with the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index).
+Official IDOL software containers are distributed in a Docker repository.  A personal key is required to access them.  To request a key, contact OpenText support from the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index).
 
 Store your API key in a text file in your Linux home directory, for example `idol_docker_key.txt`, then log in with:
 
@@ -68,8 +80,8 @@ Login Succeeded
 
 ## Conclusions
 
-You now understand how to set up a system to Docker and IDOL components in containers.
+You now understand how to set up a system for Docker and you have access to the IDOL component containers.
 
 ## Next step
 
-You are now ready to go to [Part II](./PART_II.md).
+You're ready to get started.  Go to [Part II](./PART_II.md).

@@ -91,7 +91,7 @@ Client apps running on WSL Ubuntu can communicate with servers running on Window
 To find your WSL IP address as seen from Windows, run the following commands from the Ubuntu command line:
 
 ```
-$ sudo apt install net-tools
+$ sudo apt-get install net-tools
 $ ifconfig | grep -A1 eth0 | grep "inet "
     inet 172.18.109.25  netmask 255.255.240.0  broadcast 172.18.111.255
 ```

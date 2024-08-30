@@ -20,7 +20,6 @@ In this lesson, you will:
   - [Mount external configuration files](#mount-external-configuration-files)
   - [Update the configuration file](#update-the-configuration-file)
   - [Redeploy and validate](#redeploy-and-validate)
-- [Stop, Start, Up or Down](#stop-start-up-or-down)
 - [Conclusions](#conclusions)
 - [Next steps](#next-steps)
 
@@ -78,7 +77,7 @@ Monitor some of the files as they pass from processor to processor:
 - A new tab opens, showing the document metadata and content for this file, including any PII detections:
     ![nifi-view-document](figs/nifi-view-document.png)
 
-> TIP: If you cannot open a queued document, you might need to reconfigure your setup. To monitor documents flowing through NiFi, you must connect to NiFi by using an explicit IP address, not `localhost`. If you are using WSL and following this tutorial to the letter, you will have no problem. You have already found your WSL (guest) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access) and possibly set a friendly hostname for it (`idol-docker-host`) in your Windows `hosts` file.
+> TIP: If you cannot open a queued document, you might need to reconfigure your setup. To monitor documents flowing through NiFi, you must connect to NiFi by using an explicit IP address, not `localhost`. If you are using WSL and following this tutorial to the letter, you will have no problem. You have already found your WSL (guest) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access) and possibly set a friendly host name for it (`idol-docker-host`) in your Windows `hosts` file.
 
 ## Explore documents in IDOL Find
 
@@ -163,33 +162,15 @@ One common change is to provide a friendly name for a given field. For example, 
 Next you stop and start the IDOL Find container to pick up these changes.
 
 ```
-docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml stop idol-find
-docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml up -d
+./deploy.sh stop idol-find
+./deploy.sh up -d
 ```
 
 Open IDOL Find and log in again to see the field name under **FILTERS** has changed to **EDUCED PERSON NAME**.
 
 > NOTE: For details on other available configuration options, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Find_24.3_Documentation/admin/Content/Introduction.htm).
 
-> NOTE: The Find source code is available on [GitHub](https://github.com/opentext-idol/find), where you can find detailed instructions to set up your own development environment to build your own custom changes into the application.
-
-## Stop, Start, Up or Down
-
-To finish, here is a recap of how to stop and start your docker system:
-
-- To stop your containers (without destroying anything):
-
-    ```
-    docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml stop
-    ```
-
-- To rebuild (if changes are detected) and start containers (in the background):
-
-    ```
-    docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml up -d
-    ```
-
-> NOTE: For full details on the verbs available for `docker compose`, see the [docker documentation](https://docs.docker.com/compose/reference/).
+> NOTE: The IDOL Find source code is available on [GitHub](https://github.com/opentext-idol/find), where you can find detailed instructions to set up your own development environment to build your own custom changes into the application.
 
 ## Conclusions
 

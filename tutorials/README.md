@@ -116,11 +116,9 @@ Within the above, showcase some enrichment tasks
 
 ### Search and Question Answering
 
-Do you want an answer, not a list of search results?  Excited about LLMs?
+Do you want an answer, not a list of search results?  Excited about what you can do with LLMs and *your* data?
 
-<!-- Get started with [IDOL Answer](advanced/answer/README.md). -->
-
-*COMING SOON*
+Get started with [IDOL Answer](advanced/answer/README.md).
 
 ### Administration
 

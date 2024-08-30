@@ -12,6 +12,7 @@ This section walks you through key modifications to the `basic-idol` deployment,
   - [Update the configuration file](#update-the-configuration-file)
   - [Redeploy](#redeploy)
   - [Validate](#validate)
+- [Keeping track of compose files](#keeping-track-of-compose-files)
 - [Conclusions](#conclusions)
 - [Next steps](#next-steps)
 
@@ -185,6 +186,30 @@ docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docke
 Open IDOL Admin for Content onto the [configuration view](http://idol-docker-host:9100/a=admin#page/config/SetParametricFields) to see that your change has been applied:
 
 ![content-config-pii](figs/content-config-pii.png)
+
+## Keeping track of compose files
+
+You will have noticed that you need to reference your list of `.yml` files whenever you run commands for your system with `docker compose`, which can be a source of confusion.  To simplify things, I recommend creating a `deploy.sh` script, for example:
+
+```
+touch deploy.sh
+chmod +x deploy.sh
+```
+
+, with the following content:
+
+```
+docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml "$@"
+```
+
+Now, you can use this to conveniently control your deployment with the standard `docker compose` options, for example:
+
+- Start all containers (and rebuild any changes): `./deploy.sh up -d`
+- Stop all containers (without destroying anything): `./deploy.sh stop`
+- Stop one containers: `./deploy.sh stop idol-content`
+- Take down all containers: `./deploy.sh down`
+
+> NOTE: For full details on the verbs available for `docker compose`, see the [docker documentation](https://docs.docker.com/compose/reference/).
 
 ## Conclusions
 

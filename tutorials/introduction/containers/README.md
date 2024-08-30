@@ -6,7 +6,7 @@ After completing this tutorial, you will have a working end-to-end system, from 
 
 ## PART I - IDOL containers with Docker
 
-Set up your machine for Docker and download the [IDOL Containers Toolkit](https://github.com/opentext-idol/idol-containers-toolkit).
+Set up your machine for Docker and download the IDOL Containers Toolkit.
 
 Start [here](./PART_I.md).
 
