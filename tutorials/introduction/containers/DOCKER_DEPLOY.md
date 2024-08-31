@@ -30,7 +30,7 @@ By default, in the `basic-idol` deployment, only NiFi and IDOL Find are accessib
   docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml up
   ```
 
-- When the containers start, you can point to IDOL Admin for Content on http://idol-docker-host:9100/a=admin or IDOL Community on http://idol-docker-host:9030/a=admin.
+- When the containers start, you can point to IDOL Admin for Content on <http://idol-docker-host:9100/a=admin> or IDOL Community on <http://idol-docker-host:9030/a=admin>.
 
 ## Mount a shared folder
 
@@ -170,7 +170,7 @@ Property=ParametricFields
 + PropertyFieldCSVs=*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
 ```
 
-> NOTE: For details on these and other IDOL Content field types, see [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_11_6/IDOLServer/Guides/html/English/expert/index.html#IDOLExpert/Fields/Field_Properties.htm#FieldsForSearch).
+> NOTE: For details on these and other IDOL Content field types, see [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_3/IDOLServer_24.3_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm#FieldsForSearch).
 
 ### Redeploy
 

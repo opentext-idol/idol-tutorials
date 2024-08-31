@@ -98,7 +98,7 @@ Connectors - Discuss multiple sources and show examples for:
 - [ ] Documentum ingest
 - [ ] Dropbox ingest
 - [ ] Twitter ingest - stream and channel
-- [ ] Web ingest - Wookiepedia - https://starwars.fandom.com/wiki/Main_Page or https://starwars.fandom.com/wiki/Special:Random
+- [ ] Web ingest - Wookiepedia - <https://starwars.fandom.com/wiki/Main_Page> or <https://starwars.fandom.com/wiki/Special:Random>
     - Grab Categories, title, long_title, content (in sections) and dates (created, last updated?)
 - [ ] ODBC ingest (Filr?)
 

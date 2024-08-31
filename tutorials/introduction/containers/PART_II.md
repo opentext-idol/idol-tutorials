@@ -110,7 +110,7 @@ flowchart TB
 
 Before you continue, you need to edit some of the container toolkit files.
 
-To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com/). To open the `basic-idol` folder contents for editing, type:
+To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `basic-idol` folder contents for editing, type:
 ```
 $ cd /opt/idol/idol-containers-toolkit/basic-idol
 $ code .
@@ -156,7 +156,7 @@ Wait for the log message "NiFi has started".
 
 ## First look at NiFi
 
-When the system is running, open NiFi on http://idol-docker-host:8080/idol-nifi/nifi/.  
+When the system is running, open NiFi on <http://idol-docker-host:8080/idol-nifi/nifi/>.
 
 The NiFi container comes with a pre-loaded ingest flow, which will:
 
@@ -173,7 +173,7 @@ The NiFi container comes with a pre-loaded ingest flow, which will:
 
 ## First look at Find
 
-Log in to Find on http://idol-docker-host:8080/find/. The default credentials are `admin` / `admin`.  
+Log in to Find on <http://idol-docker-host:8080/find/>. The default credentials are `admin` / `admin`.  
 
 It is empty for now, so you can move on to the next section.
 

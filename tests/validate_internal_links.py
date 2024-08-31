@@ -1,5 +1,5 @@
 """
-python validate_external_links.py 1
+python validate_internal_links.py 1
 """
 
 import os, re, requests, sys
@@ -9,16 +9,11 @@ try:
 except:
   verbose = False
 
-def isExternalUrl(link):
-  return link.find("http://$") == -1 and link.find("&configPath=") == -1 and link.find("IP") == -1 and link.find("localhost") == -1 and link.find("127.0.0.1") == -1
-
 def findDocsLinks(_text):
-  # pattern = r'(https:\/\/www\.microfocus\.com\/documentation([\w\d:#@%/;$~_?\+-=\.&](#!)?)*)'
-  pattern = r'(https?:\/\/([\w\d:#@%\/;$~_?\+-=\.&](#!)?)*)'
+  pattern = r'\]\(([^\()]+\.md(#?)[^\)]*)\)'
   match_list = []
   for match in re.findall(pattern, _text):
-    matched_url = match[0]
-    if isExternalUrl(matched_url): match_list.append(matched_url)
+    match_list.append(match[0])
 
   return match_list
 
@@ -39,25 +34,22 @@ for dir_path, dir_names, file_names in os.walk(".."):
 
     with open(file_path, 'r') as md_file:
       for link in findDocsLinks(md_file.read()):
-        if "swinfra.net" in link: continue
-        if "autonomy.com" in link: continue
-        if "oauth2" in link: continue
-        if "idol-docker-host" in link: continue
+        if link.startswith("http"): continue
         
         count += 1
 
-        try:
-          x = requests.head(link)
-          if verbose: print(f'{x.status_code}: {link}')
-          if x.status_code == 200:
-            passed += 1
+        if verbose: print(link)
 
-          else:
-            report[file_path].append(f'{x.status_code}: {link}')
+        link_path = os.path.abspath(
+          os.path.join(dir_path, link.split("#")[0])
+        )
+
+        if os.path.isfile(link_path):
+          passed += 1
+
+        else:
+          report[file_path].append(link)
         
-        except Exception as e:
-          report[file_path].append(f'{e}: {link}')
-
 result_line = f'Test complete. {passed} passed out of {count}.'
 print('='*len(result_line))
 print(result_line)

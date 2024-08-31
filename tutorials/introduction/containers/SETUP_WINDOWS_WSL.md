@@ -2,7 +2,7 @@
 
 Set up WSL 2 (Windows Subsystem for Linux), a feature of Microsoft Windows that allows developers to run a Linux environment without the need for a separate virtual machine or dual booting.
 
-> NOTE: The steps below are summarized from https://learn.microsoft.com/en-us/windows/wsl/install.
+> NOTE: The steps below are summarized from <https://learn.microsoft.com/en-us/windows/wsl/install>.
 
 ---
 

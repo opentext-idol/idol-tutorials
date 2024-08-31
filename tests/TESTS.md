@@ -4,8 +4,12 @@ This folder contains test files to be run to validate aspects of these tutorial 
 
 ## List of validation tests
 
+### Internal links
+
+From this `tests` folder, run the script `python validate_internal_links.py`.  This file searches all markdown files for internal `.md` references and checks that those files exist.
+
 ### External links
 
-From this `tests` folder, run the script `python validate_external_links.py > links.log`.  This file searches all markdown files for docs URLs and checks for a 200 status code using the `requests` library.
+From this `tests` folder, run the script `python validate_external_links.py`.  This file searches all markdown files for external URLs and checks for a 200 status code using the `requests` library.
 
 *That's all folks!*

@@ -19,7 +19,7 @@ Using an Nvidia T600 card with 4 GB memory, the processing speed metric "predict
 
 ## Nvidia Container Toolkit
 
-First, upgrade CUDA for Windows, from https://developer.nvidia.com/cuda-downloads.  
+First, upgrade CUDA for Windows, from <https://developer.nvidia.com/cuda-downloads>.
 
 > NOTE: CUDA (Compute Unified Device Architecture) from Nvidia enables general purpose computing on GPUs, which can perform efficient parallel processing to dramatically speed up machine learning algorithms.
 

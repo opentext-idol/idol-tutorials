@@ -67,9 +67,9 @@ How is a GPU not essential, you may wonder? You will be downloading [quantized L
 
 Hugging Face Hub has become the standard platform for hosting machine learning models including LLMs.  Many models are shared openly but a growing number require you to create an account and use an associated access token.
 
-Create your (free) account here: https://huggingface.co/join.
+Create your (free) account here: <https://huggingface.co/join>.
 
-Navigate to the access tokens page in settings: https://huggingface.co/settings/tokens and create a new token.
+Navigate to the access tokens page in settings: <https://huggingface.co/settings/tokens> and create a new token.
 
 ![hf-token](figs/hf-token.png)
 
@@ -196,7 +196,7 @@ If you do not add your Hugging Face token correctly, or it does not have the cor
 
 ### Index a sample document
 
-Open IDOL Admin for Content at http://localhost:9100/action=admin#page/console/index and do the following:
+Open IDOL Admin for Content at <http://localhost:9100/action=admin#page/console/index> and do the following:
 
 1. Under "Choose Data", select the "Text" radio button.  For simplicity, add the existing sample document "Thought for the Day". 
 
@@ -242,7 +242,7 @@ You can now search for your document:
 
 ### Generate an answer from your document
 
-Open IDOL Admin for Answer Server at http://localhost:12000/action=admin#page/console/test-action and do the following:
+Open IDOL Admin for Answer Server at <http://localhost:12000/action=admin#page/console/test-action> and do the following:
 
 1. Paste the following action:
    

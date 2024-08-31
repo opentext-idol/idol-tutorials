@@ -92,7 +92,7 @@ flowchart TB
 
 First, you need to edit some of the container toolkit files.
 
-> REMINDER: To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com/). 
+> REMINDER: To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). 
 > 
 > To open the `data-admin` folder contents for editing, type:
 > ```
@@ -143,7 +143,7 @@ As a reminder, you can now control your deployment with the standard `docker com
 
 ## First look at IDOL Data Admin
 
-When the system is running, point your web browser to http://idol-docker-host:8080/.  
+When the system is running, point your web browser to <http://idol-docker-host:8080/>.
 
 On first logging in, you must enter the temporary credentials: `admin` / `admin`.
 
@@ -182,7 +182,7 @@ Remember that your initial login was as a temporary "admin" user.  On the next s
 
 ![ida-new-admin](figs/ida-new-admin.png)
 
-> NOTE: You can alternatively create your own users from IDOL Community http://idol-docker-host:9030/action=admin#page/users, as you are already familiar with. IDOL Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/DataAdmin_24.3_Documentation/admin/Content/Setup/UserRoles.htm) for details.
+> NOTE: You can alternatively create your own users from IDOL Community <http://idol-docker-host:9030/action=admin#page/users>, as you are already familiar with. IDOL Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/DataAdmin_24.3_Documentation/admin/Content/Setup/UserRoles.htm) for details.
 
 ## Conclusions
 

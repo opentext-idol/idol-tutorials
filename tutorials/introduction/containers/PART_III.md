@@ -27,7 +27,7 @@ In this lesson, you will:
 
 ## Modify IDOL container deployment
 
-Remember that, to edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com/). To open the `basic-idol` folder contents for editing, type:
+Remember that, to edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `basic-idol` folder contents for editing, type:
 
 ```
 $ cd /opt/idol/idol-containers-toolkit/basic-idol
@@ -44,7 +44,7 @@ With your IDOL system now running, you are almost ready to start ingesting data.
 
 ### Update the flow
 
-Open NiFi at http://idol-docker-host:8080/idol-nifi/nifi/ and stop everything: 
+Open NiFi at <http://idol-docker-host:8080/idol-nifi/nifi/> and stop everything: 
 
 - On the **Operate** tile, click the stop icon:
   
@@ -60,7 +60,7 @@ This repository includes a `data` folder containing some sample enterprise files
 
 ### Run ingest
 
-Open NiFi at http://idol-docker-host:8080/idol-nifi/nifi/ and start everything: 
+Open NiFi at <http://idol-docker-host:8080/idol-nifi/nifi/> and start everything: 
 
 - From the top-level **NiFi Flow** canvas, on the **Operate** tile, click the play icon:
   
@@ -81,9 +81,9 @@ Monitor some of the files as they pass from processor to processor:
 
 ## Explore documents in IDOL Find
 
-Log in to Find on http://idol-docker-host:8080/find/. The default credentials are `admin` / `admin`.  
+Log in to Find on <http://idol-docker-host:8080/find/>. The default credentials are `admin` / `admin`.  
 
-> NOTE: To create your own users, go to IDOL Community http://idol-docker-host:9030/action=admin#page/users. Find users need one or more of the "FindAdmin", "FindBI" and "FindUser" roles. See the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Find_24.3_Documentation/admin/Content/User_Roles.htm) for details.
+> NOTE: To create your own users, go to IDOL Community <http://idol-docker-host:9030/action=admin#page/users>. Find users need one or more of the "FindAdmin", "FindBI" and "FindUser" roles. See the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Find_24.3_Documentation/admin/Content/User_Roles.htm) for details.
 
 The initial view of the topic map shows a summary of the key terms in your document set:
 
