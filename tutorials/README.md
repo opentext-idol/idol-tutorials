@@ -85,7 +85,7 @@ Dip into any of the following lesson series to develop your IDOL knowledge and t
 
 Use IDOL NiFi processors to do more with your data.  Collect securely, enrich, ingest and view. 
 
-> NOTE: NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2021](https://www.nsa.gov/Research/Technology-Transfer-Program/Success-Stories/Article/3306190/nsa-releases-niagarafiles-to-open-source-software/#:~:text=To%20ensure%20that%20the%20most%20important%20information%20was,Agency%20%28NSA%29%20and%20across%20the%20Intelligence%20Community%20%28IC%29.).
+> NOTE: NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2014](https://web.archive.org/web/20171207172647/https://www.nsa.gov/news-features/press-room/press-releases/2014/nifi-announcement.shtml).
 
 *COMING SOON*
 
