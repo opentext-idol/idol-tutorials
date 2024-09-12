@@ -1,6 +1,6 @@
 # Set up LLaMA.cpp server with GPU acceleration
 
-Reconfigure [LLaMA.cpp](https://lmstudio.ai/) server for GPU acceleration. 
+Reconfigure [LLaMA.cpp](https://lmstudio.ai/) server for GPU acceleration.
 
 ---
 
@@ -26,7 +26,8 @@ First, upgrade CUDA for Windows, from <https://developer.nvidia.com/cuda-downloa
 Next, install the the container toolkit on Ubuntu under WSL, as instructed in the [official documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html):
 
 1. Download the repository settings for Nvidia:
-  ```
+
+  ```sh
   curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
     && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
       sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
@@ -34,12 +35,14 @@ Next, install the the container toolkit on Ubuntu under WSL, as instructed in th
   ```
 
 1. Connect to the new repository:
-  ```
+
+  ```sh
   sudo apt-get update
   ```
 
 1. Install the toolkit:
-  ```
+
+  ```sh
   sudo apt-get install -y nvidia-container-toolkit
   ```
 
@@ -47,7 +50,7 @@ Next, install the the container toolkit on Ubuntu under WSL, as instructed in th
 
 Configure the Container Toolkit for Docker, then restart the Docker service:
 
-```
+```sh
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker.service
 ```
@@ -80,14 +83,14 @@ services:
 
 To apply a settings change in your `docker-compose.yml` file, you must redeploy the container:
 
-```
+```sh
 docker compose down
 docker compose up -d
 ```
 
 Watch the logs to look for the following lines to tell you the GPU is in use:
 
-```
+```sh
 $ docker logs llama-llamacpp-server-1 -f
 ...
 ggml_cuda_init: found 1 CUDA devices:
@@ -105,10 +108,10 @@ These `.gguf`-format, quantized LLMs allow for partial "offloading" of processin
 
 Use Windows Task Manager to check for growth in "Shared GPU memory usage", which indicates your GPU is over capacity.
 
-![shared-gpu-memory](figs/shared-gpu-memory.png)
+![shared-gpu-memory](./figs/shared-gpu-memory.png)
 
 For optimum speed, find the highest value of `LLAMA_ARG_N_GPU_LAYERS` on your system that doesn't significantly increase the baseline shared memory, observed by setting this parameter to `0`.
 
 ## Next step
 
-You now have a more responsive local LLM server.  Return to the [tutorial](./PART_II.md#get-answers-from-your-documents) to continue.
+You now have a more responsive local LLM server.  Return to the [tutorial](./PART_II.md#get-an-answer-from-a-sample-document) to continue.

@@ -6,7 +6,7 @@
 
 Connect to the Docker repository:
 
-```
+```sh
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
@@ -23,7 +23,7 @@ echo \
 
 Verify the connection:
 
-```
+```sh
 $ sudo apt-get update
 Get:1 https://download.docker.com/linux/ubuntu jammy InRelease [48.8 kB]
 Get:2 https://download.docker.com/linux/ubuntu jammy/stable amd64 Packages [35.6 kB]
@@ -31,7 +31,7 @@ Get:2 https://download.docker.com/linux/ubuntu jammy/stable amd64 Packages [35.6
 
 Install Docker packages:
 
-```
+```sh
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
@@ -39,7 +39,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 Test run Docker:
 
-```
+```sh
 $ sudo docker run hello-world
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
@@ -47,7 +47,7 @@ This message shows that your installation appears to be working correctly.
 
 Verify that you also have Docker Compose installed:
 
-```
+```sh
 $ sudo docker compose version
 Docker Compose version v2.28.1
 ```
@@ -56,25 +56,25 @@ Docker Compose version v2.28.1
 
 Join your user to the `docker` group:
 
-```
+```sh
 sudo usermod -aG docker $USER
 newgrp docker
 ```
 
 Test docker access:
 
-```
+```sh
 $ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ```
 
 Configure Docker to start on boot:
 
-```
+```sh
 sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 ```
 
 ## Next steps
 
-Return to the [`containers tutorial](./PART_I.md#log-in-to-idols-docker-repository).
+Return to the [`containers tutorial](./PART_I.md#log-in-to-the-idol-docker-repository).

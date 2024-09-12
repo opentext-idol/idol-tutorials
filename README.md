@@ -23,11 +23,11 @@ Get a local copy of this tutorial to give you all the configuration files and sa
 
 The examples in this tutorial assume you store these materials under `C:\OpenText`. File paths and other resources are currently documented for Windows, but other supported platforms (for example, Linux) will work with appropriate modifications.
 
-You can stay on GitHub to follow the steps in this and further linked README files in your browser or, if you prefer to work with the downloaded files, see [these steps](./appendix/markdown_reader.md) for some convenient offline reading options.
+You can stay on GitHub to follow the steps in this and further linked README files in your browser or, if you prefer to work with the downloaded files, see [these steps](./tutorials/appendix/MARKDOWN_READER.md) for some convenient offline reading options.
 
 ## Get started
 
-The tutorials start [here](tutorials/README.md).
+The tutorials start [here](./tutorials/README.md).
 
 ## License
 

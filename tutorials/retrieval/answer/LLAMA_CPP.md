@@ -1,6 +1,6 @@
 # Set up LLaMA.cpp server
 
-Set up [LLaMA.cpp](https://lmstudio.ai/) as an easy example of a local LLM Server, with optional GPU acceleration. 
+Set up [LLaMA.cpp](https://lmstudio.ai/) as an easy example of a local LLM Server, with optional GPU acceleration.
 
 ---
 
@@ -8,7 +8,7 @@ Set up [LLaMA.cpp](https://lmstudio.ai/) as an easy example of a local LLM Serve
 - [LLaMA.cpp server with Docker](#llamacpp-server-with-docker)
 - [Start the LLM Server](#start-the-llm-server)
 - [Call the LLM Server](#call-the-llm-server)
-- [Optionally Enable GPU acceleration](#optionally-enable-gpu-acceleration)
+- [Optionally enable GPU acceleration](#optionally-enable-gpu-acceleration)
 - [Next step](#next-step)
 
 ---
@@ -21,26 +21,26 @@ This model is a quantized version of the "Mistral-7B-Instruct-v0.3" LLM, which i
 
 To view details of the model and it's provenance, go to [Hugging Face](https://huggingface.co/lmstudio-community/Mistral-7B-Instruct-v0.3-GGUF).
 
-![hf-provenance](figs/hf-provenance.png)
+![hf-provenance](./figs/hf-provenance.png)
 
 ## LLaMA.cpp server with Docker
 
 From the Ubuntu command line on WSL, create a new project folder structure:
 
-```
+```sh
 mkdir -p /opt/idol/llama/models
 touch /opt/idol/llama/docker-compose.yml
 ```
 
 Move the downloaded LLM file:
 
-```
+```sh
 mv /mnt/c/Users/$USER/Downloads/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf /opt/idol/llama/models/
 ```
 
 Enter the following into your `docker-compose.yml` file:
 
-```
+```yml
 services:
   llamacpp-server:
     image: ghcr.io/ggerganov/llama.cpp:server
@@ -60,15 +60,15 @@ services:
 
 Run the server with Docker compose:
 
-```
+```sh
 docker compose up -d
 ```
 
-![llama-up](figs/llama-up.png)
+![llama-up](./figs/llama-up.png)
 
 Monitor the logs with:
 
-```
+```sh
 docker logs llama-llamacpp-server-1 -f
 ```
 
@@ -78,7 +78,7 @@ Press `Ctrl+C` to stop following the logs.
 
 From your Ubuntu command prompt on WSL, run the following requests:
 
-- Health check: 
+- Health check:
   
   `curl http://localhost:8888/health`
 
@@ -86,12 +86,9 @@ From your Ubuntu command prompt on WSL, run the following requests:
   {"status":"ok"}
   ```
 
-  > TIP: Install a JSON formatter to better display the server responses:
-  > ```
-  > sudo apt-get install jq
-  > ```
+  > TIP: Install a JSON formatter to better display the server responses.  See this [tip](../../appendix/TIPS.md#json-formatting) for details.
 
-- Check the model is loaded: 
+- Check the model is loaded:
   
   `curl http://localhost:8888/v1/models | jq`
 
@@ -119,7 +116,7 @@ From your Ubuntu command prompt on WSL, run the following requests:
 
   > NOTE: The "7B" in the model name stands for 7 billion parameters.
 
-- Get metrics (in Prometheus compatible format): 
+- Get metrics (in Prometheus compatible format):
   
   `curl http://localhost:8888/metrics`
   
@@ -147,7 +144,7 @@ From your Ubuntu command prompt on WSL, run the following requests:
   }
   ```
 
-## Optionally Enable GPU acceleration
+## Optionally enable GPU acceleration
 
 Using an Nvidia T600 card with 4 GB memory, the processing speed metric "predicted tokens per second" is recorded as 11.6.  This compares to 12.1 seconds with CPU only.  That's only a 5% speed increase, so this really is **optional** unless you have a bigger GPU.
 
@@ -155,4 +152,4 @@ To set up GPU acceleration for your server, follow [these steps](./LLAMA_CPP_GPU
 
 ## Next step
 
-You now have a responsive, local LLM server.  Return to the [tutorial](./PART_II.md#get-answers-from-your-documents) to continue.
+You now have a responsive, local LLM server.  Return to the [tutorial](./PART_II.md#get-an-answer-from-a-sample-document) to continue.

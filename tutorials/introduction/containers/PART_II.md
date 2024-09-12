@@ -49,15 +49,12 @@ StandardRoles=query,servicestatus
 
 The system running IDOL License Server must be accessible (on port `20000`, by default) from the system running Docker. In your WSL environment, test access from the Linux command line, as follows.
 
-```
+```bsh
 $ curl $(hostname).local:20000/a=getversion
-<?xml version='1.0' encoding='UTF-8' ?>
-<autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'>
-  <action>GETVERSION</action>
-  <response>SUCCESS</response>
-  <responsedata>...</responsedata>
-</autnresponse>
+<?xml version='1.0' encoding='UTF-8' ?><autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'><action>GETVERSION</action><response>SUCCESS</response><responsedata>...
 ```
+
+> TIP: Install an XML formatter to better display the server responses.  See this [tip](../../appendix/TIPS.md#xml-formatting) for details.
 
 ## Deploy IDOL containers
 
@@ -87,8 +84,7 @@ flowchart TB
     view[IDOL View]
     find[IDOL Find]
     comm[IDOL Community]
-    agent1[IDOL AgentStore]
-    agent2[IDOL Categorization AgentStore]
+    agent[IDOL AgentStore]
     proxy[Reverse Proxy]
   end
 
@@ -96,24 +92,24 @@ flowchart TB
   users --- proxy --- find
   proxy --- ingest
   ingest -- Index Docs--- dre 
-  find -- Credentials --- comm --- agent1
+  find -- Credentials --- comm --- agent
   find -- Query Docs --- dre
   ingest -- Get File --- view
   find -- Get HTML --- view
-  view -- Highlight --- agent1
-  ingest ---- agent2
+  view -- Highlight --- agent
 ```
 
-> NOTE: Apache NiFi is an open source tool built to automate the flow of data between systems. In IDOL, it is used primarily for ingestion (ETL = Extraction, Transform and Loading). NiFi has an intuitive drag & drop interface for configuration and is highly scalable. IDOL ships components that are easily embedded into a NiFi flow as modular processors. 
+> NOTE: Apache NiFi is an open source tool built to automate the flow of data between systems. In IDOL, it is used primarily for ingestion (ETL = Extraction, Transform and Loading). NiFi has an intuitive drag & drop interface for configuration and is highly scalable. IDOL ships components that are easily embedded into a NiFi flow as modular processors.
 
 ### Setup
 
 Before you continue, you need to edit some of the container toolkit files.
 
 To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `basic-idol` folder contents for editing, type:
-```
-$ cd /opt/idol/idol-containers-toolkit/basic-idol
-$ code .
+
+```sh
+cd /opt/idol/idol-containers-toolkit/basic-idol
+code .
 ```
 
 Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set the IP address of your IDOL License Server. For example:
@@ -128,7 +124,7 @@ Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set th
 
 > NOTE: The same `.env` file is used to specify the IDOL version, currently 24.3:
 >
-> ```
+> ```ini
 > # Version of IDOL images to use
 > IDOL_SERVER_VERSION=24.3
 > ```
@@ -139,16 +135,16 @@ Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set th
 
 To launch the system, run the following commands from Ubuntu:
 
-```
+```sh
 cd /opt/idol/idol-containers-toolkit/basic-idol
 docker compose up
 ```
 
-![docker-up](figs/docker-up.png)
+![docker-up](./figs/docker-up.png)
 
 Monitor the start of the NiFi container with:
 
-```
+```sh
 docker logs basic-idol-idol-nifi-1 -f
 ```
 
@@ -158,18 +154,28 @@ Wait for the log message "NiFi has started".
 
 When the system is running, open NiFi on <http://idol-docker-host:8080/idol-nifi/nifi/>.
 
-The NiFi container comes with a pre-loaded ingest flow, which will:
+![nifi-basic-idol-group](./figs/nifi-basic-idol-group.png)
 
-1. Capture files from disk using the IDOL FileSystem Connector.
-1. Extract any sub-files using KeyView.
-1. Filter (that is, extract) content (that is, text) from files using KeyView.
-1. Identify possible PII from that text using IDOL Eduction.
-1. Categorize each file based on the text content.
-1. Index the documents into IDOL Content.
+Double-click the "Basic IDOL" tile to enter the processor group, which contains two sub-groups:
 
-![nifi-flow-enrich](figs/nifi-flow-enrich.png)
+1. **Connectors** contains the processors necessary to connect to our source repositories.  In the `basic-idol` example, this means ingesting files from disk.
+1. **Document Processing** encapsulates the steps needed to extract and enrich ingested files before indexing into IDOL Content.
 
-> NOTE: Not shown in the above screenshot, this NiFi flow also includes a FileSystem Connector Group that facilitates the capture of files from disk for both the initial indexing and later on-demand viewing, for example when a user wants to open a document in IDOL Find.
+Double-click the "Document Processing" tile:
+
+![nifi-document-processing-group](./figs/nifi-document-processing-group.png)
+
+> NOTE: The breadcrumbs in the footer of the NiFi window help you keep track on where you are in the process group hierarchy.
+
+The document processing flow will:
+
+1. Iteratively extract any sub-files using *KeyViewExtractFiles*.
+1. Filter (that is, extract) content (that is, text) from files using *KeyViewFilterDocument*.
+1. Normalize field names from different repository types, with *StandardizeMetadata*.
+1. Identify possible PII from that text using *Eduction*.
+1. Index the documents into IDOL Content using *PutIDOL*.
+
+![nifi-flow-enrich](./figs/nifi-flow-enrich.png)
 
 ## First look at Find
 
@@ -181,6 +187,12 @@ It is empty for now, so you can move on to the next section.
 
 You now understand how to deploy and run IDOL components in containers. You have an initial understanding of a NiFi ingest flow and you have IDOL Find running.
 
+Now is a good time to commit your changes to the `idol-containers-toolkit` environment file:
+
+![vscode-git](./figs/vscode-git.png)
+
+> TIP: Continue to commit your changes as you step through the tutorial.
+
 ## Next step
 
-Now, you are ready to customize your deployment for your data.  Go to [Part III](./PART_III.md).
+Next, you are ready to customize your deployment for your data.  Go to [Part III](./PART_III.md).

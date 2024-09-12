@@ -1,6 +1,6 @@
 # Answer questions with RAG
 
-**RAG** (Retrieval Augmented Generation) uses a large language models (LLM) to generate answers from trusted documents in your system. 
+**RAG** (Retrieval Augmented Generation) uses a large language models (LLM) to generate answers from trusted documents in your system.
 
 IDOL Answer Server's RAG system converts your question into a query to retrieve relevant documents.  Selected text from these documents is then sent as "context" with your question as a prompt to the external LLM.  This allows the LLM to answer questions based on your data.  IDOL Answer Server can then return the answer with reference documents for validation.
 
@@ -47,11 +47,11 @@ In this lesson, you will:
 - [Create an account with Hugging Face](#create-an-account-with-hugging-face)
 - [Set up a local LLM server](#set-up-a-local-llm-server)
 - [Configure an Answer Server RAG system](#configure-an-answer-server-rag-system)
-  - [Possible errors](#possible-errors)
+  - [Possible start-up errors](#possible-start-up-errors)
 - [Get an answer from a sample document](#get-an-answer-from-a-sample-document)
   - [Index a sample document](#index-a-sample-document)
   - [Generate an answer from your document](#generate-an-answer-from-your-document)
-    - [Possible errors](#possible-errors-1)
+    - [Possible answer errors](#possible-answer-errors)
 - [Conclusions](#conclusions)
 - [Next step](#next-step)
 
@@ -71,7 +71,7 @@ Create your (free) account here: <https://huggingface.co/join>.
 
 Navigate to the access tokens page in settings: <https://huggingface.co/settings/tokens> and create a new token.
 
-![hf-token](figs/hf-token.png)
+![hf-token](./figs/hf-token.png)
 
 Give your token and memorable name and **Read** access.  Save the token value somewhere safe, you will not be able to see it again.
 
@@ -90,7 +90,7 @@ For a quick and easy setup on your Windows laptop, follow [these steps](./LLAMA_
 Edit your Answer Server configuration file `/opt/idol/idol-containers-toolkit/data-admin/answerserver/answerserver.cfg`:
 
 1. Allow access to IDOL Admin from outside the container:
-   
+
     ```diff
     [Service]
     ...
@@ -98,8 +98,8 @@ Edit your Answer Server configuration file `/opt/idol/idol-containers-toolkit/da
     + Access-Control-Allow-Origin=*
     ```
 
-2. Replace the default "Passage Extractor" system with a RAG system for LLM-enabled question answering:
-   
+1. Replace the default "Passage Extractor" system with a RAG system for LLM-enabled question answering:
+
     ```diff
     [Systems]
     0=AnswerBank
@@ -129,8 +129,8 @@ The above configuration references two external files:
 
 Both files are included in this tutorial repository.  Copy them into your docker project to give:
 
-```
-/opt/idol/idol-containers-toolkit/data-admin$ ls answerserver/rag/
+```sh
+$ ls /opt/idol/idol-containers-toolkit/data-admin/answerserver/rag/
  llamacpp_server.py   prompt_template.txt
 ```
 
@@ -148,7 +148,7 @@ The `.py` script expects properties from some environment variables to run.  Add
     ```
 
     > TIP: You noted down your Hugging Face token string earlier; it begins with `hf_`.  This token is required by the `mistralai` project to access their models.  
-    
+
     > TIP: You have already found your WSL (guest) IP address in the [WSL guide](../../introduction/containers/SETUP_WINDOWS_WSL.md#network-access)
 
 1. Edit the following section in `/opt/idol/idol-containers-toolkit/data-admin/docker-compose.yml`:
@@ -170,7 +170,7 @@ The `.py` script expects properties from some environment variables to run.  Add
 
 Restart the Answer Server container to apply these changes:
 
-```
+```sh
 cd /opt/idol/idol-containers-toolkit/data-admin
 ./deploy.sh stop idol-answerserver
 ./deploy.sh up -d
@@ -178,17 +178,17 @@ cd /opt/idol/idol-containers-toolkit/data-admin
 
 Check the logs to see the RAG system is created without errors:
 
-```
+```sh
 $ docker logs data-admin-idol-answerserver-1 -f
 ...
 30/08/2024 08:33:36 [1] 30-Normal: Created answer system 'RAG' (type: rag)
 ```
 
-### Possible errors
+### Possible start-up errors
 
 If you do not add your Hugging Face token correctly, or it does not have the correct "Read" access, as discussed above, you will see the following error message:
 
-```
+```log
 30/08/2024 14:22:15 [1] 99-Always: Failed to configure answer system: Invalid configuration file: Failed to import Python script ./rag/llamacpp_server.py: Invalid token passed!
 ```
 
@@ -198,25 +198,25 @@ If you do not add your Hugging Face token correctly, or it does not have the cor
 
 Open IDOL Admin for Content at <http://localhost:9100/action=admin#page/console/index> and do the following:
 
-1. Under "Choose Data", select the "Text" radio button.  For simplicity, add the existing sample document "Thought for the Day". 
+1. Under "Choose Data", select the "Text" radio button.  For simplicity, add the existing sample document "Thought for the Day".
 
-    ![index-sample-doc](figs/index-sample-doc.png)
+    ![index-sample-doc](./figs/index-sample-doc.png)
 
     > NOTE: You must edit the text for the **Next** button to activate, just add a space at the end as shown in the screenshot above.
 
 1. Click **Next** to advance to "Choose Database" and select "News" from the dropbown menu:
 
-    ![index-into-db](figs/index-into-db.png)
+    ![index-into-db](./figs/index-into-db.png)
 
 1. Click **Next** to advance to "Kill Duplicates".  Keep default options.
 
 1. Click **Next** to advance to "Summary", then click **Index**
 
-    ![index-pending](figs/index-pending.png)
-    
+    ![index-pending](./figs/index-pending.png)
+
 1. Scroll down and click **Sync** to finalize the indexing.
-   
-    ![index-sync](figs/index-sync.png)
+
+    ![index-sync](./figs/index-sync.png)
 
 You can now search for your document:
 
@@ -224,46 +224,46 @@ You can now search for your document:
 
 1. **Click** the search icon to query for documents.
 
-    ![search-databases](figs/search-databases.png)
+    ![search-databases](./figs/search-databases.png)
 
 1. Modify the example query action to search for the text "management":
-   
-    ![search-text](figs/search-text.png)
+
+    ![search-text](./figs/search-text.png)
   
 1. Add another query option, for example to highlight matching terms in the returned documents, then click **Test Action**.
 
-    ![search-run](figs/search-run.png)
+    ![search-run](./figs/search-run.png)
 
     > NOTE: For details on this `query` action, see the [IDOL Content Help](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Actions/Query/Query.htm).
 
 1. View the results and note how the matching terms for the query text "management" are marked up for highlighting.
 
-    ![search-result](figs/search-result.png)
+    ![search-result](./figs/search-result.png)
 
 ### Generate an answer from your document
 
 Open IDOL Admin for Answer Server at <http://localhost:12000/action=admin#page/console/test-action> and do the following:
 
 1. Paste the following action:
-   
-    ```
+
+    ```url
     action=ask&text=what is management's responsibility?
     ```
 
-    ![ask-question](figs/ask-question.png)
+    ![ask-question](./figs/ask-question.png)
 
 1. Click **Test Action** to see your LLM-generated answer.
 
-    ![ask-answer-rag](figs/ask-answer-rag.png)
+    ![ask-answer-rag](./figs/ask-answer-rag.png)
 
     > NOTE: The answer is returned with a confidence score, as well as details of the reference document(s) for verification.
 
-#### Possible errors
+#### Possible answer errors
 
 If your LLM Server is not running or not accessible, you will see the following error message:
 
-![ask-connection-error](figs/ask-connection-error.png)
- 
+![ask-connection-error](./figs/ask-connection-error.png)
+
 Ensure that your LLaMA.cpp server is running and that your `.env` file correctly references your WSL system IP address.
 
 ## Conclusions

@@ -26,7 +26,7 @@ By default, in the `basic-idol` deployment, only NiFi and IDOL Find are accessib
 
 - This modification has already been made and you can use it by referencing a second `.yml` file in your startup command:
 
-  ```
+  ```sh
   docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml up
   ```
 
@@ -45,47 +45,48 @@ Next, you can run another system modification to configure a shared folder where
     ```diff
     volumes:
       idol-ingest-volume:
-        # If running on Windows you may need to specify local driver
     - # driver: local
     +   driver: local
         driver_opts:
           type: none
     -     device: /path/to/idol-ingest/bind
     +     device: /mnt/c/OpenText/hotfolder
+          o: bind
     ```
 
     > NOTE: If you are using WSL, you already know that your Windows paths are accessible from WSL via the `/mnt/` parent directory from the [WSL guide](./SETUP_WINDOWS_WSL.md#file-system-access).
 
 - To run with these changes to the Docker volume `idol-ingest-volume`, you must first remove the existing volume:
 
-    ```
+    ```sh
     docker volume rm basic-idol_idol-ingest-volume
     ```
 
 - Finally, launch the modified system with:
 
-    ```
+    ```sh
     docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml up -d
     ```
 
     > NOTE: The `-d` option here sets the system to run in the background. You now will not automatically see log messages in your terminal.  
-    > 
+    >
     > To view logs, either:
     > - run `docker compose logs` to see the log messages that the `-d` option has suppressed, or
     > - read the [`docker logs` documentation](https://docs.docker.com/reference/cli/docker/container/logs/) for steps to tail logs for a specific container, for example:
     >
-    >    ```
+    >    ```sh
     >    docker logs basic-idol-idol-find-1 -f
     >    ```
     >
     > To stop the system in this mode, you must run:
-    > ```
+    >
+    > ```sh
     > docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml stop
     > ```
 
 You can now check the mounted volume with:
 
-```
+```sh
 $ docker volume inspect basic-idol_idol-ingest-volume
 [
     {
@@ -114,7 +115,7 @@ IDOL containers ship with their configuration files included. Before you can edi
 
 With the Docker system running, use the Linux command line to make a local copy of the IDOL container configuration directory:
 
-```
+```sh
 $ cd /opt/idol/idol-containers-toolkit/basic-idol
 $ docker cp basic-idol-idol-content-1:/content/cfg content/
 Successfully copied 33.8kB to /opt/idol/idol-containers-toolkit/basic-idol/content/
@@ -123,8 +124,8 @@ Successfully copied 33.8kB to /opt/idol/idol-containers-toolkit/basic-idol/conte
 Check for a new directory `basic-idol/content/cfg` on your WSL Linux filesystem, containing several `.cfg` files.
 
 > TIP: To explore the contents of a running container manually, you can try:
-> 
-> ```
+>
+> ```sh
 > $ docker exec -it basic-idol-idol-content-1 bash
 > [idoluser@4ebbcce2b410 content]$ pwd
 > /content
@@ -167,7 +168,7 @@ Property=NumericFields
 // Specify which fields contain parametric values to be stored for optimised parametric searching
 Property=ParametricFields
 - PropertyFieldCSVs=*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
-+ PropertyFieldCSVs=*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
++ PropertyFieldCSVs=*/APPNAME,*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
 ```
 
 > NOTE: For details on these and other IDOL Content field types, see [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_3/IDOLServer_24.3_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm#FieldsForSearch).
@@ -176,7 +177,7 @@ Property=ParametricFields
 
 Next you stop and start the IDOL Content container to pick up these changes.
 
-```
+```sh
 docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml stop idol-content
 docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml up -d
 ```
@@ -185,21 +186,25 @@ docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docke
 
 Open IDOL Admin for Content onto the [configuration view](http://idol-docker-host:9100/a=admin#page/config/SetParametricFields) to see that your change has been applied:
 
-![content-config-pii](figs/content-config-pii.png)
+![content-config-pii](./figs/content-config-pii.png)
 
 ## Keeping track of compose files
 
 You will have noticed that you need to reference your list of `.yml` files whenever you run commands for your system with `docker compose`, which can be a source of confusion.  To simplify things, I recommend creating a `deploy.sh` script, for example:
 
-```
+```sh
 touch deploy.sh
 chmod +x deploy.sh
 ```
 
 , with the following content:
 
-```
-docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml -f docker-compose.bindmount.yml "$@"
+```sh
+docker compose \
+  -f docker-compose.yml \
+  -f docker-compose.expose-ports.yml \
+  -f docker-compose.bindmount.yml \
+  "$@"
 ```
 
 Now, you can use this to conveniently control your deployment with the standard `docker compose` options, for example:
@@ -217,4 +222,4 @@ You are now familiar with key concepts of deploying IDOL containers with modific
 
 ## Next steps
 
-Return to the containers [tutorial](./README.md#ingest-documents-with-nifi).
+Return to the containers [tutorial](./PART_III.md#ingest-documents-with-nifi).

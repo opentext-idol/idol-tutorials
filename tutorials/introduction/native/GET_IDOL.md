@@ -20,7 +20,7 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 1. Scroll to the bottom and click `Activate` next to your *IDOL SW license* under the Action column.
 
     ![get-license](./figs/get-license.png)
- 
+
 1. On the "License Activation" screen, at the bottom left, select the check box, choose your preferred version (the latest is 24.3), then fill in the quantity to activate:
 
    ![eSoftware-selectLicense](./figs/eSoftware-selectLicense.png)
@@ -46,8 +46,9 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
     ![get-software](./figs/get-software.png)
 
 1. From the list of available files, select and download the following (depending on your operating system), *e.g.*
-   -  `LicenseServer_24.3.0_WINDOWS_X86_64.zip` or `LicenseServer_24.3.0_LINUX_X86_64.zip`, and
-   -  `Content_24.3.0_WINDOWS_X86_64.zip` or `Content_24.3.0_LINUX_X86_64.zip`.
+
+   - `LicenseServer_24.3.0_WINDOWS_X86_64.zip` or `LicenseServer_24.3.0_LINUX_X86_64.zip`, and
+   - `Content_24.3.0_WINDOWS_X86_64.zip` or `Content_24.3.0_LINUX_X86_64.zip`.
 
     ![get-idol-zips](./figs/get-idol-zips.png)
 

@@ -10,7 +10,7 @@ In this lesson, you will:
 
 - [Answer system types](#answer-system-types)
 - [Data Admin](#data-admin)
-- [Configure and run the `data-admin` deployment](#configure-and-run-the-data-admin-deployment-1)
+- [Introducing the `data-admin` deployment](#introducing-the-data-admin-deployment)
   - [Setup](#setup)
   - [Deploy](#deploy)
 - [First look at IDOL Data Admin](#first-look-at-idol-data-admin)
@@ -47,7 +47,7 @@ IDOL Data Admin allows you to set up and maintain an Answer Bank system, a store
 
 > NOTE: Data Admin can also be used to manage an IDOL search system to optimize the search experience for your end users. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/DataAdmin_24.3_Documentation/admin/Content/Introduction.htm) for details.
 
-## Configure and run the `data-admin` deployment
+## Introducing the `data-admin` deployment
 
 Within the IDOL Container project, the `data-admin` directory includes files to define an end-to-end IDOL question answering system.  Some of these components will be similar to what you have seen before, with Content, View and Community but here we have in addition Answer Server and its related components, as well as a dedicated user interface called "IDOL Data Admin".
 
@@ -92,12 +92,13 @@ flowchart TB
 
 First, you need to edit some of the container toolkit files.
 
-> REMINDER: To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). 
-> 
+> REMINDER: To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com).
+>
 > To open the `data-admin` folder contents for editing, type:
-> ```
-> $ cd /opt/idol/idol-containers-toolkit/data-admin
-> $ code .
+>
+> ```sh
+> cd /opt/idol/idol-containers-toolkit/data-admin
+> code .
 > ```
 
 Edit the `.env` file in `/opt/idol/idol-containers-toolkit/data-admin` to set the IP address of your IDOL License Server. For example:
@@ -121,17 +122,26 @@ Next, update the startup script for Answer Server `data-admin/answerserver/start
 
 To launch the system, type the following commands:
 
-```
+```sh
 cd /opt/idol/idol-containers-toolkit/data-admin
 docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml up -d
 ```
 
 It can be more convenient to use a deployment script, as in the [introductory lesson](../../introduction/containers/DOCKER_DEPLOY.md#keeping-track-of-compose-files).  For example:
 
-```
+```sh
 cd /opt/idol/idol-containers-toolkit/data-admin
-echo 'docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml "$@"' > deploy.sh
+touch deploy.sh
 chmod +x deploy.sh
+```
+
+, with the following content:
+
+```sh
+docker compose \
+  -f docker-compose.yml \
+  -f docker-compose.expose-ports.yml \
+  "$@"
 ```
 
 As a reminder, you can now control your deployment with the standard `docker compose` options:
@@ -139,7 +149,7 @@ As a reminder, you can now control your deployment with the standard `docker com
 - Start all containers (and rebuild any changes): `./deploy.sh up -d`
 - Stop all containers (without destroying anything): `./deploy.sh stop`
 - Stop one containers: `./deploy.sh stop idol-content`
-- Take down all containers: `./deploy.sh down` 
+- Take down all containers: `./deploy.sh down`
 
 ## First look at IDOL Data Admin
 
@@ -147,11 +157,11 @@ When the system is running, point your web browser to <http://idol-docker-host:8
 
 On first logging in, you must enter the temporary credentials: `admin` / `admin`.
 
-![ida-login](figs/ida-login.png)
+![ida-login](./figs/ida-login.png)
 
 > TIP: These temporary default login details can be confirmed as follows:
-> 
-> ```
+>
+> ```sh
 > $ docker exec -it data-admin-idol-dataadmin-1 bash
 > idoluser@f88770416667 dataadmin]$ cat home/config.json | grep -A 2 defaultLogin
 >   "defaultLogin" : {
@@ -164,9 +174,10 @@ On logging in for the first time, you have the opportunity to review the various
 
 These are already pre-configured except the optional external search engine. Add a search URL and click **ENABLE SEARCH ENGINE**:
 
-![ida-external-search](figs/ida-external-search.png)
+![ida-external-search](./figs/ida-external-search.png)
 
 > TIP: Try any of the following URL templates:
+>
 > - DuckDuckGo: "http://duckduckgo.com/?q=%q"
 > - Bing: "http://www.bing.com/search?q=%q"
 > - Google: "http://google.com/search?q=%q"
@@ -174,19 +185,19 @@ These are already pre-configured except the optional external search engine. Add
 
 Next, scroll up and click **SAVE CHANGES**, then click **Next**.
 
-![ida-save-changes](figs/ida-save-changes.png)
+![ida-save-changes](./figs/ida-save-changes.png)
 
 ### IDOL Data Admin users
 
 Remember that your initial login was as a temporary "admin" user.  On the next screen, you must add at least one new administrator-level user, for example called "idol", then log out and log in a that new user.
 
-![ida-new-admin](figs/ida-new-admin.png)
+![ida-new-admin](./figs/ida-new-admin.png)
 
 > NOTE: You can alternatively create your own users from IDOL Community <http://idol-docker-host:9030/action=admin#page/users>, as you are already familiar with. IDOL Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/DataAdmin_24.3_Documentation/admin/Content/Setup/UserRoles.htm) for details.
 
 ## Conclusions
 
-You have an overview understanding of an IDOL question answering system.  You have set up a containerized deployment including the required IDOL components. 
+You have an overview understanding of an IDOL question answering system.  You have set up a containerized deployment including the required IDOL components.
 
 ## Next step
 

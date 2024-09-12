@@ -22,7 +22,7 @@ Use IDOL Data Admin to create and administer a trusted store of reference questi
 
 <!-- Start [here](./PART_III.md). -->
 
-*COMING SOON*
+> COMING SOON!
 
 ## PART IV - Conversations
 
@@ -30,7 +30,7 @@ Set up IDOL Conversation Server to enable a chat-style interaction that helps us
 
 <!-- Start [here](./PART_IV.md). -->
 
-*COMING SOON*
+> COMING SOON!
 
 ## Next steps
 

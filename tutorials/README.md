@@ -47,11 +47,13 @@ The easiest option for most people trying IDOL for the first time is to use a Wi
 > NOTE: For Linux users, there will be notes like this along the way for relevant changes.
 
 Your Windows laptop will need at least the following spare capacity:
+
 - 4 CPU cores, 8 GB RAM and 50 GB disk.
 
 For Windows users, you must be running Windows 11, or Windows 10 (Build 19041 or higher).
 
 You will also need:
+
 - A text editor.
 - Administrator privileges to install software.
 
@@ -61,7 +63,7 @@ You will also need:
 
 An IDOL system collects your source content, using analytics to build an index of useful data that you can search and analyze.
 
-![idol-workflow](figs/idol-workflow.png)
+![idol-workflow](./figs/idol-workflow.png)
 
 This introduction is in two parts, first a *native* installation of two essential IDOL components on your Windows machine, then second an end-to-end containerized deployment using Docker.
 
@@ -69,13 +71,13 @@ This introduction is in two parts, first a *native* installation of two essentia
 
 Generate a license key then download, install and run IDOL Content, the search index at the core of your IDOL system.
 
-Get started with [IDOL Content](introduction/native/README.md).
+Get started with [IDOL Content](./introduction/native/README.md).
 
 ### End-to-end deployment with containers
 
-Use the official IDOL container repository to simplify installation of larger IDOL systems. Use Docker to set up a multi-component, end-to-end system from ingest with NiFi to search with IDOL Find. 
+Use the official IDOL container repository to simplify installation of larger IDOL systems. Use Docker to set up a multi-component, end-to-end system from ingest with NiFi to search with IDOL Find.
 
-Get started with [IDOL containers](introduction/containers/README.md).
+Get started with [IDOL containers](./introduction/containers/README.md).
 
 ## Advanced lessons
 
@@ -83,11 +85,11 @@ Dip into any of the following lesson series to develop your IDOL knowledge and t
 
 ### Ingest and enrichment
 
-Use IDOL NiFi processors to do more with your data.  Collect securely, enrich, ingest and view. 
+Use IDOL NiFi processors to do more with your data.  Collect securely, enrich, ingest and view.
 
 > NOTE: NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2014](https://web.archive.org/web/20171207172647/https://www.nsa.gov/news-features/press-room/press-releases/2014/nifi-announcement.shtml).
 
-*COMING SOON*
+> COMING SOON!
 
 <!-- 
 - [NiFi Process Groups](./ingestion/nifi-process-group/README.md)
@@ -124,7 +126,7 @@ Get started with [IDOL Answer](./retrieval/answer/README.md).
 
 Learn how to monitor your IDOL system and perform maintenance tasks. Scale up your IDOL system, from distributed ingest to query speed optimization.
 
-*COMING SOON*
+> COMING SOON!
 
 <!-- 
   - [ ] Bind-mounting lesson: Bind-mount content.cfg, change log level and also bind-mount logs folder/
@@ -134,7 +136,7 @@ Learn how to monitor your IDOL system and perform maintenance tasks. Scale up yo
 
 ### Rich media
 
-IDOL Media Server is often used as a stand-alone solution. For more details, see this dedicated tutorial project: <https://github.com/opentext-idol/idol-rich-media-tutorials>
+IDOL Media Server includes a wide range of image, video and audio analytics to enrich your data as part of an ingest pipeline. Media Server is also used as a stand-alone solution. For more details, see this dedicated tutorial project: <https://github.com/opentext-idol/idol-rich-media-tutorials>
 
 ### Embedded IDOL
 

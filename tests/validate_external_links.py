@@ -37,12 +37,14 @@ for dir_path, dir_names, file_names in os.walk(".."):
     if not file_path in report: 
       report[file_path] = []
 
-    with open(file_path, 'r') as md_file:
+    with open(file_path, 'r', encoding='utf8') as md_file:
       for link in findDocsLinks(md_file.read()):
         if "swinfra.net" in link: continue
         if "autonomy.com" in link: continue
         if "oauth2" in link: continue
         if "idol-docker-host" in link: continue
+        if "?q=%q" in link: continue
+        if "//#" in link: continue
         
         count += 1
 

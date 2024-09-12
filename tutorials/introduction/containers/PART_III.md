@@ -11,10 +11,12 @@ In this lesson, you will:
 
 - [Modify IDOL container deployment](#modify-idol-container-deployment)
 - [Ingest documents with NiFi](#ingest-documents-with-nifi)
-  - [Update the flow](#update-the-flow)
   - [Prepare sample data for ingest](#prepare-sample-data-for-ingest)
-  - [Run ingest](#run-ingest)
+  - [Follow the ingestion](#follow-the-ingestion)
+  - [Understanding ingest](#understanding-ingest)
 - [Explore documents in IDOL Find](#explore-documents-in-idol-find)
+  - [Filter by metadata](#filter-by-metadata)
+  - [Search](#search)
 - [Edit the IDOL Find configuration file](#edit-the-idol-find-configuration-file)
   - [Copy out configuration files](#copy-out-configuration-files)
   - [Mount external configuration files](#mount-external-configuration-files)
@@ -29,9 +31,9 @@ In this lesson, you will:
 
 Remember that, to edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `basic-idol` folder contents for editing, type:
 
-```
-$ cd /opt/idol/idol-containers-toolkit/basic-idol
-$ code .
+```sh
+cd /opt/idol/idol-containers-toolkit/basic-idol
+code .
 ```
 
 The default `basic-idol` system is *almost* exactly what you need, but you can make some modifications to help you understand the system, including mounting a shared folder where you can copy sample data to index.
@@ -40,44 +42,86 @@ Follow these [docker deployment steps](./DOCKER_DEPLOY.md) then return here.
 
 ## Ingest documents with NiFi
 
-With your IDOL system now running, you are almost ready to start ingesting data. First, you can look closer at the NiFi flow.
-
-### Update the flow
-
-Open NiFi at <http://idol-docker-host:8080/idol-nifi/nifi/> and stop everything: 
-
-- On the **Operate** tile, click the stop icon:
-  
-  ![nifi-operate](figs/nifi-operate.png)
-
-Again, the default system is *almost* exactly what you need. However, again you can make some modifications, including to add a new processor.
-
-Follow these [steps](./NIFI_INGEST.md) then return here.
+With your IDOL system now running, you are almost ready to start ingesting data.
 
 ### Prepare sample data for ingest
 
 This repository includes a `data` folder containing some sample enterprise files to ingest. Copy the directory `Retail` into your shared folder `C:\OpenText\hotfolder`.
 
-### Run ingest
+### Follow the ingestion
 
-Open NiFi at <http://idol-docker-host:8080/idol-nifi/nifi/> and start everything: 
-
-- From the top-level **NiFi Flow** canvas, on the **Operate** tile, click the play icon:
-  
-  ![nifi-operate](figs/nifi-operate.png)
+Open NiFi at <http://idol-docker-host:8080/idol-nifi/nifi/> and note that the processors are automatically started.
 
 Monitor some of the files as they pass from processor to processor:
 
-- Right click any link, then click **List queue**:
-    ![nifi-list-queue](figs/nifi-list-queue.png)
+- Stop a processor to temporarily block some files in the queue. Right click on the processor tile, then click **Stop**:
+    ![nifi-list-queue](./figs/nifi-stop-processor.png)
+
+- Right click the link comping in to that processor, then click **List queue**:
+    ![nifi-list-queue](./figs/nifi-list-queue.png)
 
 - Click the eye icon for any queued document:
-    ![nifi-view-queue](figs/nifi-view-queue.png)
+    ![nifi-view-queue](./figs/nifi-view-queue.png)
 
 - A new tab opens, showing the document metadata and content for this file, including any PII detections:
-    ![nifi-view-document](figs/nifi-view-document.png)
+    ![nifi-view-document](./figs/nifi-view-document.png)
 
 > TIP: If you cannot open a queued document, you might need to reconfigure your setup. To monitor documents flowing through NiFi, you must connect to NiFi by using an explicit IP address, not `localhost`. If you are using WSL and following this tutorial to the letter, you will have no problem. You have already found your WSL (guest) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access) and possibly set a friendly host name for it (`idol-docker-host`) in your Windows `hosts` file.
+
+Restart your stopped processor (right-click, then **Start**) to allow those queued files to be processed.
+
+### Understanding ingest
+
+So, let's recap on something for clarity.  How did your files actually get from the hotfolder to IDOL Content?
+
+1. In the setup, you [configured a mounted disk](./DOCKER_DEPLOY.md#mount-a-shared-folder) that is visible to the container running NiFi at `/idol-ingest`.
+
+   - The `docker-compose.bindmount.yml` file defines the local directory for a volume:
+
+      ```yml
+      volumes:
+        idol-ingest-volume:
+          driver_opts:
+            device: /mnt/c/OpenText/hotfolder
+      ```
+
+   - That volume is mounted into the NiFi container in `docker-compose.yml`:
+
+      ```yml
+      services:
+        idol-nifi:
+          volumes:
+            - idol-ingest-volume:/idol-ingest
+      ```
+
+1. In the "Basic IDOL" NiFi flow, the FileSystem Connector is pre-configured to look at this mounted folder for files.
+
+    - Navigate to the "GetFileSystem" processor to view its configuration:
+      ![nifi-get-files-config](./figs/nifi-get-files-config.png)
+
+    - Click **ADVANCED** and go to the **BROWSE** tab to see the connector's view of that folder:
+      ![nifi-get-files-browse](./figs/nifi-get-files-browse.png)
+
+1. After flowing through the various IDOL processors in NiFi, files get to the "PutIDOL" processor, which sends them to IDOL Content (in batches) to the container with hostname `idol-content` on port `9100`.
+
+    - The container host is defined in `docker-compose.yml`, which also points to the mounted configuration directory:
+
+      ```yml
+      services:
+        idol-content: 
+          volumes:
+            - ./content/cfg:/content/cfg
+      ```
+
+    - The IDOL Content configuration file `content/cfg/original-content-cfg` defines the server port:
+
+      ```ini
+      [Server]
+      Port=9100
+      ```
+
+    - The "PutIDOL" processor properties reference these:
+      ![nifi-put-idol](./figs/nifi-put-idol.png)
 
 ## Explore documents in IDOL Find
 
@@ -87,23 +131,25 @@ Log in to Find on <http://idol-docker-host:8080/find/>. The default credentials 
 
 The initial view of the topic map shows a summary of the key terms in your document set:
 
-![find-topic-map](figs/find-topic-map.png)
+![find-topic-map](./figs/find-topic-map.png)
 
-Filter by metadata, for example:
+### Filter by metadata
 
-- application name,
+For example:
 
-- word count, or
+- application name, or
+
+  ![find-filter-app-name](./figs/find-filter-app-name.png)
+
+- word count
   
-  ![find-word-count](figs/find-word-count.png)
+  ![find-filter-word-count](./figs/find-filter-word-count.png)
 
-- educed name value
+### Search
 
-  ![find-educed-name](figs/find-educed-name.png)
+For example, for "sales process" to retrieve relevant documents:
 
-Search for *sales process* to retrieve relevant documents:
-
-![find-search](figs/find-search.png)
+![find-search](./figs/find-search.png)
 
 In the **List** tab, click on an item in the result list to show a near-native HTML rendering of the original document. In this way, IDOL allows you to view documents directly in the Find application, without having to have the viewing software installed for each file type in your index.
 
@@ -119,7 +165,7 @@ You have already modified an IDOL component configuration file. You used IDOL Co
 
 With the Docker system running, use the Linux command line to make a local copy of the IDOL container configuration directory:
 
-```
+```sh
 $ cd /opt/idol/idol-containers-toolkit/basic-idol
 $ mkdir find
 $ docker cp basic-idol-idol-find-1:/opt/find/home/config_basic.json find/
@@ -141,7 +187,7 @@ idol-find:
 
 ### Update the configuration file
 
-You might have noticed that Find automatically displays any parametric- and numeric-type fields found in the source documents. To change the behavior of this display, you can edit the configuration file `fieldsInfo` section.
+You might have noticed that Find automatically displays any *parametric*- and *numeric*-type fields found in the source documents. To change the behavior of this display, you can edit the configuration file `fieldsInfo` section.
 
 One common change is to provide a friendly name for a given field. For example, look at the `PII_NAME/VALUE` field, which is shown as just **VALUE** by default in Find. Use the following example to add an entry for it:
 
@@ -161,12 +207,14 @@ One common change is to provide a friendly name for a given field. For example, 
 
 Next you stop and start the IDOL Find container to pick up these changes.
 
-```
+```sh
 ./deploy.sh stop idol-find
 ./deploy.sh up -d
 ```
 
 Open IDOL Find and log in again to see the field name under **FILTERS** has changed to **EDUCED PERSON NAME**.
+
+  ![find-filter-educed-name](./figs/find-filter-educed-name.png)
 
 > NOTE: For details on other available configuration options, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Find_24.3_Documentation/admin/Content/Introduction.htm).
 
@@ -174,7 +222,13 @@ Open IDOL Find and log in again to see the field name under **FILTERS** has chan
 
 ## Conclusions
 
-You now understand how to modify IDOL containers deployments. You can update container configuration files for IDOL components including Find. You have updated a NiFi ingest chain to ingest documents and can search for your documents in Find.
+You have now set up and used an end-to-end IDOL system. You understand how to modify a containerized IDOL deployment. You can mount external volumes and update configuration files for IDOL components, including Find. You have explored a NiFi ingest chain to ingest documents and can search for your documents in Find.
+
+> REMINDER: To stop (but not destroy) your IDOL deployment, run:
+>
+> ```sh
+> /opt/idol/idol-containers-toolkit/basic-idol$ ./deploy.sh stop
+> ```
 
 ## Next steps
 

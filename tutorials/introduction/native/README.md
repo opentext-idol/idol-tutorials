@@ -13,7 +13,7 @@ In this lesson, you will start to get familiar with key concepts of an IDOL syst
   - [Configure](#configure)
 - [Run IDOL](#run-idol)
   - [IDOL License Server](#idol-license-server)
-    - [(*Optionally*) Run as a service](#optionally-run-as-a-service)
+    - [Optionally run as a service](#optionally-run-as-a-service)
   - [IDOL Content](#idol-content)
 - [Use IDOL](#use-idol)
   - [Open IDOL Admin](#open-idol-admin)
@@ -36,9 +36,9 @@ Follow [these steps](./GET_IDOL.md) to obtain IDOL software and your license key
    - `C:\OpenText\Content_24.3.0_WINDOWS_X86_64`
   
 1. Copy your license key `.dat` file into `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64` and rename it to `licensekey.dat`.
-   
+
 1. On Windows, you might need to install the included Visual C++ Redistributable package. In the same IDOL Content Server folder, right-click on `vcredist.exe`, then select 'Run as administrator'.
-   
+
     > HINT: If you see a version conflict error here, you might need to first uninstall any existing version.
 
 ### Configure
@@ -66,11 +66,11 @@ You are now ready to launch your IDOL applications.
 
 First you start IDOL License Server. Go to `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64`, and double-click `licenseserver.exe`.
 
-This action opens a terminal window. To confirm IDOL License Server is running you can: 
+This action opens a terminal window. To confirm IDOL License Server is running you can:
 
 - check the `logs/application.log`, looking for success statements like:
 
-  ```
+  ```log
   27/07/2024 06:13:32 [0] 30-Normal: ACI Server validated operations key.
   ...
   27/07/2024 06:13:32 [0] 00-Always: ACI Server attached to port 20000
@@ -99,43 +99,21 @@ If License Server is not running, check that:
   
 If you are reusing an existing License Server, try deleting the `license` and `uid` folders, before starting again.
 
-#### (*Optionally*) Run as a service
-
-<details><summary>Click me for instructions.</summary><p>
+#### Optionally run as a service
 
 It can be convenient to configure IDOL License Server to run as a service, for example so it will start up on system boot.
 
-On Windows, open Windows Command Prompt in administrator mode by right-clicking and selecting **Run as administrator**. Type the following commands:
-
-```
-> cd C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64
-> licenseserver.exe -install -servicename OT_IDOL_License_Server -displayname "OpenText IDOL License Server 24.3.0"
-Successfully installed "licenseserver.exe" as a service.
-```
-
-> TIP: To remove the service, run the following command in administrator mode:
-> ```
-> > sc delete OT_IDOL_License_Server
-> [SC] DeleteService SUCCESS
-> ```
-
-> TIP: To monitor Windows Services, run the **Services** system tool.
-
-> NOTE: For more details on Windows service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_3/LicenseServer_24.3_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_WindowsServices.htm).
-
-> NOTE: IDOL components also work well with common init systems on Linux, for example `systemd`.  For details, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_3/LicenseServer_24.3_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_LinuxStartup.htm).
-
-<p></details>
+To set up License Server as a service, follow [these steps](../../appendix/IDOL_SERVICE.md).
 
 ### IDOL Content
 
 With IDOL License Server running, you can now start IDOL Content. Go to `C:\OpenText\Content_24.3.0_WINDOWS_X86_64`, and double-click `content.exe`.
 
-This action opens a terminal window. To confirm IDOL Content is running, you can: 
+This action opens a terminal window. To confirm IDOL Content is running, you can:
 
 - check the `logs/application.log`, looking for success statements like:
 
-  ```
+  ```log
   27/06/2024 06:15:32 [1] 00-Always: Your license expires in 223 days
   ...
   27/07/2024 06:15:33 [0] 00-Always: ACI Server attached to port 9100
@@ -172,7 +150,7 @@ If you are reusing an existing IDOL Content, try deleting the `license` and `uid
 
 Each IDOL component includes a web app called IDOL Admin, which offers common and component-specific feature. To open IDOL Admin for Content, click <http://localhost:9100/action=admin>.
 
-![idol-admin](figs/idol-admin.png)
+![idol-admin](./figs/idol-admin.png)
 
 This feature-rich UI allows you to monitor the running component, from logs and system usage to configuration settings and queue tasks.
 
@@ -188,7 +166,7 @@ For IDOL, a database means a logical group of indexed documents. You can create 
 - Name the database **Demo**.
 - Click **Add**.
 
-![create-database](figs/create-database.png)
+![create-database](./figs/create-database.png)
 
 > NOTE: Read more about database creation in the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Part%20-%20Administration/Administration/Create_a_New_Databas.htm?Highlight=Database).
 
@@ -198,7 +176,7 @@ In IDOL Admin for Content, under the **Control** menu, select **Console**.
 
 Open the **Index** tab, then under **What data do you want to index?**, select **Text**.
 
-![index-text](figs/index-text.png)
+![index-text](./figs/index-text.png)
 
 The example document shown here gives us a first look at the IDOL *IDX* document index format. This format defines a unique reference field, some metadata fields, as well as a block of plain text, the `DRECONTENT`.
 
@@ -210,13 +188,13 @@ In IDOL Admin, replace the example document in the text box with the contents of
 
 Choose the **Demo** database you just created, then click **Next**.
 
-![select-database](figs/select-database.png)
+![select-database](./figs/select-database.png)
 
-Retain the default settings for **Kill Duplicates**, then click **Next**. You can read more about KillDuplicates in the [IDOL Server Reference] (https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Index%20Actions/IndexData/Parameters/_IX_KillDuplicates.htm).
+Retain the default settings for **Kill Duplicates**, then click **Next**. You can read more about KillDuplicates in the [IDOL Server Reference](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Index%20Actions/IndexData/Parameters/_IX_KillDuplicates.htm).
 
 Under **Summary**, click **Index**.  
 
-![index-data](figs/index-data.png)
+![index-data](./figs/index-data.png)
 
 After the index processing is complete, click **Sync** to finalize indexing and make the documents available to search.
 
@@ -230,15 +208,15 @@ By default, this returns the six most recently indexed documents.
 
 To do something a bit more interesting, modify the query as shown in this screenshot to `action=query&print=all&totalresults=true&anylanguage=true&text=*&maxresults=10&querysummary=true`:
 
-![extended-query](figs/extended-query.png)
+![extended-query](./figs/extended-query.png)
 
 Clicking **Test Action** again now shows 10 documents, as well as a summary of the most common terms in them.
 
-![query-summary](figs/query-summary.png)
+![query-summary](./figs/query-summary.png)
 
 In this way you can start to explore your indexed documents. Here is one more example to query one of these common terms to find the related documents.
 
-![query-highlight](figs/query-highlight.png)
+![query-highlight](./figs/query-highlight.png)
 
 > NOTE: For full details on the available query options with IDOL Content, see the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Part%20-%20Results/Retrieval/Retrieval.htm)
 

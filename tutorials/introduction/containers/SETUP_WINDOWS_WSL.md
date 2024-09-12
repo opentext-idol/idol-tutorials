@@ -26,24 +26,24 @@ You must be running Windows 11 or Windows 10 (Build 19041 or higher) to use the 
 Open PowerShell or Windows Command Prompt in administrator mode by right-clicking and selecting **Run as administrator**.
 
 > TIP: For existing users of WSL, you might need to specify that you want to use WSL version 2. Run the command:
-> 
-> ```
+>
+> ```cmd
 > wsl --set-default-version 2
 > ```
 
 Type the following command to install the Ubuntu distribution of Linux:
 
-```
+```cmd
 wsl --install
 ```
 
-![wsl-install](figs/wsl-install.png)
+![wsl-install](./figs/wsl-install.png)
 
-When complete you will be prompted to __restart your machine__.
+When complete you will be prompted to *restart your machine*.
 
 After rebooting, a command window will pop up automatically, prompting you to create a username and password:
 
-![wsl-login](figs/wsl-login.png)
+![wsl-login](./figs/wsl-login.png)
 
 You are now logged in to Ubuntu running on your Windows box.
 
@@ -53,7 +53,7 @@ You are now logged in to Ubuntu running on your Windows box.
 
 From PowerShell, run the following command to verify your setup:
 
-```
+```cmd
 > wsl -l -v
   NAME      STATE           VERSION
 * Ubuntu    Running         2
@@ -61,7 +61,7 @@ From PowerShell, run the following command to verify your setup:
 
 If your version is `1`, rather than `2`, run the following PowerShell command to convert it:
 
-```
+```cmd
 wsl --set-version Ubuntu 2
 ```
 
@@ -79,7 +79,7 @@ To view your Windows file system from Ubuntu, go to `/mnt/c/`.
 
 To find your Windows IP address as seen from WSL, run the following command from the Ubuntu command line:
 
-```
+```sh
 $ ping $(hostname).local -c 1
 PING MY_HOSTNAME.opentext.net (172.18.96.1) 56(84) bytes of data.
 ```
@@ -90,7 +90,7 @@ Client apps running on WSL Ubuntu can communicate with servers running on Window
 
 To find your WSL IP address as seen from Windows, run the following commands from the Ubuntu command line:
 
-```
+```sh
 $ sudo apt-get install net-tools
 $ ifconfig | grep -A1 eth0 | grep "inet "
     inet 172.18.109.25  netmask 255.255.240.0  broadcast 172.18.111.255
@@ -100,13 +100,13 @@ Client apps running on Windows can communicate with servers running on WSL Ubunt
 
 For convenience, you may want to set this IP address to a named host in your Windows `hosts` file. With administrator privileges, edit `C:\Windows\System32\drivers\etc\hosts` as follows:
 
-```diff
-+ # IDOL Tutorial
-+ 172.18.109.25	idol-docker-host		# WSL
+```ini
+# IDOL Tutorial
+172.18.109.25	idol-docker-host		# WSL
 ```
 
 Save and close the `hosts` file.
 
 > TIP: For an improved experience working from the command line on Windows, try [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/install):
 >
-> ![wsl-terminal](figs/wsl-terminal.png)
+> ![wsl-terminal](./figs/wsl-terminal.png)
