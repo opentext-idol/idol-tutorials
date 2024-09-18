@@ -6,6 +6,7 @@
   - [XML formatting](#xml-formatting)
   - [JSON formatting](#json-formatting)
 - [Monitoring Docker](#monitoring-docker)
+- [File name format encoding](#file-name-format-encoding)
 - [End](#end)
 
 ---
@@ -87,7 +88,7 @@ Compare the output:
 
 ## Monitoring Docker
 
-Monitor hardware resources per container:
+Monitor hardware resources per container, where the helper script `deploy.sh` calls `docker compose` with your collection of compose `.yml` files as described in the [introductory tutorial](../introduction/containers/DOCKER_DEPLOY.md#keeping-track-of-compose-files):
 
 ```sh
 $ ./deploy.sh stats
@@ -101,8 +102,6 @@ d2e499cc349c   basic-idol-idol-nifi-1                        11.24%    6.055GiB 
 ec10facb8935   basic-idol-idol-categorisation-agentstore-1   0.02%     19.07MiB / 31.19GiB   0.06%     4.26kB / 897B     0B / 0B     22
 c81461d2fc7f   basic-idol-idol-agentstore-1                  0.02%     90.3MiB / 31.19GiB    0.28%     5.76kB / 5.13kB   0B / 0B     22
 ```
-
-> REMINDER: Where the helper script `deploy.sh` calls `docker compose` with your collection of compose `.yml` files, as described in the [introductory tutorial](../introduction/containers/DOCKER_DEPLOY.md#keeping-track-of-compose-files).
 
 > NOTE: Optionally add a service name to restrict the list, for example:
 >
@@ -129,6 +128,40 @@ UID       PID       PPID      C    STIME   TTY   TIME       CMD
 cblanks   2083586   2083558   0    18:18   ?     00:00:00   /bin/bash ./run_idol.sh                              
 cblanks   2083755   2083586   0    18:18   ?     00:00:00   ./content.exe -configfile /content/cfg/content.cfg 
 ```
+
+## File name format encoding
+
+When you mount a disk for ingest with the FileSystem Connector, depending on your environment you may see issues with file names containing unicode characters that stop you being able to ingest content.
+
+1. Verify the locale of your `idol-nifi` container:
+
+    ```sh
+    $ cd /opt/idol/idol-containers-toolkit/basic-idol
+    $ docker exec -it basic-idol-idol-nifi-1 bash
+    [nifi@912b67752a6e nifi-current]$ locale
+    LANG=C.utf8
+    ...
+    [nifi@912b67752a6e nifi-current]$ exit
+    ```
+
+1. If the system is not setup with a UTF-8 locale, like `C.utf8` shown above, make the following change  your docker compose file:
+
+    ```diff
+    idol-nifi:
+      <<: *common-server
+      image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose > nifi-minimal or nifi-full
+      environment:
+    +   - LANG=C.UTF-8
+    +   - LC_ALL=C.UTF-8
+    ```
+
+1. Restart your NiFi container to apply the changes:
+
+    ```sh
+    cd /opt/idol/idol-containers-toolkit/basic-idol
+    ./deploy.sh down idol-nifi
+    ./deploy.sh up -d
+    ```
 
 ---
 

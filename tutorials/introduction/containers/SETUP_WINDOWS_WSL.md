@@ -102,7 +102,7 @@ For convenience, you may want to set this IP address to a named host in your Win
 
 ```ini
 # IDOL Tutorial
-172.18.109.25	idol-docker-host		# WSL
+172.18.109.25 idol-docker-host    # WSL
 ```
 
 Save and close the `hosts` file.

@@ -137,10 +137,12 @@ To launch the system, run the following commands from Ubuntu:
 
 ```sh
 cd /opt/idol/idol-containers-toolkit/basic-idol
-docker compose up
+docker compose up -d
 ```
 
 ![docker-up](./figs/docker-up.png)
+
+> NOTE: Ignore the deprecation warnings about the `version` attribute.
 
 Monitor the start of the NiFi container with:
 
@@ -149,6 +151,8 @@ docker logs basic-idol-idol-nifi-1 -f
 ```
 
 Wait for the log message "NiFi has started".
+
+> NOTE: For more details read the [`docker logs` documentation](https://docs.docker.com/reference/cli/docker/container/logs/).
 
 ## First look at NiFi
 

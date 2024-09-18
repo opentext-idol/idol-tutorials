@@ -120,28 +120,32 @@ Next, update the startup script for Answer Server `data-admin/answerserver/start
 
 ### Deploy
 
-To launch the system, type the following commands:
+To launch the system, navigate to the project folder:
 
 ```sh
 cd /opt/idol/idol-containers-toolkit/data-admin
-docker compose -f docker-compose.yml -f docker-compose.expose-ports.yml up -d
 ```
 
-It can be more convenient to use a deployment script, as in the [introductory lesson](../../introduction/containers/DOCKER_DEPLOY.md#keeping-track-of-compose-files).  For example:
+I recommend creating a deployment script, as in the [introductory lesson](../../introduction/containers/DOCKER_DEPLOY.md#keeping-track-of-compose-files).  For example:
 
 ```sh
-cd /opt/idol/idol-containers-toolkit/data-admin
 touch deploy.sh
 chmod +x deploy.sh
 ```
 
-, with the following content:
+Add the following content:
 
 ```sh
 docker compose \
   -f docker-compose.yml \
   -f docker-compose.expose-ports.yml \
   "$@"
+```
+
+Start the deployment project with:
+
+```sh
+./deploy.sh up -d
 ```
 
 As a reminder, you can now control your deployment with the standard `docker compose` options:
