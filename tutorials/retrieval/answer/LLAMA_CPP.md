@@ -1,6 +1,6 @@
 # Set up LLaMA.cpp server
 
-Set up [LLaMA.cpp](https://lmstudio.ai/) as an easy example of a local LLM Server, with optional GPU acceleration.
+Set up `LLaMA.cpp` as an easy example of a local LLM Server, with optional GPU acceleration.
 
 ---
 
