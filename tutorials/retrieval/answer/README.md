@@ -12,7 +12,7 @@ Start [here](./PART_I.md).
 
 ## PART II - Answer questions with RAG
 
-Set up **RAG** (Retrieval Augmented Generation), which uses a large language models (LLM) to generate answers by querying your IDOL Content for relevant trusted documents.
+Set up **RAG** (Retrieval Augmented Generation), which uses a large language model (LLM) to generate answers by querying your IDOL Content for relevant trusted documents.
 
 Start [here](./PART_II.md).
 
@@ -34,4 +34,4 @@ Set up IDOL Conversation Server to enable a chat-style interaction that helps us
 
 ## Next steps
 
-Explore some advanced IDOL configurations, in the [showcase section](../../README.md#advanced-lessons).
+Explore some advanced IDOL configurations, in the [showcase section](../../README.md#showcase-lessons).

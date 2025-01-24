@@ -1,6 +1,6 @@
 # Set up your Windows system for Ubuntu
 
-Set up WSL 2 (Windows Subsystem for Linux), a feature of Microsoft Windows that allows developers to run a Linux environment without the need for a separate virtual machine or dual booting.
+Set up WSL (Windows Subsystem for Linux), a feature of Microsoft Windows that allows developers to run a Linux environment without the need for a separate virtual machine or dual booting.
 
 > NOTE: The steps below are summarized from <https://learn.microsoft.com/en-us/windows/wsl/install>.
 
@@ -13,7 +13,8 @@ Set up WSL 2 (Windows Subsystem for Linux), a feature of Microsoft Windows that 
   - [File system access](#file-system-access)
   - [Network access](#network-access)
     - [Access Windows host from WSL guest](#access-windows-host-from-wsl-guest)
-    - [Access WSL host from Windows guest](#access-wsl-host-from-windows-guest)
+    - [Access WSL guest from Windows host](#access-wsl-guest-from-windows-host)
+- [Next steps](#next-steps)
 
 ---
 
@@ -59,19 +60,29 @@ From PowerShell, run the following command to verify your setup:
 * Ubuntu    Running         2
 ```
 
-If your version is `1`, rather than `2`, run the following PowerShell command to convert it:
-
-```cmd
-wsl --set-version Ubuntu 2
-```
+> TIP: If your version is `1`, rather than `2`, run the following PowerShell command to convert your instance with the following command, which takes you system's name as input:
+>
+> ```cmd
+> wsl --set-version Ubuntu 2
+> ```
 
 ## Communications between Windows and WSL
 
+Get a notebook ready, you will need to keep track of the following information about connectivity between host and guest.
+
 ### File system access
 
-To view your Ubuntu file system from Windows, go to `\\wsl.localhost\Ubuntu`.
+To view your guest Ubuntu file system from Windows, go to `\\wsl.localhost\Ubuntu`.
 
-To view your Windows file system from Ubuntu, go to `/mnt/c/`.
+![guest-filesystem](./figs/guest-filesystem.png)
+
+To view your host Windows file system from Ubuntu, go to `/mnt/c/`.
+
+![host-filesystem](./figs/host-filesystem.png)
+
+> TIP: For an improved experience working from the command line on Windows, try [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/install):
+>
+> ![wsl-terminal](./figs/wsl-terminal.png)
 
 ### Network access
 
@@ -86,7 +97,7 @@ PING MY_HOSTNAME.opentext.net (172.18.96.1) 56(84) bytes of data.
 
 Client apps running on WSL Ubuntu can communicate with servers running on Windows at this IP address (that is, `172.18.96.1`).
 
-#### Access WSL host from Windows guest
+#### Access WSL guest from Windows host
 
 To find your WSL IP address as seen from Windows, run the following commands from the Ubuntu command line:
 
@@ -98,15 +109,16 @@ $ ifconfig | grep -A1 eth0 | grep "inet "
 
 Client apps running on Windows can communicate with servers running on WSL Ubuntu at this IP address (that is, `172.18.109.25`).
 
-For convenience, you may want to set this IP address to a named host in your Windows `hosts` file. With administrator privileges, edit `C:\Windows\System32\drivers\etc\hosts` as follows:
-
-```ini
-# IDOL Tutorial
-172.18.109.25 idol-docker-host    # WSL
-```
-
-Save and close the `hosts` file.
-
-> TIP: For an improved experience working from the command line on Windows, try [Windows Terminal](https://learn.microsoft.com/en-us/windows/terminal/install):
+> TIP: For convenience, you may want to set this IP address to a named host in your Windows `hosts` file. With administrator privileges, edit `C:\Windows\System32\drivers\etc\hosts` as follows:
 >
-> ![wsl-terminal](./figs/wsl-terminal.png)
+> ```ini
+> # IDOL Tutorial
+> 172.18.109.25 idol-docker-host    # WSL
+> ```
+>
+> Save and close the `hosts` file.
+
+## Next steps
+
+Return to the containers [tutorial](./PART_I.md#docker).
+

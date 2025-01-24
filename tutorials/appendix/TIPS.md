@@ -44,7 +44,7 @@ Compare the output:
     <action>GETVERSION</action>
     <response>SUCCESS</response>
     <responsedata>
-      <autn:version>24.3.0</autn:version>
+      <autn:version>24.4.0</autn:version>
       ...
     </responsedata>
   </autnresponse>
@@ -79,7 +79,7 @@ Compare the output:
       "action": "GETVERSION",
       "response": "SUCCESS",
       "responsedata": {
-        "version": "24.3.0",
+        "version": "24.4.0",
         ...
       }
     }
@@ -116,7 +116,7 @@ See which container services are running:
 ```sh
 $ ./deploy.sh ps idol-content
 NAME                                          IMAGE                                                 COMMAND              SERVICE                          CREATED         STATUS                   PORTS
-basic-idol-idol-content-1                     microfocusidolserver/content:24.3                     "./run_idol.sh"      idol-content                     6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:9100-9102->9100-9102/tcp, :::9100-9102->9100-9102/tcp
+basic-idol-idol-content-1                     microfocusidolserver/content:24.4                     "./run_idol.sh"      idol-content                     6 minutes ago   Up 6 minutes (healthy)   0.0.0.0:9100-9102->9100-9102/tcp, :::9100-9102->9100-9102/tcp
 ```
 
 See which processes are running on each container:

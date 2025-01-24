@@ -1,10 +1,19 @@
-# Set up your Linux system for Docker
+# Set up Docker on your Linux system
+
+---
+
+- [Install Docker Engine](#install-docker-engine)
+  - [Test installation](#test-installation)
+  - [Optional post-install steps](#optional-post-install-steps)
+- [Next steps](#next-steps)
+
+---
 
 ## Install Docker Engine
 
-> NOTE: The following steps assume a Linux system using the `apt-get` package manager. For the `yum` package manager, see the [yum steps](./DOCKER_LINUX_YUM.md). For other Linux systems, refer to the official guide https://docs.docker.com/engine/install/.
+> NOTE: The following steps assume a Linux system using the `apt-get` package manager. For the `yum` package manager, see the [alternative yum steps](./DOCKER_LINUX_YUM.md). For other Linux systems, refer to the official guide <https://docs.docker.com/engine/install/>.
 
-Connect to the Docker repository:
+To connect to the Docker repository, run the included `apt-source-docker.sh` script, which contains the lines:
 
 ```sh
 # Add Docker's official GPG key:
@@ -20,6 +29,8 @@ echo \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
+
+> TIP: Ensure the script is executable on your system with `chmod +x apt-source-docker.sh`.
 
 Verify the connection:
 
@@ -77,4 +88,4 @@ sudo systemctl enable containerd.service
 
 ## Next steps
 
-Return to the [`containers tutorial](./PART_I.md#log-in-to-the-idol-docker-repository).
+Return to the [containers tutorial](./PART_I.md#docker).

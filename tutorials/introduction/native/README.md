@@ -20,6 +20,9 @@ In this lesson, you will start to get familiar with key concepts of an IDOL syst
   - [Create a new database](#create-a-new-database)
   - [Load sample documents](#load-sample-documents)
   - [Explore the documents](#explore-the-documents)
+    - [Basic query](#basic-query)
+    - [Highlight matches](#highlight-matches)
+    - [Query summary](#query-summary)
 - [Conclusions](#conclusions)
 - [Next steps](#next-steps)
 
@@ -32,10 +35,10 @@ Follow [these steps](./GET_IDOL.md) to obtain IDOL software and your license key
 ### Install
 
 1. Extract your downloaded files into a new working folder (the following guide assumes this is `C:\OpenText` on Windows) to give you:
-   - `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64`, and
-   - `C:\OpenText\Content_24.3.0_WINDOWS_X86_64`
+   - `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64`, and
+   - `C:\OpenText\Content_24.4.0_WINDOWS_X86_64`
   
-1. Copy your license key `.dat` file into `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64` and rename it to `licensekey.dat`.
+1. Copy your license key `.dat` file into `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64` and rename it to `licensekey.dat`.
 
 1. On Windows, you might need to install the included Visual C++ Redistributable package. In the same IDOL Content Server folder, right-click on `vcredist.exe`, then select 'Run as administrator'.
 
@@ -43,7 +46,7 @@ Follow [these steps](./GET_IDOL.md) to obtain IDOL software and your license key
 
 ### Configure
 
-In each IDOL component directory, you will see an executable and a configuration file with the same name, for example, `content.exe` and `content.cfg`. You can modify this configuration file to change how the component runs.  
+In each IDOL component directory, you will see an executable and a configuration file with the same name, for example, `content.exe` and `content.cfg`. You can modify this configuration file to change how the component runs.
 
 > NOTE: When you make any configuration changes, you must restart the component to load these changes.
 
@@ -56,7 +59,7 @@ ServicePort=9102
 + Access-Control-Allow-Origin=*
 ```
 
-> NOTE: Each IDOL component contains config sections for licensing, ports for communication and logging, as well as specialist configuration options that only apply to that specific component. For full details on the options for a particular component, see the corresponding Reference. For example, the [IDOL Content Component Reference](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/_ACI_Welcome.htm).
+> NOTE: Each IDOL component contains config sections for licensing, ports for communication and logging, as well as specialist configuration options that only apply to that specific component. For full details on the options for a particular component, see the corresponding Reference. For example, the [IDOL Content Component Reference](https://www.microfocus.com/documentation/idol/IDOL_24_4/Content_24.4_Documentation/Help/Content/_ACI_Welcome.htm).
 
 ## Run IDOL
 
@@ -64,7 +67,7 @@ You are now ready to launch your IDOL applications.
 
 ### IDOL License Server
 
-First you start IDOL License Server. Go to `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64`, and double-click `licenseserver.exe`.
+First you start IDOL License Server. Go to `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64`, and double-click `licenseserver.exe`.
 
 This action opens a terminal window. To confirm IDOL License Server is running you can:
 
@@ -83,19 +86,19 @@ This action opens a terminal window. To confirm IDOL License Server is running y
     <action>GETVERSION</action>
     <response>SUCCESS</response>
     <responsedata>
-      <autn:version>24.3.0</autn:version>
+      <autn:version>24.4.0</autn:version>
       ...
     </responsedata>
   </autnresponse>
   ```
 
-> NOTE: To explore the API calls available for IDOL License Server, see the [License Server Reference](https://www.microfocus.com/documentation/idol/IDOL_24_3/LicenseServer_24.3_Documentation/Help/Content/Actions/_ACI_Actions.htm).
+> NOTE: To explore the API calls available for IDOL License Server, see the [License Server Reference](https://www.microfocus.com/documentation/idol/IDOL_24_4/LicenseServer_24.4_Documentation/Help/Content/Actions/_ACI_Actions.htm).
 
 If License Server is not running, check that:
 
 - port 20000 in not already use.
   
-- your `licensekey.dat` file exists in the `C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64` folder.
+- your `licensekey.dat` file exists in the `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64` folder.
   
 If you are reusing an existing License Server, try deleting the `license` and `uid` folders, before starting again.
 
@@ -103,11 +106,11 @@ If you are reusing an existing License Server, try deleting the `license` and `u
 
 It can be convenient to configure IDOL License Server to run as a service, for example so it will start up on system boot.
 
-To set up License Server as a service, follow [these steps](../../appendix/IDOL_SERVICE.md).
+To set up License Server as a service on your Windows machine, follow [these steps](../../appendix/IDOL_SERVICE.md#windows).
 
 ### IDOL Content
 
-With IDOL License Server running, you can now start IDOL Content. Go to `C:\OpenText\Content_24.3.0_WINDOWS_X86_64`, and double-click `content.exe`.
+With IDOL License Server running, you can now start IDOL Content. Go to `C:\OpenText\Content_24.4.0_WINDOWS_X86_64`, and double-click `content.exe`.
 
 This action opens a terminal window. To confirm IDOL Content is running, you can:
 
@@ -126,7 +129,7 @@ This action opens a terminal window. To confirm IDOL Content is running, you can
     <action>GETVERSION</action>
     <response>SUCCESS</response>
     <responsedata>
-      <autn:version>24.3.0</autn:version>
+      <autn:version>24.4.0</autn:version>
       ...
     </responsedata>
   </autnresponse>
@@ -134,7 +137,7 @@ This action opens a terminal window. To confirm IDOL Content is running, you can
 
 If IDOL Content is not running:
 
-- Verify the host and port in use for License Server. If your License Server uses a port other than 20000, or you have installed License Server on another machine, update the host and port in `C:\OpenText\Content_24.3.0_WINDOWS_X86_64\idol.common.cfg`:
+- Verify the host and port in use for License Server. If your License Server uses a port other than 20000, or you have installed License Server on another machine, update the host and port in `C:\OpenText\Content_24.4.0_WINDOWS_X86_64\idol.common.cfg`:
   
   ```ini
   [License]
@@ -168,7 +171,7 @@ For IDOL, a database means a logical group of indexed documents. You can create 
 
 ![create-database](./figs/create-database.png)
 
-> NOTE: Read more about database creation in the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Part%20-%20Administration/Administration/Create_a_New_Databas.htm?Highlight=Database).
+> NOTE: Read more about database creation in the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Content_24.4_Documentation/Help/Content/Part%20-%20Administration/Administration/Create_a_New_Databas.htm?Highlight=Database).
 
 ### Load sample documents
 
@@ -180,19 +183,21 @@ Open the **Index** tab, then under **What data do you want to index?**, select *
 
 The example document shown here gives us a first look at the IDOL *IDX* document index format. This format defines a unique reference field, some metadata fields, as well as a block of plain text, the `DRECONTENT`.
 
-> NOTE: For more detail on the `.idx` format, see the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Appendixes/IDX/IDX_Format.htm?Highlight=DREREFERENCE).
+> NOTE: For more detail on the `.idx` format, see the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Content_24.4_Documentation/Help/Content/Appendixes/IDX/IDX_Format.htm?Highlight=DREREFERENCE).
 
-The `demo.idx` file, in the same directory as this README, contains a small sample of IDOL documents. These documents were generated by ChatGPT with the prompt "*Using the IDOL IDX format, generate 10 example documents representing office documents*."  
+The `demo.idx` file, in the same directory as this README, contains a small sample of IDOL documents. These documents were generated by ChatGPT with the prompt "*Using the IDOL IDX format, generate 10 example documents representing office documents*."
 
 In IDOL Admin, replace the example document in the text box with the contents of the `demo.idx` file, then click **Next**.
+
+![demo-idx](./figs/demo-idx.png)
 
 Choose the **Demo** database you just created, then click **Next**.
 
 ![select-database](./figs/select-database.png)
 
-Retain the default settings for **Kill Duplicates**, then click **Next**. You can read more about KillDuplicates in the [IDOL Server Reference](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Index%20Actions/IndexData/Parameters/_IX_KillDuplicates.htm).
+Retain the default settings for **Kill Duplicates**, then click **Next**. You can read more about KillDuplicates in the [IDOL Server Reference](https://www.microfocus.com/documentation/idol/IDOL_24_4/Content_24.4_Documentation/Help/Content/Index%20Actions/IndexData/Parameters/_IX_KillDuplicates.htm).
 
-Under **Summary**, click **Index**.  
+Under **Summary**, click **Index**.
 
 ![index-data](./figs/index-data.png)
 
@@ -200,30 +205,50 @@ After the index processing is complete, click **Sync** to finalize indexing and 
 
 ### Explore the documents
 
+#### Basic query
+
 In IDOL Admin, in the **Control** menu, select **Console**.
 
-On the **Test Action** tab, note the example query action, then click **Test Action** to run it.  
+On the **Test Action** tab, note the example query action, then click **Test Action** to run it.
+
+![test-query](./figs/test-query.png)
 
 By default, this returns the six most recently indexed documents.
 
-To do something a bit more interesting, modify the query as shown in this screenshot to `action=query&print=all&totalresults=true&anylanguage=true&text=*&maxresults=10&querysummary=true`:
+#### Highlight matches
 
-![extended-query](./figs/extended-query.png)
+When you retrieve documents in a query, you may want to know why that document came back.  Here is one more example of a query to highlight related terms in the returned documents:
 
-Clicking **Test Action** again now shows 10 documents, as well as a summary of the most common terms in them.
-
-![query-summary](./figs/query-summary.png)
-
-In this way you can start to explore your indexed documents. Here is one more example to query one of these common terms to find the related documents.
+```url
+action=query&print=all&totalresults=true&anylanguage=true&text=customer%20acquisition&highlight=terms
+```
 
 ![query-highlight](./figs/query-highlight.png)
 
-> NOTE: For full details on the available query options with IDOL Content, see the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_3/Content_24.3_Documentation/Help/Content/Part%20-%20Results/Retrieval/Retrieval.htm)
+#### Query summary
+
+To return a summary of the key terms (think "world cloud") from the document set returned by a query, copy and paste the following query:
+
+```url
+action=query&print=all&totalresults=true&anylanguage=true&text=*&maxresults=10&querysummary=true
+```
+
+Click **Test Action** to run it.
+
+The new response shows 10 documents, as well as a summary of the most common terms in them.
+
+![query-summary](./figs/query-summary.png)
+
+In this way you can start to build an understanding of your indexed documents.
+
+> NOTE: For full details on the available query options with IDOL Content, see the [IDOL Server Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Content_24.4_Documentation/Help/Content/Part%20-%20Results/Retrieval/Retrieval.htm)
 
 ## Conclusions
 
-You now understand how to license and run IDOL Content and the basics of indexing and searching for data.
+You now understand how to license and run IDOL Content and the basics of indexing and retrieving data.
 
 ## Next steps
+
+Check out the [News Spectrum](http://news-spectrum.com/) demo, which uses IDOL's query summary to help you review key topics and trends in world news.
 
 Try the next tutorial, which introduces containerized deployment for easy multi-component installation [here](../containers/README.md).

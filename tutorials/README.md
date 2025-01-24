@@ -13,9 +13,10 @@ These tutorials are intended as a step-by-step guide to walk you through common 
 - [Introduction](#introduction)
   - [Your first installation](#your-first-installation)
   - [End-to-end deployment with containers](#end-to-end-deployment-with-containers)
-- [Advanced lessons](#advanced-lessons)
-  - [Ingest and enrichment](#ingest-and-enrichment)
+- [Showcase lessons](#showcase-lessons)
   - [Search and Question Answering](#search-and-question-answering)
+  - [Ingest and enrichment](#ingest-and-enrichment)
+  - [Investigate](#investigate)
   - [Administration](#administration)
 - [Learn more](#learn-more)
   - [Rich media](#rich-media)
@@ -42,7 +43,7 @@ To use IDOL software, you must have an active entitlement with the [Software Lic
 
 IDOL software can be installed on Windows, Linux, on-prem, in the cloud, and in containers.
 
-The easiest option for most people trying IDOL for the first time is to use a Windows laptop. So, these tutorials assume that is what you are using.  
+The easiest option for most people trying IDOL for the first time is to use a Windows laptop. So, these tutorials assume that is what you are using.
 
 > NOTE: For Linux users, there will be notes like this along the way for relevant changes.
 
@@ -79,13 +80,19 @@ Use the official IDOL container repository to simplify installation of larger ID
 
 Get started with [IDOL containers](./introduction/containers/README.md).
 
-## Advanced lessons
+## Showcase lessons
 
 Dip into any of the following lesson series to develop your IDOL knowledge and try out more features.
 
+### Search and Question Answering
+
+Do you want an answer, not a list of search results?  Excited about what you can do with LLMs and *your* data?
+
+Get started with [IDOL Answer](./retrieval/answer/README.md).
+
 ### Ingest and enrichment
 
-Use IDOL NiFi processors to do more with your data.  Collect securely, enrich, ingest and view.
+Use IDOL NiFi processors to do more with your data. Collect securely, enrich, ingest and view.
 
 > NOTE: NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2014](https://web.archive.org/web/20171207172647/https://www.nsa.gov/news-features/press-room/press-releases/2014/nifi-announcement.shtml).
 
@@ -116,11 +123,11 @@ Within the above, showcase some enrichment tasks
 - [ ] OCR, with analyze media
  -->
 
-### Search and Question Answering
+### Investigate
 
-Do you want an answer, not a list of search results?  Excited about what you can do with LLMs and *your* data?
+Install and run Discover, the new investigative application that combines IDOL's search and entity enrichment with a graph database to help you do more with your data.
 
-Get started with [IDOL Answer](./retrieval/answer/README.md).
+> COMING SOON!
 
 ### Administration
 
@@ -144,7 +151,7 @@ IDOL servers and components can be embedded in your third-party applications wit
 
 ### Useful links
 
-- Read more tips on working with IDOL products in [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_3/IDOLServer_24.3_Documentation/Guides/html/expert/Content/IDOLExpert_Welcome.htm).
-- For details of the latest changes to IDOL, please see the [Release Notes](https://www.microfocus.com/documentation/idol/IDOL_24_3/IDOLReleaseNotes_24.3_Documentation/idol/Content/_Introduction.htm).
+- Read more tips on working with IDOL products in [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_4/IDOLServer_24.4_Documentation/Guides/html/expert/Content/IDOLExpert_Welcome.htm).
+- For details of the latest changes to IDOL, please see the [Release Notes](https://www.microfocus.com/documentation/idol/IDOL_24_4/IDOLReleaseNotes_24.4_Documentation/idol/Content/_Introduction.htm).
 - Full administration guides are available for all IDOL products on the [IDOL documentation site](https://www.microfocus.com/documentation/idol/).
-- To learn more about the suite of IDOL products, visit [opentext.com/idol](https://www.opentext.com/products/unstructured-data-analytics).
+- To learn more about the suite of IDOL products, visit [opentext.com/idol](https://www.opentext.com/products/knowledge-discovery).

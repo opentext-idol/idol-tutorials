@@ -21,7 +21,7 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 
     ![get-license](./figs/get-license.png)
 
-1. On the "License Activation" screen, at the bottom left, select the check box, choose your preferred version (the latest is 24.3), then fill in the quantity to activate:
+1. On the "License Activation" screen, at the bottom left, select the check box, choose your preferred version (the latest is 24.4), then fill in the quantity to activate:
 
    ![eSoftware-selectLicense](./figs/eSoftware-selectLicense.png)
 
@@ -29,15 +29,15 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 
    ![eSoftware-configureLicense](./figs/eSoftware-configureLicense.png)
 
-    > NOTE: IDOL License Server listens for HTTP requests from other IDOL components to provide them license seats.  The default port is `20000` but you are free to change this.
+    > NOTE: IDOL License Server listens for HTTP requests from other IDOL components to provide them license seats. The default port is `20000` but you are free to change this.
 
-    > TIP: To obtain your MAC address and host name on Windows, open a command prompt and enter `ipconfig /all`.  Now look for the "Host Name" and "Physical Address" fields:
+    > TIP: To obtain your MAC address and host name on Windows, open a command prompt and enter `ipconfig /all`. Now look for the "Host Name" and "Physical Address" fields:
     >
     > ![ipconfig](./figs/ipconfig.png)
     >
     > On Linux the equivalent command is [`ifconfig`](https://manpages.org/ifconfig).
 
-1. Click "Next", then confirm your details and click "Submit".  You will soon received your key, which is a `.dat` file, at your registered email address.
+1. Click "Next", then confirm your details and click "Submit". You will soon received your key, which is a `.dat` file, at your registered email address.
 
 ## Download IDOL components
 
@@ -47,8 +47,8 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 
 1. From the list of available files, select and download the following (depending on your operating system), *e.g.*
 
-   - `LicenseServer_24.3.0_WINDOWS_X86_64.zip` or `LicenseServer_24.3.0_LINUX_X86_64.zip`, and
-   - `Content_24.3.0_WINDOWS_X86_64.zip` or `Content_24.3.0_LINUX_X86_64.zip`.
+   - `LicenseServer_24.4.0_WINDOWS_X86_64.zip` or `LicenseServer_24.4.0_LINUX_X86_64.zip`, and
+   - `Content_24.4.0_WINDOWS_X86_64.zip` or `Content_24.4.0_LINUX_X86_64.zip`.
 
     ![get-idol-zips](./figs/get-idol-zips.png)
 

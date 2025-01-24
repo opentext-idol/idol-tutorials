@@ -1,6 +1,6 @@
 # Introduction
 
-An introduction to containerized IDOL deployments.  
+An introduction to containerized IDOL deployments.
 
 After completing this tutorial, you will have a working end-to-end system, from ingest with NiFi to search with IDOL Find.
 
@@ -24,4 +24,4 @@ Start [here](./PART_III.md).
 
 ## Next steps
 
-Explore some advanced IDOL configurations, in the [showcase section](../../README.md#advanced-lessons).
+Explore some advanced IDOL configurations, in the [showcase section](../../README.md#showcase-lessons).

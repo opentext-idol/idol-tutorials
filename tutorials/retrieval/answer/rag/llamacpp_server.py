@@ -17,17 +17,7 @@ import requests
 from transformers import AutoTokenizer
 
 LLM_ENDPOINT = os.getenv('IDOL_LLM_ENDPOINT') or 'http://localhost:8888/v1/chat/completions'
-LLM_MODEL_QUANTIZED = os.getenv('IDOL_LLM_MODEL_QUANTIZED') or '/models/model-name.gguf'
-LLM_MODEL = os.getenv('IDOL_LLM_MODEL') or 'model-provider/model-name'
-LLM_MODEL_REVISION = os.getenv('IDOL_LLM_MODEL_REVISION') or 'main'
-
-# Set this environment variable if you don't want to use a cached tokenizer.
-# The cache location can be configured via the HF_HOME environment variable.
-HUGGINGFACE_API_TOKEN = os.getenv('IDOL_HUGGINGFACE_API_TOKEN')
-if HUGGINGFACE_API_TOKEN is not None:
-    from huggingface_hub import login
-    # Authenticate with Hugging Face
-    login(HUGGINGFACE_API_TOKEN)
+LLM_MODEL = os.getenv('IDOL_LLM_MODEL') or '/models/model-name.gguf'
 
 def generate(prompt: str) -> str:
     '''
@@ -45,7 +35,7 @@ def generate(prompt: str) -> str:
             { "role": "system", "content": context.strip() },
             { "role": "user", "content": question.strip() }
         ],
-        "model": LLM_MODEL_QUANTIZED,
+        "model": LLM_MODEL,
         "n": 1,
         "temperature": 0
     }
@@ -74,9 +64,9 @@ def get_token_count(text: str, token_limit: int) -> Tuple[str, int]:
     truncate it if its token count exceeds token_limit, and return the number of tokens
     (including special tokens) in the original text.
     '''
-    tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL, revision=LLM_MODEL_REVISION)
+    tokenizer_cache_dir = os.path.join(os.path.dirname(__file__), "tokenizer_cache")
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_cache_dir)
 
-    # Tokenize the text with special tokens, see https://github.com/mistralai/mistral-common/blob/ce444e276f348e03ae9bf6b6e9b73f3dde1793a2/src/mistral_common/tokens/tokenizers/sentencepiece.py#L191
     chat_completion_tokenized = tokenizer.encode(f'[INST] {text} [/INST]', add_special_tokens=True)
 
     original_token_count = len(chat_completion_tokenized)

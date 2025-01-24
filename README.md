@@ -2,7 +2,7 @@
 
 A growing set of guides to get you doing great things with IDOL.
 
-For details of the latest changes to IDOL in version 24.3, please see the [Release Notes](https://www.microfocus.com/documentation/idol/IDOL_24_3/IDOLReleaseNotes_24.3_Documentation/idol/Content/_Introduction.htm).
+For details of the latest changes to IDOL in version 24.4, please see the [Release Notes](https://www.microfocus.com/documentation/idol/IDOL_24_4/IDOLReleaseNotes_24.4_Documentation/idol/Content/_Introduction.htm).
 
 ## Target audience
 
@@ -31,6 +31,6 @@ The tutorials start [here](./tutorials/README.md).
 
 ## License
 
-(c) Copyright 2024 OpenText or one of its affiliates.
+(c) Copyright 2024-2025 OpenText or one of its affiliates.
 
-Licensed under the MIT License (the "License"); you may not use this project except in compliance with the License.
+Licensed under the MIT License (the "License"); you may not use this project except in compliance with the [License](./LICENSE.md).

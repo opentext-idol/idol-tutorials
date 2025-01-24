@@ -22,8 +22,8 @@ In this tip, you can optionally set up IDOL License Server as a service under Wi
 On Windows, open Windows Command Prompt in administrator mode by right-clicking and selecting **Run as administrator**. Type the following commands:
 
 ```cmd
-> cd C:\OpenText\LicenseServer_24.3.0_WINDOWS_X86_64
-> licenseserver.exe -install -servicename OT_IDOL_License_Server -displayname "OpenText IDOL License Server 24.3.0"
+> cd C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64
+> licenseserver.exe -install -servicename OT_IDOL_License_Server -displayname "OpenText IDOL License Server 24.4.0"
 Successfully installed "licenseserver.exe" as a service.
 ```
 
@@ -36,7 +36,7 @@ Check the service is running. Click <http://localhost:20000/action=getversion> t
   <action>GETVERSION</action>
   <response>SUCCESS</response>
   <responsedata>
-    <autn:version>24.3.0</autn:version>
+    <autn:version>24.4.0</autn:version>
     ...
   </responsedata>
 </autnresponse>
@@ -51,7 +51,7 @@ To remove the service, run the following command in administrator mode:
 [SC] DeleteService SUCCESS
 ```
 
-> NOTE: For more details on Windows service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_3/LicenseServer_24.3_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_WindowsServices.htm).
+> NOTE: For more details on Windows service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_4/LicenseServer_24.4_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_WindowsServices.htm).
 
 ## Linux
 
@@ -124,7 +124,7 @@ $ curl localhost:20000/a=getversion | xmllint --format -
   <response>SUCCESS</response>
 ```
 
-> NOTE: For more details on Linux service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_3/LicenseServer_24.3_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_LinuxStartup.htm).
+> NOTE: For more details on Linux service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_4/LicenseServer_24.4_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_LinuxStartup.htm).
 
 ---
 

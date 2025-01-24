@@ -7,12 +7,11 @@ This section walks you through key modifications to the `basic-idol` deployment,
 - [Keeping track of compose files](#keeping-track-of-compose-files)
 - [Make each IDOL component accessible](#make-each-idol-component-accessible)
 - [Mount a shared folder](#mount-a-shared-folder)
-- [Edit an IDOL component configuration file](#edit-an-idol-component-configuration-file)
+- [Edit IDOL component configuration files](#edit-idol-component-configuration-files)
   - [Copy out configuration files](#copy-out-configuration-files)
   - [Mount external configuration files](#mount-external-configuration-files)
-- [Update the configuration file](#update-the-configuration-file)
-  - [Include enriched metadata](#include-enriched-metadata)
-  - [Include file metadata](#include-file-metadata)
+  - [Update the configuration file](#update-the-configuration-file)
+    - [Include file metadata](#include-file-metadata)
   - [Redeploy](#redeploy)
   - [Validate](#validate)
 - [Conclusions](#conclusions)
@@ -22,7 +21,7 @@ This section walks you through key modifications to the `basic-idol` deployment,
 
 ## Keeping track of compose files
 
-You will find that you need to reference your list of `.yml` files whenever you run commands for your system with `docker compose`, which can be a source of confusion.  To simplify things, I recommend creating a `deploy.sh` script, for example:
+You will find that you need to reference your list of `.yml` files whenever you run commands for your system with `docker compose`, which can be a source of confusion. To simplify things, I recommend creating a `deploy.sh` script, for example:
 
 ```sh
 touch deploy.sh
@@ -48,7 +47,7 @@ Now, you can use this to conveniently control your deployment with the standard 
 
 ## Make each IDOL component accessible
 
-By default, in the `basic-idol` deployment, only NiFi and IDOL Find are accessible. The following modification exposes all component ports, for example to see IDOL Admin for Content as you did in the first lesson.
+By default, in the `basic-idol` deployment, only the NiFi and IDOL Find use interfaces are accessible. The following modification exposes all component ports, for example allowing you to see IDOL Admin for Content as you did in the first lesson.
 
 - First, stop the current system with:
 
@@ -56,7 +55,7 @@ By default, in the `basic-idol` deployment, only NiFi and IDOL Find are accessib
     ./deploy.sh stop
     ```
 
-- This modification has already been made and you can use it by referencing a second `.yml` file in your `deploy.sh` script:
+- This modification has already been made for us and can be used by referencing a second `.yml` file in the `deploy.sh` script:
 
     ```diff
     docker compose \
@@ -71,7 +70,7 @@ By default, in the `basic-idol` deployment, only NiFi and IDOL Find are accessib
     ./deploy.sh up -d
     ```
 
-- When the containers start, you can point to IDOL Admin for Content on <http://idol-docker-host:9100/a=admin> or IDOL Community on <http://idol-docker-host:9030/a=admin>.
+When the containers start, you can point to IDOL Admin for Content on <http://idol-docker-host:9100/a=admin>.
 
 ## Mount a shared folder
 
@@ -83,7 +82,7 @@ Next, you can run another system modification to configure a shared folder where
     ./deploy.sh stop
     ```
 
-- Next, create a shared folder location in your Windows system: `C:\OpenText\hotfolder`.  
+- Next, create a shared folder location in your Windows system: `C:\OpenText\hotfolder`.
 
 - Now edit the file `docker-compose.bindmount.yml` to define your own folder location:
 
@@ -143,18 +142,20 @@ $ docker volume inspect basic-idol_idol-ingest-volume
 
 > TIP: Depending on your environment, you may see issues with file names containing unicode characters that stop you being able to ingest content from this file share. See the [appendix](../../appendix/TIPS.md#file-name-format-encoding) for more information.
 
-## Edit an IDOL component configuration file
+## Edit IDOL component configuration files
 
-Each IDOL component includes a configuration file that you can modify to change how the component runs.  
+Each IDOL component includes a configuration file that you can modify to change how the component runs.
 
-IDOL containers ship with their configuration files included. Before you can edit these, you must perform some extra steps:
+IDOL containers ship with their configuration files included. In order to persist your edits to these files, you must perform some extra steps:
 
-- Copy the configuration files out from the container.
-- Mount external configuration files to be read from inside the container.
+1. Copy the configuration files out from the running container.
+1. Stop the container.
+1. Mount external configuration files to be read from inside the container.
+1. Restart the container.
 
 ### Copy out configuration files
 
-With the Docker system running, use the Linux command line to make a local copy of the IDOL container configuration directory:
+With the Docker system running, use the Linux command line to make a local copy of the IDOL container configuration directory.  We will use Content as an example:
 
 ```sh
 $ cd /opt/idol/idol-containers-toolkit/basic-idol
@@ -163,6 +164,11 @@ Successfully copied 33.8kB to /opt/idol/idol-containers-toolkit/basic-idol/conte
 ```
 
 Check for a new directory `basic-idol/content/cfg` on your WSL Linux filesystem, containing several `.cfg` files.
+
+```sh
+$ ls content/cfg/
+content.cfg  idol.common.cfg  idol_ssl.cfg  original.content.cfg
+```
 
 > TIP: To explore the contents of a running container manually, you can try:
 >
@@ -182,49 +188,39 @@ Edit the file `basic-idol/docker-compose.yml` to mount the external config direc
 
 ```diff
 idol-content:
+  <<: *common-server
   image: ${IDOL_REGISTRY}/content:${IDOL_SERVER_VERSION}
-  extra_hosts: *external-licenseserver-host
 + volumes:
 +   - ./content/cfg:/content/cfg # this mounts an external cfg folder
 ```
 
-## Update the configuration file
+> NOTE: This mount replaces the original contents of the `/content/cfg` folder in the container with the (editable) files stored outside.
 
-Depending on your sample data, enrichment setup and use cases, you can expect to have (and to expose) different metadata properties on your documents. The IDOL index includes specialized field type definitions to optimize query speed and to allow convenient filtering, such as filtering on labels (facets) and numeric ranges.
+### Update the configuration file
 
-### Include enriched metadata
+IDOL components are highly configurable.  Most configuration settings are made via the `.cfg` files you have already seen.
 
-In this tutorial, you will run an enrichment flow to detect PII (Personally identifiable information), including person names.  
+Each component has dedicated documentation to describe available configuration settings, *e.g.* see [here](https://www.microfocus.com/documentation/idol/IDOL_24_4/Content_24.4_Documentation/Help/Content/Configuration/_ACI_Config.htm) for IDOL Content. These include settings that effect authorization, encryption, caching for efficiency savings and scheduling for maintenance task, to name a few.
 
-You can update the IDOL Content configuration file to define patterns to match detected person names as a *parametric*-type field.
+A common area for configuration change relates to how you index your data. The IDOL index includes specialized field type definitions to optimize query speed and/or to allow convenient filtering, such as filtering on labels (parametrics or *facets*), numeric ranges, dates, *etc.*
 
-Edit the file `basic-idol/content/cfg/original.content.cfg` to add these new numeric and parametric field name patterns:
+> NOTE: For full details on IDOL index field types, see [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_4/IDOLServer_24.4_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm).
 
-```diff
-[SetParametricFields]
-- PropertyFieldCSVs=*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
-+ PropertyFieldCSVs=*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
-```
+#### Include file metadata
 
-### Include file metadata
+Depending on your data, enrichment setup and use cases, you can expect to have different metadata properties on your documents.
 
-The sample files were are using in this tutorial are Microsoft Office formats, which have some useful metadata fields baked in.
+The sample files we are using in this tutorial are Microsoft Office formats, which have some useful metadata fields baked in.  
 
-You can add patterns to match the "WORDCOUNT" and "APPNAME" metadata fields from these formats as *numeric*-type and *parametric*-type respectively.
+One is **APPNAME**, which we would like to be able to filter on.  To enable this, add an additional pattern to the *parametric*-type field list.
 
-Edit the file `basic-idol/content/cfg/original.content.cfg` again to add these new numeric and parametric field name patterns:
+Edit the file `basic-idol/content/cfg/original.content.cfg`:
 
 ```diff
-[SetNumericFields]
-- PropertyFieldCSVs=*/*_NUM,*/NUM_*,*/DOCUMENT_METADATA_FILESIZE_BYTES,*/REPOSITORY_METADATA_FILESIZE_BYTES,*/LATITUDE,*/LONGITUDE
-+ PropertyFieldCSVs=*/WORDCOUNT,*/*_NUM,*/NUM_*,*/DOCUMENT_METADATA_FILESIZE_BYTES,*/REPOSITORY_METADATA_FILESIZE_BYTES,*/LATITUDE,*/LONGITUDE
-
 [SetParametricFields]
 - PropertyFieldCSVs=,*/PII_*/VALUE*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
 + PropertyFieldCSVs=*/APPNAME,*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
 ```
-
-> NOTE: For details on these and other IDOL Content field types, see [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_3/IDOLServer_24.3_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm#FieldsForSearch).
 
 ### Redeploy
 
@@ -239,7 +235,7 @@ Next you stop and start the IDOL Content container to pick up these changes.
 
 Open IDOL Admin for Content onto the [configuration view](http://idol-docker-host:9100/a=admin#page/config/SetParametricFields) to see that your change has been applied:
 
-![content-config-pii](./figs/content-config-pii.png)
+![content-config-param](./figs/content-config-param.png)
 
 ## Conclusions
 

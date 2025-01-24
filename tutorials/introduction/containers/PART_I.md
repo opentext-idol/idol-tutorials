@@ -28,6 +28,8 @@ A containerized deployment of IDOL has a few prerequisites:
 
 - Git: The version control system required to download the IDOL configuration tool for use with Docker.
 
+### Docker
+
 Docker has both free and premium tiers. To run the free tier requires a Linux system. If you work on Windows you have a few options, including:
 
 - Set up a cloud virtual environment, for example, using AWS.
@@ -36,9 +38,7 @@ Docker has both free and premium tiers. To run the free tier requires a Linux sy
 
 For this guide, we recommend that you follow [these steps](./SETUP_WINDOWS_WSL.md) to configure WSL to set up a local Linux environment. This option is the quickest and easiest setup to support your own learning.
 
-### Docker
-
-Follow [these steps](./DOCKER_LINUX_APT.md) to install Docker on your WSL system.
+With WSL configured, now follow [these steps](./DOCKER_LINUX_APT.md) to install Docker.
 
 ### Git
 
@@ -79,15 +79,15 @@ git clone https://github.com/opentext-idol/idol-containers-toolkit.git
 
 ### Keeping up to date
 
-The Containers Toolkit is actively developed and new releases will appear regularly, which you can download, or "pull", with Git.  
+The Containers Toolkit is actively developed and new releases will appear regularly, which you can download, or "pull", with Git.
 
 Before pulling changes to your local system, always ensure you have committed your local changes.
 
-> TIP: If you don't already have a preferred tool for source control, VS Code has good integrated support for Git.  See [Using Git source control in VS Code](https://code.visualstudio.com/docs/sourcecontrol/overview#_git-support).
+> TIP: If you don't already have a preferred tool for source control, VS Code has good integrated support for Git. See [Using Git source control in VS Code](https://code.visualstudio.com/docs/sourcecontrol/overview#_git-support).
 
 ### Log in to the IDOL Docker repository
 
-Official IDOL software containers are distributed in a Docker repository.  A personal key is required to access them.  To request a key, contact OpenText support from the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index).
+Official IDOL software containers are distributed in a Docker repository. A personal key is required to access them. To request a key, contact OpenText support from the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index).
 
 Store your API key in a text file in your Linux home directory, for example `idol_docker_key.txt`, then log in with:
 
@@ -103,4 +103,4 @@ You now understand how to set up a system for Docker and you have access to the 
 
 ## Next step
 
-You're ready to get started.  Go to [Part II](./PART_II.md).
+You're ready to get started. Go to [Part II](./PART_II.md).
