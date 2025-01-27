@@ -1,4 +1,4 @@
-# Configure and run the `data-admin` deployment
+# PART I - Configure and run the `data-admin` deployment
 
 In this lesson, you will:
 
@@ -210,7 +210,7 @@ These are already pre-configured except the optional external search engine. Add
 > - DuckDuckGo: `http://duckduckgo.com/?q=%q`
 > - Bing: `http://www.bing.com/search?q=%q`
 > - Google: `http://google.com/search?q=%q`
-> - Yahoo!: ``http://search.yahoo.com/search?q=%q`
+> - Yahoo!: `http://search.yahoo.com/search?q=%q`
 
 Next, scroll up and click **SAVE CHANGES**, confirm, then click **Next**.
 

@@ -7,7 +7,7 @@ Set up [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) as an easy example of
 - [LLaMA.cpp server with Docker](#llamacpp-server-with-docker)
 - [Start the LLM Server](#start-the-llm-server)
 - [Call the LLM Server](#call-the-llm-server)
-- [Optionally try alternative LLMs](#optionally-try-alternative-llms)
+- [Explore alternative LLMs](#explore-alternative-llms)
   - [Run with a different model](#run-with-a-different-model)
   - [Comparing models](#comparing-models)
 - [Optionally enable GPU acceleration](#optionally-enable-gpu-acceleration)
@@ -105,8 +105,6 @@ From your Ubuntu command prompt on WSL, run the following requests:
   }
   ```
 
-  > NOTE: The "7B" in the model name stands for 7 billion parameters.
-
 - Prompt a response, for example ask a question:
   
   `curl http://localhost:8888/v1/completions -d '{"prompt": "Provide a concise factual response. Please keep your answer under 10 words. Question: Who is the head of state of the United Kingdom?"}' | jq`
@@ -121,7 +119,7 @@ From your Ubuntu command prompt on WSL, run the following requests:
   }
   ```
 
-  LLMs do not always give the correct answer, therefore it is important to provide relevant context with a question:
+  LLMs do not always give the correct answer. This is one reason why we want to use RAG and provide relevant context with a question:
   
   `curl http://localhost:8888/v1/completions -d '{"prompt": "Charles III succeeded his mother on her death in September 2022. Please keep your answer under 10 words. Question: Who is the head of state of the United Kingdom?"}' | jq`
   
@@ -149,12 +147,16 @@ From your Ubuntu command prompt on WSL, run the following requests:
   ...
   ```
 
-## Optionally try alternative LLMs
+- Try out the included UI on <http://localhost:8888/index-new.html>.
+
+## Explore alternative LLMs
 
 Other models to consider for your local demo environment include:
 
 - [Llama-3.2-3B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF), *e.g.* download [Llama-3.2-3B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf?download=true)
-- [Llama-3.2-1B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF), *e.g.* download [Llama-3.2-1B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf?download=true)
+- [Llama-3.2-1B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF), *e.g.* download [Llama-3.2-1B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf?download=true)
+
+> NOTE: The "3B" and "1B" in the model names stand for three billion and one billion parameters.  Bigger models, with more parameters should have the capacity to generate more accurate responses. These are both small compared to seven billion for Mistral 7B.
 
 ### Run with a different model
 
@@ -203,17 +205,17 @@ Being smaller, they may give less useful answers than Mistral 7B but for my test
 
 **Question**: "Who was the first man on the moon?"
 
-- **Mistral 7B**: " The first man on the moon was Neil Armstrong, who landed on the lunar surface on July 20, 1969, as part of the Apollo 11 mission. Armstrong famously declared, \"That's one small step for man, one giant leap for mankind.\"" [`8.4s`]
+- **Mistral 7B**: " The first man on the moon was Neil Armstrong, who landed on the lunar surface on July 20, 1969, as part of the Apollo 11 mission. Armstrong famously declared, \"That's one small step for man, one giant leap for mankind.\"" (`8.4s`)
 
-- **Llama 3B**: "Neil Armstrong was the first man to set foot on the moon on July 20, 1969, during the Apollo 11 mission." [`2.7s`]
+- **Llama 3B**: "Neil Armstrong was the first man to set foot on the moon on July 20, 1969, during the Apollo 11 mission." (`2.7s`)
 
-- **Llama 1B**: "Neil Armstrong was the first man to walk on the moon, on July 20, 1969, during the Apollo 11 mission." [`1.0s`]
+- **Llama 1B**: "Neil Armstrong was the first man to walk on the moon, on July 20, 1969, during the Apollo 11 mission." (`1.0s`)
 
 ## Optionally enable GPU acceleration
 
 If you have access to a GPU, optionally follow [these steps](./LLM_SERVER_GPU.md) to set up GPU acceleration for your server.
 
-> TIP: Unless you have access to a large GPU, this is unlikely to result in a significant speed up.
+> IMPORTANT: Unless you have access to a large GPU, this is unlikely to result in a significant speed up.
 
 ## Next step
 

@@ -1,4 +1,4 @@
-# Answer questions with RAG
+# PART II - Answer questions with RAG
 
 The **RAG** process combined a search (retrieval) engine with a large language model (LLM) to generate answers from trusted documents in your system.
 
@@ -23,6 +23,8 @@ In this lesson, you will:
   - [Index a sample document](#index-a-sample-document)
   - [Generate an answer from your documents](#generate-an-answer-from-your-documents)
     - [Possible answer errors](#possible-answer-errors)
+    - [Under the hood with RAG](#under-the-hood-with-rag)
+  - [Ask questions in Data Admin](#ask-questions-in-data-admin)
 - [Conclusions](#conclusions)
 - [Next step](#next-step)
 
@@ -303,20 +305,74 @@ If your LLM Server is not running or not accessible, you will see the following 
 
 Ensure that your LLM server is running and that your `.env` file correctly references your WSL system IP address.
 
+#### Under the hood with RAG
+
+When we run the Answer Server **Ask** action, you know that behind-the-scenes IDOL Content is being used to return relevant text as context for the LLM.
+
+Let's see exactly how this works:
+
+1. the question is asked:
+
+    ```url
+    action=ask&text=what is management's responsibility?
+    ```
+
+1. the question text is converted to a search query:
+
+    ```txt
+    managements responsibility
+    ```
+
+1. a query action has sent to IDOL Content:
+
+    ```url
+    action=query&text=managements responsibility&expandQuery=true
+    ```
+
+    > NOTE: The `expandQuery` property only has an effect if you also configure QMS.
+
+1. the response is requested with summarized text only:
+
+    ```url
+    &print=none&summary=rag
+    ```
+
+1. limits are placed on the returned text to match the acceptable prompt size for your target LLM:
+
+    ```url
+    &maxResults=12&totalCharacters=4050
+    ```
+
+    > NOTE: The prompt size limit for an LLM is typically given in number of tokens. To calculate the approximate character limit for a given LLM, Answer Server needs access to the relevant tokenizer method, which you set up [above](#download-local-tokenizer-files).
+
+To see the IDOL Content query being run, try out one of *the most useful* IDOL component actions: [Get Request Log](http://idol-docker-host:9100/a=grl):
+
+![content-grl](./figs/content-grl.png)
+
+From this view, you can click on any action to re-run it and view the response:
+
+![content-query](./figs/content-query.png)
+
+This behind the scenes use of the powerful IDOL Content query is what provides the key to making use of your data with generative AI.
+
+### Ask questions in Data Admin
+
+To complete this lesson, now try to ask the same question from the IDOL Data Admin user interface.
+
+Log in again to IDOL Data Admin on <http://idol-docker-host:8080/>, with your new user, *e.g.* "idol".
+
+From the **Search** page, try the same question "What is management's responsibility?"
+
+![ida-search-result](./figs/ida-search-result.png)
+
 ## Conclusions
 
-You have created a generative-AI-enabled question answering system on your own laptop using IDOL Answer's RAG system.
+You have created a generative-AI-enabled question answering system on your own laptop using IDOL Answer's RAG system.  You understand the chain of events from question to query to answer.
 
 ## Next step
 
-Index your on data into IDOL using NiFi.
-<!-- Go to [Part III](./PART_III.md). -->
+Extend this containerized deployment to add NiFi and index more data to interrogate with IDOL Answer Server.
 
-> COMING SOON!
-
-Jump to Answer Bank configuration and build a set of curated answers.
-<!-- Go to [Part IV](./PART_IV.md). -->
-
-> COMING SOON!
+Go to [Part III](./PART_III.md).
 
 Alternatively, explore other advanced IDOL configurations in the [showcase section](../../README.md#showcase-lessons).

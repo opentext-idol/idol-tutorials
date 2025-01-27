@@ -16,19 +16,25 @@ Set up **RAG** (Retrieval Augmented Generation), which uses a large language mod
 
 Start [here](./PART_II.md).
 
-## PART III - Answer questions with Answer Bank
+## PART III - Combine with NiFi ingest
+
+Extend this containerized deployment to add NiFi and index more data to interrogate with IDOL Answer Server.
+
+Start [here](./PART_III.md).
+
+## PART IV - Answer questions with Answer Bank
 
 Use IDOL Data Admin to create and administer a trusted store of reference questions and answers.
 
-<!-- Start [here](./PART_III.md). -->
+<!-- Start [here](./PART_IV.md). -->
 
 > COMING SOON!
 
-## PART IV - Conversations
+## PART V - Conversations
 
 Set up IDOL Conversation Server to enable a chat-style interaction that helps users get to the right answer.
 
-<!-- Start [here](./PART_IV.md). -->
+<!-- Start [here](./PART_V.md). -->
 
 > COMING SOON!
 

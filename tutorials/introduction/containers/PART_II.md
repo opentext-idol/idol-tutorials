@@ -160,7 +160,7 @@ Wait for the log message "NiFi has started".
 
 ## First look at NiFi
 
-When the system is running, open NiFi on <http://idol-docker-host:8080/idol-nifi/nifi/>.
+When the system is running, open NiFi on <http://idol-docker-host:8001/nifi/>.
 
 ![nifi-basic-idol-group](./figs/nifi-basic-idol-group.png)
 

@@ -121,4 +121,3 @@ Client apps running on Windows can communicate with servers running on WSL Ubunt
 ## Next steps
 
 Return to the containers [tutorial](./PART_I.md#docker).
-

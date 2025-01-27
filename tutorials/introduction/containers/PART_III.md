@@ -56,7 +56,7 @@ This repository includes a `data` folder containing some sample enterprise files
 
 ### Follow the ingestion
 
-Open NiFi at <http://idol-docker-host:8080/idol-nifi/nifi/> and note that the processors are automatically started.
+Open NiFi at <http://idol-docker-host:8001/nifi/> and note that the processors are automatically started.
 
 Monitor some of the files as they pass from processor to processor:
 
