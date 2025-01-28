@@ -56,7 +56,7 @@ This repository includes a `data` folder containing some sample enterprise files
 
 ### Follow the ingestion
 
-Open NiFi at <http://idol-docker-host:8001/nifi/> and note that the processors are automatically started.
+Open NiFi at <http://idol-docker-host:8001/nifi/> (using the direct link this time, rather than the reverse proxy) and note that the processors are automatically started.
 
 Monitor some of the files as they pass from processor to processor:
 
@@ -150,7 +150,7 @@ Now is a good point to pause and review what we've done for clarity. How did you
 
 ## Explore documents in IDOL Find
 
-Log in to Find on <http://idol-docker-host:8080/find/>. The default credentials are `admin` / `admin`.
+Log in to Find on <http://idol-docker-host:8000/> (using the direct link this time, rather than the reverse proxy). The default credentials are `admin` / `admin`.
 
 > NOTE: To create your own users, go to IDOL Community <http://idol-docker-host:9030/action=admin#page/users>. Find users need one or more of the "FindAdmin", "FindBI" and "FindUser" roles. See the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Find_24.4_Documentation/admin/Content/User_Roles.htm) for details.
 
