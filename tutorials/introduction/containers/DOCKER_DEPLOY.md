@@ -76,10 +76,10 @@ When the containers start, you can point to IDOL Admin for Content on <http://id
 
 Next, you can run another system modification to configure a shared folder where you can place documents for ingest.
 
-- First, stop the current system with:
+- First, stop and destroy the current system with:
 
     ```sh
-    ./deploy.sh stop
+    ./deploy.sh down
     ```
 
 - Next, create a shared folder location in your Windows system: `C:\OpenText\hotfolder`.
