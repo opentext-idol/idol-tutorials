@@ -84,9 +84,9 @@ If you stopped a processor, restart it (right-click, then **Start**) to allow th
 
 As in the first lesson, use IDOL Admin for Content to view the data index.
 
-As in the first lesson, use [test action](http://idol-docker-host:9100/a=admin#page/console/test-action) to run a query on the data.
+Use [test action](http://idol-docker-host:9100/a=admin#page/console/test-action) to run a query on the data.
 
-Use this query to search for documents related to "retail sales" and return a contextual summary of each document:
+This query to search for documents related to "retail sales" and return a contextual summary of each document:
 
 ```url
 action=query&text=retail%20sales&summary=context&print=none
