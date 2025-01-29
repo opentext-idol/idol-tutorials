@@ -189,7 +189,7 @@ Below this in the flow are clean-up processors, which will be discussed in anoth
 
 ## First look at Find
 
-Log in to Find on <http://idol-docker-host:8080/idol-find/> (via the reverse proxy). The default credentials are `admin` / `admin`.
+Log in to Find on <http://idol-docker-host:8080/find/> (via the reverse proxy). The default credentials are `admin` / `admin`.
 
 It is empty for now, so you can move on to the next section.
 
