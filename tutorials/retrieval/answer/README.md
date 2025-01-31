@@ -22,17 +22,17 @@ Extend this containerized deployment to add NiFi and index more data to interrog
 
 Start [here](./PART_III.md).
 
-## PART IV - Answer questions with Answer Bank
+## PART IV - Conversations
 
-Use IDOL Data Admin to create and administer a trusted store of reference questions and answers.
+Set up IDOL Conversation Server to enable a chat-style interaction that helps users get to the right answer.
 
 <!-- Start [here](./PART_IV.md). -->
 
 > COMING SOON!
 
-## PART V - Conversations
+## PART V - Answer questions with Answer Bank
 
-Set up IDOL Conversation Server to enable a chat-style interaction that helps users get to the right answer.
+Use IDOL Data Admin to create and administer a trusted store of reference questions and answers.
 
 <!-- Start [here](./PART_V.md). -->
 

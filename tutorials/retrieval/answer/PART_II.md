@@ -12,13 +12,16 @@ In this lesson, you will:
 ---
 
 - [RAG (Retrieval Augmented Generation) with IDOL Answer Server](#rag-retrieval-augmented-generation-with-idol-answer-server)
-- [Hardware requirements](#hardware-requirements)
+- [LLM selection and hardware requirements](#llm-selection-and-hardware-requirements)
+  - [What's in a name?](#whats-in-a-name)
 - [Local LLM setup](#local-llm-setup)
   - [Download an LLM](#download-an-llm)
   - [Set up a local LLM server](#set-up-a-local-llm-server)
   - [Download local tokenizer files](#download-local-tokenizer-files)
     - [Possible errors](#possible-errors)
 - [Configure an Answer Server RAG system](#configure-an-answer-server-rag-system)
+  - [Considerations for prompt size](#considerations-for-prompt-size)
+  - [LLM interaction](#llm-interaction)
 - [Get an answer from a sample document](#get-an-answer-from-a-sample-document)
   - [Index a sample document](#index-a-sample-document)
   - [Generate an answer from your documents](#generate-an-answer-from-your-documents)
@@ -56,11 +59,31 @@ llm-svr-- Answer -->answer
 
 IDOL Answer Server's RAG architecture is open to your LLM of choice ("Bring Your Own Model"), which can be hosted locally, or as a remote service.  Remote LLM services may incur a cost and could expose your data to third parties.  For this guide, we will set up a local system.
 
-## Hardware requirements
+## LLM selection and hardware requirements
 
-For reasonable response times from an LLM, access to a GPU is recommended but is not essential for testing and demonstrations.
+For reasonable response times from an LLM, access to a GPU is recommended but - luckily for us - is not essential for testing and demonstrations.
 
 "How is a GPU not essential?", you may wonder. You will be downloading [quantized LLMs](https://huggingface.co/docs/optimum/main/en/concept_guides/quantization), which have reduced compute and memory costs and can run on CPU.
+
+For this tutorial we will consider a family of three related models of different sizes, so that you can easily switch between them to build a performant system on your hardware:
+
+- [Mistral-7B-Instruct-v0.3-GGUF](https://huggingface.co/lmstudio-community/Mistral-7B-Instruct-v0.3-GGUF),
+- [Llama-3.2-3B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF), and
+- [Llama-3.2-1B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF).
+
+These models have all been chosen to be both good at answering questions and acceptably performant on a laptop for testing, even without a GPU.
+
+### What's in a name?
+
+The "7B", "3B" and "1B" labels refer to the size fo the models, *e.g.* seven billion parameters for "Mistral 7B". The more parameters a model has, the more hardware resources are required, with the potential benefit of more useful responses.
+
+The "Instruct" label refers to a fine-tuning process of a base LLM, intended to teach the model to follow user instructions, *e.g.* to answer questions.
+
+The label "GGUF" indicates that the model is quantized, as introduced above.
+
+These complete labels, *e.g.* "Mistral-7B-Instruct-v0.3-GGUF", therefore tell you about the provenance of the model. This one is a quantized version of the "Mistral-7B-Instruct-v0.3" LLM, which is the result of fine-tuning "Mistral-7B-v0.3" to follow user instructions. To view details of the model and its provenance, go to [Hugging Face](https://huggingface.co/lmstudio-community/Mistral-7B-Instruct-v0.3-GGUF).
+
+![hf-provenance](./figs/hf-provenance.png)
 
 ## Local LLM setup
 
@@ -82,23 +105,21 @@ With this token you can download local models and supporting files to set up you
 
 ### Download an LLM
 
-You can choose your favorite LLM, but for this tutorial, you will use `Mistral-7B-Instruct-v0.3-GGUF`. Click to [download](https://huggingface.co/lmstudio-community/Mistral-7B-Instruct-v0.3-GGUF/resolve/main/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf?download=true) the model from Hugging Face with your web browser.
+Download the model files directly from Hugging Face with the links below:
 
-This model has been chosen to be both good at answering your questions and acceptably performant on your laptop for testing, even without a GPU.
-
-> NOTE: It is a quantized version of the `Mistral-7B-Instruct-v0.3` LLM, which itself is the result of fine-tuning `Mistral-7B-v0.3` to follow user instructions. To view details of the model and its provenance, go to [Hugging Face](https://huggingface.co/lmstudio-community/Mistral-7B-Instruct-v0.3-GGUF).
->
-> ![hf-provenance](./figs/hf-provenance.png)
+- [Mistral-7B-Instruct-v0.3-GGUF](https://huggingface.co/lmstudio-community/Mistral-7B-Instruct-v0.3-GGUF/resolve/main/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf?download=true),
+- [Llama-3.2-3B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf?download=true)
+- [Llama-3.2-1B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf?download=true), and
 
 ### Set up a local LLM server
 
-IDOL Answer's RAG system requires an HTTP server to provide a set of APIs to interact with a downloaded LLM. There are a growing number of options available, many of which conveniently integrate with Hugging Face and can be deployed with Docker.
+IDOL Answer's RAG system requires an HTTP server to provide a set of APIs that allow interaction with a downloaded LLM. There are a growing number of options available, many of which conveniently integrate with Hugging Face and can be deployed with Docker.
 
-For a quick and easy setup on your Windows laptop, follow [these steps](./LLM_SERVER.md) to install LLaMA.cpp as an example LLM server.
+For a quick and easy setup on your Windows laptop, follow [these steps](./LLM_SERVER.md) to install "LLaMA.cpp" as an example LLM server.
 
-> NOTE: [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) is the opensource engine behind the popular (free for personal use) desktop application [LM Studio](https://lmstudio.ai/), which also has a [server mode](https://lmstudio.ai/docs/api/server).
+> NOTE: [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) is the opensource engine behind the popular (and free for personal use) desktop application [LM Studio](https://lmstudio.ai/), which also has a [server mode](https://lmstudio.ai/docs/api/server).
 
-> NOTE: For production deployments, consider using [vLLM](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html#deploying-with-docker). We won't use it here because vLLM does not currently support quantized LLMs.
+> NOTE: For production deployments, also consider using [vLLM](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html#deploying-with-docker). We won't use it here because vLLM does not currently support quantized LLMs.
 
 ### Download local tokenizer files
 
@@ -120,14 +141,21 @@ LLM_MODEL_REVISION = "main"
 HUGGINGFACE_API_TOKEN = "<YOUR_TOKEN>"
 ```
 
+> NOTE: This tokenizer is common to the three models suggested above, so you only need to set this up once.
+
 > TIP: You noted down your Hugging Face token string earlier; it begins with `hf_`. This token is required by the `mistralai` project to access their tokenizer.
 
-Install dependencies and run the script:
+Install Python dependencies:
+
+```sh
+sudo apt install python3-pip
+pip install transformers sentencepiece protobuf
+```
+
+Run the included script:
 
 ```sh
 cd/opt/idol/idol-containers-toolkit/data-admin/answerserver/rag
-pip install sentencepiece
-pip install protobuf
 python3 download_tokenizer_files.py
 ```
 
@@ -175,13 +203,36 @@ Edit your Answer Server configuration file `/opt/idol/idol-containers-toolkit/da
     + ModuleID=RAGLLMModule 
     + RetrievalType=mixed
     + PromptTemplatePath=./rag/prompt_template.txt
-    + PromptTokenLimit=1000
+    + PromptTokenLimit=2000
+    + ACIMaxResults=3
     + MaxQuestionSize=70
     + 
     + [RAGLLMModule]
     + Type=GenerativePython 
     + Script=./rag/llamacpp_server.py
     ```
+
+> NOTE: For details on the "RAG" configuration options, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.1/AnswerServer_25.1_Documentation/Help/Content/Configuration/Systems/RAG/RAG_Config.htm).
+
+### Considerations for prompt size
+
+Each LLM accepts a maximum prompt size (measured in tokens). For Llama 3.2 models, the upper limit is [128K tokens](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct). However, prompt processing accounts for a significant fraction of the LLM response time, so using the full available prompt size is not practical here.
+
+With IDOL Answer Server, this prompt size limit is managed using the `PromptTokenLimit` parameter.  With the same example question, varying this parameter has the following effect on response time:
+
+`PromptTokenLimit` | **Ask** response time / seconds
+--- | ---
+1000 | 5.1
+2000 | 9.6
+3000 | 14.6
+4000 | 19.6
+5000 | 27.5
+
+To balance speed with usefulness, consider the rule-of-thumb that [100 tokens is approximately 75 words](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them). For example, setting this 2,000-token limit will allow IDOL Answer Server to provide up to roughly 1,500 words of relevant information to the LLM for RAG.
+
+To maximize the relevancy of a 1,500 word prompt, text is intelligently summarized from the best-matching documents in the IDOL Content index. Use the `ACIMaxResults` parameter to limit how many of those best-matching documents to use when building this summary prompt.
+
+### LLM interaction
 
 The above configuration references two external files:
 
@@ -201,16 +252,14 @@ The `.py` script expects properties from some environment variables to run. Add 
     ```ini
     # RAG System parameters for IDOL Answer Server
     IDOL_LLM_ENDPOINT=http://<YOUR_WSL_IP_ADDRESS>:8888/v1/chat/completions # llama.cpp server
-    IDOL_LLM_MODEL=/models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+    # IDOL_LLM_MODEL=/models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+    # IDOL_LLM_MODEL=/models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+    IDOL_LLM_MODEL=/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf
     ```
 
     > NOTE: You have already found your WSL (guest) IP address in the [WSL guide](../../introduction/containers/SETUP_WINDOWS_WSL.md#network-access), where the value shown was `172.18.109.25`.
 
-    > NOTE: If you prefer another model, specify it here, *e.g.*:
-    >
-    > ```ini
-    > IDOL_LLM_MODEL=/models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
-    > ```
+    > NOTE: Uncomment your preferred model from the three above for your first tests.  Ensure that this matches the model you have enabled in your LLM server.
 
 1. Add these new files and environment variables to your deployment by editing `/opt/idol/idol-containers-toolkit/data-admin/docker-compose.yml` as follows:
 
@@ -340,10 +389,10 @@ Let's see exactly how this works:
 1. limits are placed on the returned text to match the acceptable prompt size for your target LLM:
 
     ```url
-    &maxResults=12&totalCharacters=4050
+    &maxResults=3&totalCharacters=9050
     ```
 
-    > NOTE: The prompt size limit for an LLM is typically given in number of tokens. To calculate the approximate character limit for a given LLM, Answer Server needs access to the relevant tokenizer method, which you set up [above](#download-local-tokenizer-files).
+    > REMINDER: See [above](#considerations-for-prompt-size) for discussion on parameters affecting the prompt size.
 
 To see the IDOL Content query being run, try out one of *the most useful* IDOL component actions: [Get Request Log](http://idol-docker-host:9100/a=grl):
 

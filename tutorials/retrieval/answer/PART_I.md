@@ -94,10 +94,10 @@ flowchart TB
 
 Before you continue, you need to edit some of the container toolkit files.
 
-To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `basic-idol` folder contents for editing, type:
+To edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `data-admin` folder contents for editing, type:
 
 ```sh
-cd /opt/idol/idol-containers-toolkit/basic-idol
+cd /opt/idol/idol-containers-toolkit/data-admin
 code .
 ```
 

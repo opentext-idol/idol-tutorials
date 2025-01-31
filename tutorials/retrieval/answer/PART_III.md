@@ -14,6 +14,7 @@ In this lesson, you will:
   - [Sample data folder](#sample-data-folder)
   - [NiFi container](#nifi-container)
   - [IDOL Content configuration](#idol-content-configuration)
+  - [IDOL View Server configuration](#idol-view-server-configuration)
   - [IDOL Find](#idol-find)
 - [Restart the modified `data-admin` deployment](#restart-the-modified-data-admin-deployment)
   - [Follow the ingestion](#follow-the-ingestion)
@@ -109,7 +110,7 @@ In the previous lesson, we created a configuration file mount point to enable so
 cp -r ../basic-idol/content/cfg passageextractor_content/
 ```
 
-Update your `deploy.sh` script to use it:
+Update your `docker-compose.yml` to use it:
 
 ```diff
 idol-passageextractor-content:
@@ -120,12 +121,106 @@ idol-passageextractor-content:
 +   - ./passageextractor_content/cfg:/content/cfg
 ```
 
+### IDOL View Server configuration
+
+In `docker-compose.yml`, remove the mounted IDOL View Server configuration to roll back to defaults:
+
+```diff
+idol-dataadmin-viewserver:
+  image: ${IDOL_REGISTRY}/view:${IDOL_SERVER_VERSION}
+  extra_hosts: *external-licenseserver-host
+  environment: *http-proxy-settings
+- volumes:
+-   - ./viewserver/view.cfg:/view/cfg/view.cfg
+-   - ./viewserver/startup_tasks.sh:/view/prestart_scripts/002_startup_tasks.sh
+```
+
+Restart IDOL View Server and copy out the default configuration files.
+
+```sh
+./deploy.sh down idol-dataadmin-viewserver
+./deploy.sh up -d
+```
+
+```sh
+$ docker cp data-admin-idol-dataadmin-viewserver-1:/view/cfg viewserver/
+Successfully copied 11.8kB to /opt/idol/tutorial/idol-containers-toolkit/data-admin/viewserver/
+```
+
+Mount the configuration folder in `docker-compose.yml`, ready to make edits:
+
+```diff
+idol-dataadmin-viewserver:
+  image: ${IDOL_REGISTRY}/view:${IDOL_SERVER_VERSION}
+  extra_hosts: *external-licenseserver-host
+  environment: *http-proxy-settings
++ volumes:
++   - ./viewserver/cfg:/view/cfg
+```
+
+Edit Agent Store and Document Store host details in your `viewserver/cfg/view.cfg` file:
+
+```diff
+- IDOLHost=idol-agentstore
+- IDOLPort=9050
++ IDOLHost=idol-qms-agentstore
++ IDOLPort=20050
+```
+
+```diff
+- DocumentStoreHost=idol-content
++ DocumentStoreHost=idol-passageextractor-content
+DocumentStorePort=9100
+```
+
+Restart IDOL View Server:
+
+```sh
+./deploy.sh down idol-dataadmin-viewserver
+./deploy.sh up -d
+```
+
 ### IDOL Find
 
 Copy over the sample data "hot folder" configuration:
 
 ```sh
 cp -r ../basic-idol/find .
+```
+
+Edit the IDOL server host names in `find/config_basic.json`:
+
+```diff
+- "Host": "idol-community",
++ "Host": "idol-dataadmin-community",
+```
+
+```diff
+- "Host": "idol-content",
++ "Host": "idol-passageextractor-content",
+```
+
+```diff
+- "Host": "idol-view",
++ "Host": "idol-dataadmin-viewserver",
+```
+
+Enable and configure IDOL AnswerServer:
+
+```diff
+"answerServer" : {
+  "server" : {
+    "protocol" : "HTTP",
+-   "host" : "localhost",
+-   "port" : 7700
++   "host" : "idol-answerserver",
++   "port" : 12000
+  },
+  "systemNames" : [ ],
+- "enabled" : false,
++ "enabled" : true,
+  "conversationSystemName" : ""
+},
 ```
 
 Add the following service to your `docker-compose.yml` file:
@@ -138,6 +233,7 @@ idol-find:
   volumes:
     - ./find/config_basic.json:/opt/find/home/config_basic.json:ro # this mounts an external cfg file
   depends_on:
+    - idol-answerserver
     - idol-dataadmin-community
     - idol-dataadmin-viewserver
 ```

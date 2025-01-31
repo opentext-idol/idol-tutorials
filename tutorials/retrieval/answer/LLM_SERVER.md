@@ -24,10 +24,12 @@ mkdir -p /opt/idol/llama/models
 touch /opt/idol/llama/docker-compose.yml
 ```
 
-Move the downloaded LLM file:
+Move the downloaded LLM files:
 
 ```sh
 mv /mnt/c/Users/$USER/Downloads/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf /opt/idol/llama/models/
+mv /mnt/c/Users/$USER/Downloads/Llama-3.2-3B-Instruct-Q4_K_M.gguf /opt/idol/llama/models/
+mv /mnt/c/Users/$USER/Downloads/Llama-3.2-1B-Instruct-Q4_K_M.gguf /opt/idol/llama/models/
 ```
 
 Enter the following into your `docker-compose.yml` file:
@@ -41,11 +43,15 @@ services:
     volumes:
       - ./models:/models
     environment:
-      LLAMA_ARG_MODEL: /models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+      # LLAMA_ARG_MODEL: /models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+      # LLAMA_ARG_MODEL: /models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+      LLAMA_ARG_MODEL: /models/Llama-3.2-1B-Instruct-Q4_K_M.gguf
       LLAMA_ARG_ENDPOINT_METRICS: 1 # to disable, either remove or set to 0
 ```
 
-> NOTE: For complete information about LLaMA.cpp server, see the [documentation on GitHub](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md).
+> NOTE: Uncomment your preferred model from the three above for your first tests.
+
+> NOTE: For complete information about "LLaMA.cpp" server, see the [documentation on GitHub](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md).
 
 ## Start the LLM Server
 
@@ -88,17 +94,17 @@ From your Ubuntu command prompt on WSL, run the following requests:
     "object": "list",
     "data": [
       {
-        "id": "/models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf",
+        "id": "/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
         "object": "model",
-        "created": 1724969284,
+        "created": 1738350532,
         "owned_by": "llamacpp",
         "meta": {
-          "vocab_type": 1,
-          "n_vocab": 32768,
-          "n_ctx_train": 32768,
-          "n_embd": 4096,
-          "n_params": 7248023552,
-          "size": 4372054016
+          "vocab_type": 2,
+          "n_vocab": 128256,
+          "n_ctx_train": 131072,
+          "n_embd": 2048,
+          "n_params": 1498483200,
+          "size": 1015334912
         }
       }
     ]
@@ -111,24 +117,24 @@ From your Ubuntu command prompt on WSL, run the following requests:
 
   ```json
   {
-    "content": "\n\nAnswer: Queen Elizabeth II.",
+    "content": " The answer is: Queen Elizabeth II.",
     "id_slot": 0,
     "stop": true,
-    "model": "/models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf",
+    "model": "/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
     ...
   }
   ```
 
   LLMs do not always give the correct answer. This is one reason why we want to use RAG and provide relevant context with a question:
   
-  `curl http://localhost:8888/v1/completions -d '{"prompt": "Charles III succeeded his mother on her death in September 2022. Please keep your answer under 10 words. Question: Who is the head of state of the United Kingdom?"}' | jq`
+  `curl http://localhost:8888/v1/completions -d '{"prompt": "King Charles III succeeded his mother on her death in September 2022. Please keep your answer under 10 words. Question: Who is the head of state of the United Kingdom?"}' | jq`
   
   ```json
   {
-    "content": "\n\nCharles III, King of the United Kingdom.",
+    "content": " \n\nAnswer: King Charles III.",
     "id_slot": 0,
     "stop": true,
-    "model": "/models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf",
+    "model": "/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
     ...
   }
   ```
@@ -140,43 +146,36 @@ From your Ubuntu command prompt on WSL, run the following requests:
   ```ini
   # HELP llamacpp:prompt_tokens_total Number of prompt tokens processed.
   # TYPE llamacpp:prompt_tokens_total counter
-  llamacpp:prompt_tokens_total 73
+  llamacpp:prompt_tokens_total 105
   # HELP llamacpp:prompt_seconds_total Prompt process time
   # TYPE llamacpp:prompt_seconds_total counter
-  llamacpp:prompt_seconds_total 3.623
+  llamacpp:prompt_seconds_total 0.536
+  # HELP llamacpp:tokens_predicted_total Number of generation tokens processed.
+  # TYPE llamacpp:tokens_predicted_total counter
+  llamacpp:tokens_predicted_total 52
   ...
   ```
 
-- Try out the included UI on <http://localhost:8888/index-new.html>.
+> INFO: Try out the included UI on <http://localhost:8888/index-new.html>.
 
 ## Explore alternative LLMs
 
-Other models to consider for your local demo environment include:
+You should now have three models downloaded:
 
-- [Llama-3.2-3B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF), *e.g.* download [Llama-3.2-3B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf?download=true)
-- [Llama-3.2-1B-Instruct-GGUF](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF), *e.g.* download [Llama-3.2-1B-Instruct-Q4_K_M.gguf](https://huggingface.co/lmstudio-community/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf?download=true)
+- Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+- Llama-3.2-3B-Instruct-Q4_K_M.gguf
+- Llama-3.2-1B-Instruct-Q4_K_M.gguf
 
-> NOTE: The "3B" and "1B" in the model names stand for three billion and one billion parameters.  Bigger models, with more parameters should have the capacity to generate more accurate responses. These are both small compared to seven billion for Mistral 7B.
+> REMINDER: The "7B", "3B" and "1B" in the model names stand for the seven, three or one billion parameters of these models. Bigger models, with more parameters, should have the capacity to generate more accurate responses but are more intensive to compute.
 
 ### Run with a different model
 
-1. Move the downloaded LLM files:
-
-    ```sh
-    mv /mnt/c/Users/$USER/Downloads/Llama-3.2-3B-Instruct-Q4_K_M.gguf /opt/idol/llama/models/
-    mv /mnt/c/Users/$USER/Downloads/Llama-3.2-1B-Instruct-Q4_K_M.gguf /opt/idol/llama/models/
-    ```
-
-1. Update your `docker-compose.yml` file:
+1. Uncomment your chosen model in the `docker-compose.yml` file:
 
     ```yml
     services:
       llamacpp-server:
-        image: ghcr.io/ggerganov/llama.cpp:server
-        ports:
-          - 8888:8080
-        volumes:
-          - ./models:/models
+        ...
         environment:
           # LLAMA_ARG_MODEL: /models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
           LLAMA_ARG_MODEL: /models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
@@ -195,13 +194,13 @@ Other models to consider for your local demo environment include:
 
 Tests show the following speed comparison:
 
-Model | Predicted tokens / second
+Model | Predicted tokens / seconds
 --- | ---
 Mistral 7B | 11.6
 Llama 3B | 24.2
 Llama 1B | 58.9
 
-Being smaller, they may give less useful answers than Mistral 7B but for my test questions they all seem capable of providing good answers. For example:
+Those tests were performed with a range of questions, including:
 
 **Question**: "Who was the first man on the moon?"
 
@@ -211,6 +210,8 @@ Being smaller, they may give less useful answers than Mistral 7B but for my test
 
 - **Llama 1B**: "Neil Armstrong was the first man to walk on the moon, on July 20, 1969, during the Apollo 11 mission." (`1.0s`)
 
+> TIP: Try out your own questions to judge which model's answers you find most useful.
+
 ## Optionally enable GPU acceleration
 
 If you have access to a GPU, optionally follow [these steps](./LLM_SERVER_GPU.md) to set up GPU acceleration for your server.
@@ -219,4 +220,4 @@ If you have access to a GPU, optionally follow [these steps](./LLM_SERVER_GPU.md
 
 ## Next step
 
-You now have a responsive, local LLM server. Return to the [tutorial](./PART_II.md#download-local-tokenizer-files) to continue.
+You now have a responsive, local LLM server, with your choice of model. Return to the [tutorial](./PART_II.md#download-local-tokenizer-files) to continue.
