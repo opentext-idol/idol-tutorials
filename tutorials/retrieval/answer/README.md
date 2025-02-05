@@ -24,11 +24,9 @@ Start [here](./PART_III.md).
 
 ## PART IV - Conversations
 
-Set up IDOL Conversation Server to enable a chat-style interaction that helps users get to the right answer.
+Set up conversations with IDOL Answer Server to enable a chat-style interaction.
 
-<!-- Start [here](./PART_IV.md). -->
-
-> COMING SOON!
+Start [here](./PART_IV.md).
 
 ## PART V - Answer questions with Answer Bank
 

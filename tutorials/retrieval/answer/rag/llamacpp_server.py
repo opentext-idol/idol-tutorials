@@ -27,14 +27,21 @@ def generate(prompt: str) -> str:
     '''
     context, question = prompt.split('Question:')
 
+    # Recover chat history structure when used with a Find Conversation system.
+    chat_history = question.split('+')
+    messages = [{ "role": "system", "content": context.strip() }]
+
+    n = 0
+    for chat in chat_history:
+      n += 1
+      role = "user" if n%2 == 1 else "assistant"
+      messages.append({ "role": role, "content": chat.strip() })
+
     url = LLM_ENDPOINT
     headers = {'Content-Type': 'application/json'}
     data = {
         "max_tokens": 256,
-        "messages": [
-            { "role": "system", "content": context.strip() },
-            { "role": "user", "content": question.strip() }
-        ],
+        "messages": messages,
         "model": LLM_MODEL,
         "n": 1,
         "temperature": 0

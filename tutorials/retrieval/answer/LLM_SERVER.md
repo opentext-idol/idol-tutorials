@@ -200,6 +200,8 @@ Mistral 7B | 11.6
 Llama 3B | 24.2
 Llama 1B | 58.9
 
+> TABLE: Predicted tokens per second observed for three LLMs.
+
 Those tests were performed with a range of questions, including:
 
 **Question**: "Who was the first man on the moon?"

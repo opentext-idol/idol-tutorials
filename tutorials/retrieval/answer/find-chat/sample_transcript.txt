@@ -1,0 +1,10 @@
+Welcome to IDOL Find chat! Please tell me your name.
+> CHrIs
+Ask me a question, Chris.  I can access all your enterprise data to help you find an answer.
+> Question
+Answer Server response.
+Would you like to view the reference details?
+> Y/N
+OK, can I help you with something else, Chris?
+> cancel
+OK, let's cancel that. How may I help you, Chris?

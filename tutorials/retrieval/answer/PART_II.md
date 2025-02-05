@@ -228,6 +228,8 @@ With IDOL Answer Server, this prompt size limit is managed using the `PromptToke
 4000 | 19.6
 5000 | 27.5
 
+> TABLE: IDOL Answer Server **Ask** action response times (in seconds) for RAG with three LLMs.
+
 To balance speed with usefulness, consider the rule-of-thumb that [100 tokens is approximately 75 words](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them). For example, setting this 2,000-token limit will allow IDOL Answer Server to provide up to roughly 1,500 words of relevant information to the LLM for RAG.
 
 To maximize the relevancy of a 1,500 word prompt, text is intelligently summarized from the best-matching documents in the IDOL Content index. Use the `ACIMaxResults` parameter to limit how many of those best-matching documents to use when building this summary prompt.

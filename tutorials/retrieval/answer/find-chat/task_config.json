@@ -1,0 +1,100 @@
+{
+  "$schema": "../../resources/schemas/task_configuration/v1/schema.json",
+  "lua_script": "task_handlers.lua",
+
+  "initial_task": "INITIAL",
+  "fallback_task": "FALLBACK",
+  "user_cancel": {
+    "keywords": [ "cancel", "start again", "abort" ],
+    "action": {
+      "response": "OK, let's cancel that.",
+      "routing": "START"
+    }
+  },
+
+  "tasks": [
+
+    {
+      "id": "INITIAL",
+      "pre": {
+        "response": "Welcome to IDOL Find chat!",
+        "lua": "clear_name_and_chat"
+      },
+      "requirements": [
+        {
+          "id": "USER_NAME",
+          "scope": "session",
+          "prompt": "Please tell me your name.",
+          "validation": [ "NAME_VALIDATOR" ],
+          "prompt_required": true,
+          "user_cancel": {
+            "keywords": [ ]
+          }
+        }
+      ],
+      "post": {
+        "lua": "normalize_name",
+        "routing": "START"
+      },
+      "trigger": {
+        "regex": {
+          "case_insensitive": true,
+          "pattern": "\\b(?:start again|back to(?: the)? beginning)\\b"
+        }
+      }
+    },
+
+    {
+      "id": "START",
+      "pre": {
+        "response": "Ask me a question, {{session:USER_NAME}}.  I can access all your enterprise data to help you find an answer."
+      }
+    },
+
+    {
+      "id": "FALLBACK",
+      "pre": {
+        "lua": "ask_answer_server"
+      },
+      "post": {
+        "routing": {
+          "prompt":"Would you like to view the reference details?",
+          "map":[
+            {
+              "match":"Yes",
+              "routing":"ANSWERED"
+            },
+            {
+              "match":"No",
+              "routing":"NEXT"
+            }
+          ]
+        }
+      }
+    },
+
+    {
+      "id": "ANSWERED",
+      "pre": {
+        "lua": "show_answer_source"
+      }
+    },
+
+    {
+      "id": "NEXT",
+      "pre": {
+        "response": "OK, can I help you with something else, {{session:USER_NAME}}?"
+      }
+    }
+
+  ],
+
+  "validators": [
+    
+    {
+      "id": "NAME_VALIDATOR",
+      "regex": { "pattern": "^[a-zA-Z ,.'-]+$" }
+    }
+
+  ]
+}

@@ -31,10 +31,11 @@ In this lesson, you will:
 
 In order to replicate the data ingestion and viewing set up from the previous lesson, we need:
 
-1. the sample data folder with our documents to be ingested
-1. the NiFi container
-1. the IDOL content configuration file with our metadata field setup
-1. the IDOL Find container with view configuration
+1. the sample data folder with our documents to be ingested,
+1. the NiFi container,
+1. the IDOL Content configuration file with our custom parametric field setup,
+1. the IDOL View Server configuration, using NiFi to retrieve documents, and
+1. the IDOL Find container with view configuration.
 
 ### Sample data folder
 
@@ -74,7 +75,7 @@ Add the following service to your `docker-compose.yml` file:
 
 ```yml
 idol-nifi:
-  image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose nifi-minimal or nifi-full
+  image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION}
   extra_hosts: *external-licenseserver-host
   shm_size: 256m
   environment:
@@ -251,7 +252,7 @@ idol-find:
 Stop and destroy the existing IDOL Content instance:
 
 ```sh
-./deploy.sh down passageextractor_content
+./deploy.sh down idol-passageextractor-content
 ```
 
 Launch the updated deployment script to start all the new containers:
@@ -322,7 +323,8 @@ With NiFi set up to index files into your Answer Server system, you now have the
 
 ## Next step
 
-Jump to Answer Bank configuration and build a set of curated answers.
+Set up conversations with IDOL Answer Server to enable a chat-style interaction in IDOL Find.
+
 <!-- Go to [Part IV](./PART_IV.md). -->
 
 > COMING SOON!

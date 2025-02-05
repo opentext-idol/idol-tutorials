@@ -24,23 +24,25 @@ In this lesson, you will:
 
 ## Answer system types
 
-IDOL Answer Server has four types of system, supporting different question types.
+IDOL Answer Server has five types of system, supporting different question types.
 
 1. **Answer Bank** is a trusted store of reference questions and answers, which you can add and administer. Use Answer Bank for answers to questions such as:
 
    - What does error 404 mean?
    - How can I use my phone to send photos of cats?
 
-2. **Fact Bank** is a trusted store of factual information. Use Fact Bank to answer questions such as:
+1. **Fact Bank** is a trusted store of factual information. Use Fact Bank to answer questions such as:
 
    - What is the population of the USA?
    - What is the average June temperature in Antarctica?
 
-3. **Passage Extractor** links to a store of trusted documents that contain information that might be useful for answering questions, *i.e.* your IDOL Content index. When no trusted answer can be found from Answer Bank or Fact Bank, the Passage Extractor queries IDOL Content for relevant documents. It attempts to extract short sentences or paragraphs that contain pertinent answers. Use a Passage Extractor to answer general questions.
+1. **Passage Extractor** links to a store of trusted documents that contain information that might be useful for answering questions, *i.e.* your IDOL Content index. When no trusted answer can be found from Answer Bank or Fact Bank, the Passage Extractor queries IDOL Content for relevant documents. It attempts to extract short sentences or paragraphs that contain pertinent answers. Use a Passage Extractor to answer general questions.
 
-4. **RAG** (Retrieval Augmented Generation) uses a large language model (LLM) to generate answers from trusted documents in your system. When a user asks a question, the RAG module queries IDOL Content for relevant documents. It provides the original question and relevant content from these candidate documents in a prompt to an external LLM, which generates the answer.
+1. **RAG** (Retrieval Augmented Generation) uses a large language model (LLM) to generate answers from trusted documents in your system. When a user asks a question, the RAG module queries IDOL Content for relevant documents. It provides the original question and relevant content from these candidate documents in a prompt to an external LLM, which generates the answer.
 
     > NOTE: The RAG system performs an equivalent "fallback" function to **Passage Extraction** and may offer better results depending on the LLM you choose. It may also require GPU to run in good time.
+
+1. **Conversation** maintains context across multiple questions, allowing you to set up an interactive virtual assistant.
 
 ## Data Admin
 

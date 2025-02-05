@@ -17,11 +17,11 @@ Reconfigure the [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) server for G
 
 ## Can I benefit from GPU acceleration?
 
-Probably not with your laptop but this depends on the size of your GPU card.
+It depends on how much memory your GPU card has and which LLM you want to use.
 
-Using an Nvidia T600 card with 4 GB memory, the processing speed metric "predicted tokens per second" is recorded with Mistral 7B at 12.8. This compares to 11.6 per second with CPU only. That's only a 10% speed increase.
+For the author, using a laptop with a built-in Nvidia T600 card (4 GB memory) and running our chosen quantized LLMs, no significant speed improvement is observed. See detailed notes on speed [below](#optimization).
 
-For other models tested there is even less evidence for improvement. See detailed notes on speed [below](#optimization).
+However, if you have access to a larger GPU card and want to run LLMs with a larger footprint, the following steps may be of use.
 
 ## Nvidia Container Toolkit
 
@@ -115,7 +115,7 @@ These `.gguf`-format, quantized LLMs allow for partial "offloading" of processin
 
 ### Measurements
 
-Running a series of test prompts with Mistral 7B, I see the following speeds (predicted tokens per second) when changing the number of GPU layers configured:
+Running a series of test prompts with **Mistral 7B**, I see the following speeds (predicted tokens per second), when changing the number of GPU layers configured:
 
 `LLAMA_ARG_N_GPU_LAYERS` | Mistral 7B | Llama 3B | Llama 1B
 --- | --- | --- | ---
@@ -125,17 +125,21 @@ Running a series of test prompts with Mistral 7B, I see the following speeds (pr
 24 | 12.8 | 22.1 | 50.6
 48 | 11.3 | 24.0 | 50.2
 
+> TABLE: Predicted tokens per second observed for three LLMs with different GPU settings.
+
 ### Discussion
 
-On my system the best speed observed for Mistral 7B was with `LLAMA_ARG_N_GPU_LAYERS` at `12`.
+For comparison, we can compare the best speed with GPU from the above table against the observed predicted token rates for these same models running with CPU only:
 
-For comparison, remember that the observed predicted token rates for these same models running with CPU only were:
+Mode | Mistral 7B | Llama 3B | Llama 1B
+--- | --- | --- | ---
+GPU (best) | 12.8 | 24.0 | 50.6
+CPU only | 11.6 | 24.2 | 58.9
+Change | +10% | -1% | -14%
 
-Mistral 7B | Llama 3B | Llama 1B
---- | --- | ---
-11.6 | 24.2 | 58.9
+> TABLE: Predicted tokens per second observed for three LLMs with GPU enabled and CPU only, with percentage change in speed from enabling GPU.
 
-So, there is no evidence that this 4GB GPU speeds up these models at all.
+So, there is no evidence that enabling GPU speeds up these models on the author's system.
 
 ## Next step
 
