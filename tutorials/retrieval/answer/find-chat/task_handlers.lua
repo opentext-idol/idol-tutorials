@@ -1,6 +1,9 @@
 
 -- CONVERSATION-SCOPE VARIABLES
 
+MAX_CHAT_CONTEXT = 6 -- three question-answer pairs
+MAX_LISTED_SOURCES = 3 -- to display under answers
+
 -- TASK SCRIPTS
 
 function write_log(function_name, message)
@@ -8,11 +11,7 @@ function write_log(function_name, message)
   log:write_line(log_level_normal(), "[task_handlers.lua] - " .. function_name .. "(): ".. message)
 end
 
-function get_text(document, xpath)
-  return document:XPathValue(xpath)
-end
-
-function updateChatHistory(taskUtils, text)
+function update_chat_history(taskUtils, text)
   local chat_history = taskUtils:getSessionVar("CHAT_HISTORY")
 
   if #chat_history == 0 then 
@@ -25,28 +24,49 @@ function updateChatHistory(taskUtils, text)
   return chat_history
 end
 
--- Clear user name and chat history when restart a session.
-function clear_name_and_chat(taskUtils)
-  taskUtils:clearSessionVar("USER_NAME")
+function split_line_char(line, char)
+  local result = {}
+  for value in string.gmatch(line, '([^'..char..']+)') do
+      table.insert(result, value)
+  end
+  return result
+end
+
+function expire_chat_history(taskUtils)
+  
+  local chat_history = taskUtils:getSessionVar("CHAT_HISTORY")
+  if #chat_history == 0 then return end
+  
+  local chat_list = split_line_char(chat_history, "+")
+  if #chat_list <= MAX_CHAT_CONTEXT then return end
+  
+  -- write_log("expire_chat_history", "was: " .. #chat_list)
+  local start = #chat_list - MAX_CHAT_CONTEXT
+  local new_chat_list = {}
+  for i, v in ipairs(chat_list) do
+    if i > start then 
+      table.insert(new_chat_list, v)
+    end
+  end
+
+  -- write_log("expire_chat_history", "new: " .. #new_chat_list)
+  taskUtils:setSessionVar("CHAT_HISTORY", table.concat(new_chat_list, '+'))
+end
+
+-- Clear chat history when restarting a session.
+function initialize_session(taskUtils)
   taskUtils:setSessionVar("CHAT_HISTORY", "")
+  write_log("initialize_session", "Reset chat history.")
 end
 
--- Convert user name to Title Case.
-function normalize_name(taskUtils)
-  local input_name = taskUtils:getSessionVar("USER_NAME")
-  local name = input_name:gsub("(%a)([%w_']*)", function(first, rest)
-    return first:upper() .. rest:lower()
-  end)
-  taskUtils:setSessionVar("USER_NAME", name)
-end
-
--- Ask the next question.
+-- Ask a question.
 function ask_answer_server(taskUtils)
   local question = taskUtils:getUserText()
-  write_log("ask_answer_server", question)
+  write_log("ask_answer_server", "user: " .. question)
 
   -- Update chat history
-  local prompt = updateChatHistory(taskUtils, question)
+  expire_chat_history(taskUtils)
+  local prompt = update_chat_history(taskUtils, question)
   write_log("ask_answer_server", prompt)
 
   -- Run the ask action
@@ -71,57 +91,33 @@ function ask_answer_server(taskUtils)
     </answer>
     ]]--
     
-    local answer = get_text(answers[1], "/answer/text")
-    write_log("ask_answer_server", answer)
+    local answer = answers[1]:XPathValue("/answer/text")
+    write_log("ask_answer_server", "assistant: " .. answer)
     
-    local score = get_text(answers[1], "/answer/score")
-    local prompt_success = LuaUserPrompt:new(string.format("%s\n\nAnswer score: %s", answer, score))
+    local prompt_message = answer .. "\n\nReferences:" 
     
-    local source_ref = get_text(answers[1],"/answer/metadata/sources[1]/source/@ref")
-    local source_title = get_text(answers[1],"/answer/metadata/sources[1]/source/@title")
-    local source_database = get_text(answers[1],"/answer/metadata/sources[1]/source/@database")
-    local source_text = get_text(answers[1],"/answer/metadata/sources[1]/source/text")
-    local source_detail = string.format(
-      "%s\n\nReference: %s\nTitle: %s\nDatabase: %s", 
-      source_text, source_ref, source_title, source_database
-    )
+    local source_list = { answers[1]:XPathValues("/answer/metadata/sources/source/@ref") }
+    for i, v in ipairs(source_list) do
+      write_log("ask_answer_server", "sources: " .. v)
+      if i > MAX_LISTED_SOURCES then break end
+      prompt_message = prompt_message .. "\n  - " .. v
+    end
 
-    taskUtils:setSessionVar("LAST_ANSWER_SOURCE", source_detail)
+    local prompt_success = LuaUserPrompt:new(prompt_message)
+    
     taskUtils:setPrompts({prompt_success})
 
     -- Update chat history
-    updateChatHistory(taskUtils, answer)
+    update_chat_history(taskUtils, answer)
     
   else 
-    local prompt_failure = LuaUserPrompt:new(
-      string.format("Sorry, I couldn't find any relevant information regarding '%s'.", question)
-    )
-    taskUtils:clearSessionVar("LAST_ANSWER_SOURCE")
+    local prompt_failure = LuaUserPrompt:new(string.format(
+      "Sorry, I couldn't find any relevant information regarding '%s'.", question
+    ))
     taskUtils:setPrompts({prompt_failure})
 
     -- Update chat history
-    updateChatHistory(taskUtils, "I couldn't find any relevant information.")
+    update_chat_history(taskUtils, "")
     
   end
-end
-
-function handle_answer(taskUtils)
-  local requested = taskUtils:getSessionVar("DETAILS_REQUESTED")
-  -- write_log("handle_answer", "details requested: " .. requested)
-
-  if requested == "Y" then
-    taskUtils:setNextTask("ANSWERED")
-  
-  elseif requested == "N" then
-    taskUtils:setNextTask("NEXT")
-  end
-  
-  taskUtils:clearSessionVar("DETAILS_REQUESTED")
-end
-
-function show_answer_source(taskUtils)
-  local source_text = taskUtils:getSessionVar("LAST_ANSWER_SOURCE")
-  local prompt_success = LuaUserPrompt:new(source_text)
-  taskUtils:setPrompts({prompt_success})
-  taskUtils:clearSessionVar("LAST_ANSWER_SOURCE")
 end

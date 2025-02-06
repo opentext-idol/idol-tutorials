@@ -190,26 +190,36 @@ Edit your Answer Server configuration file `/opt/idol/idol-containers-toolkit/da
 1. Replace the default "Passage Extractor" system with a "RAG" system for LLM-enabled question answering:
 
     ```diff
-    [Systems]
-    0=AnswerBank
-    -1=PassageExtractor
-    +1=RAG
-    2=FactBank
-    +
-    + [RAG]
-    + Type=RAG
-    + IdolHost=idol-passageextractor-content
-    + IdolAciPort=9100
-    + ModuleID=RAGLLMModule 
-    + RetrievalType=mixed
-    + PromptTemplatePath=./rag/prompt_template.txt
-    + PromptTokenLimit=2000
-    + ACIMaxResults=3
-    + MaxQuestionSize=70
-    + 
-    + [RAGLLMModule]
-    + Type=GenerativePython 
-    + Script=./rag/llamacpp_server.py
+      [Systems]
+      0=AnswerBank
+    - 1=PassageExtractor
+    + 1=RAG
+      2=FactBank
+    ```
+
+    ```ini
+    [RAG]
+    Type=RAG
+    IdolHost=idol-passageextractor-content
+    IdolAciPort=9100
+    ModuleID=RAGLLMModule 
+    ACIMaxResults=3
+    RetrievalType=mixed
+    PromptTemplatePath=./rag/prompt_template.txt
+    # Mistral-7B limit is 32K tokens:
+    # - Set no more than 10K.
+    PromptTokenLimit=3000
+    # OpenAI rule of thumb 75 words ~ 100 tokens: 
+    # - set to 50 words ~ 67 tokens for single questions
+    MaxQuestionSize=70
+    CandidateRetrievalDefaults=RAGRetrievalParams
+    
+    [RAGRetrievalParams]
+    MinScore=20
+    
+    [RAGLLMModule]
+    Type=GenerativePython 
+    Script=./rag/llamacpp_server.py
     ```
 
 > NOTE: For details on the "RAG" configuration options, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.1/AnswerServer_25.1_Documentation/Help/Content/Configuration/Systems/RAG/RAG_Config.htm).

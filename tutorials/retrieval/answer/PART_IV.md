@@ -39,10 +39,19 @@ Make the following edits to `dataadmin/answerserver/answerserver.cfg` to enable 
 + 3=FindConversation
 ```
 
+```diff
+  [RAG]
+  # OpenAI rule of thumb 75 words ~ 100 tokens: 
+  # - set to 50 words ~ 67 tokens for single questions
++ # - increase to 300 words ~ 400 tokens for multi-question chat
+- MaxQuestionSize=70
++ MaxQuestionSize=400
+```
+
 ```ini
 [FindConversation]
 Type=Conversation
-TaskConfigurationFile=./conversation/find-chat/task-config.json
+TaskConfigurationFile=./conversation/find-chat/task_config.json
 # Idle conversations expire after 10 minutes
 SessionExpirationIdleTime=600
 ```

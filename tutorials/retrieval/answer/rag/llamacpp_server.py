@@ -35,7 +35,8 @@ def generate(prompt: str) -> str:
     for chat in chat_history:
       n += 1
       role = "user" if n%2 == 1 else "assistant"
-      messages.append({ "role": role, "content": chat.strip() })
+      if len(chat.strip()) > 0:
+        messages.append({ "role": role, "content": chat.strip() })
 
     url = LLM_ENDPOINT
     headers = {'Content-Type': 'application/json'}
