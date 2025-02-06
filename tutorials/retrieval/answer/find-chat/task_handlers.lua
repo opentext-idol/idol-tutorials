@@ -59,6 +59,16 @@ function initialize_session(taskUtils)
   write_log("initialize_session", "Reset chat history.")
 end
 
+-- Replicate Find's "Open Original" link.
+function open_original_link(ref, db_name, answer)
+  return "<a href=\"/api/public/view/viewDocument" ..
+    "?reference=" .. ref .. 
+    "&part=DOCUMENT" ..
+    "&index=" .. db_name ..
+    "&highlightExpressions=" .. answer ..
+    "\" target=\"_blank\">".. ref .. "</a>"
+end
+
 -- Ask a question.
 function ask_answer_server(taskUtils)
   local question = taskUtils:getUserText()
@@ -96,11 +106,12 @@ function ask_answer_server(taskUtils)
     
     local prompt_message = answer .. "\n\nReferences:" 
     
-    local source_list = { answers[1]:XPathValues("/answer/metadata/sources/source/@ref") }
-    for i, v in ipairs(source_list) do
-      write_log("ask_answer_server", "sources: " .. v)
+    local source_ref_list = { answers[1]:XPathValues("/answer/metadata/sources/source/@ref") }
+    local source_db_list = { answers[1]:XPathValues("/answer/metadata/sources/source/@database") }
+    for i, v in ipairs(source_ref_list) do
+      write_log("ask_answer_server", "sources: " .. v .. " " .. source_db_list[i])
       if i > MAX_LISTED_SOURCES then break end
-      prompt_message = prompt_message .. "\n  - " .. v
+      prompt_message = prompt_message .. "\n  - " .. open_original_link(v, source_db_list[i], answer)
     end
 
     local prompt_success = LuaUserPrompt:new(prompt_message)
