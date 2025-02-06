@@ -325,8 +325,6 @@ With NiFi set up to index files into your Answer Server system, you now have the
 
 Set up conversations with IDOL Answer Server to enable a chat-style interaction in IDOL Find.
 
-<!-- Go to [Part IV](./PART_IV.md). -->
-
-> COMING SOON!
+Go to [Part IV](./PART_IV.md).
 
 Alternatively, explore other advanced IDOL configurations in the [showcase section](../../README.md#showcase-lessons).
