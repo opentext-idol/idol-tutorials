@@ -31,11 +31,28 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 
     > NOTE: IDOL License Server listens for HTTP requests from other IDOL components to provide them license seats. The default port is `20000` but you are free to change this.
 
-    > TIP: To obtain your MAC address and host name on Windows, open a command prompt and enter `ipconfig /all`. Now look for the "Host Name" and "Physical Address" fields:
+    > TIP: To obtain your host name and [MAC address](https://en.wikipedia.org/wiki/MAC_address) on Windows, open a command prompt and enter `ipconfig /all`.
     >
-    > ![ipconfig](./figs/ipconfig.png)
+    > Copy the value of "Host Name" at the top of the response:
     >
-    > On Linux the equivalent command is [`ifconfig`](https://manpages.org/ifconfig).
+    > ```sh
+    > > ipconfig /all
+    >
+    > Windows IP Configuration
+    >
+    > Host Name . . . . . . . . . . . . : OTX-JL82BS3
+    > ```
+    >
+    > Scrolling down, there may be more than one physical address to choose from. Copy the value of the "Physical Address" field for the "Wireless LAN adapter Wi-Fi":
+    >
+    > ```sh
+    > > ipconfig /all
+    > ...
+    > Wireless LAN adapter Wi-Fi:
+    > ...
+    > Physical Address. . . . . . . . . : 8C-17-59-DD-ED-52
+    > ...
+    > ```
 
 1. Click "Next", then confirm your details and click "Submit". You will soon received your key, which is a `.dat` file, at your registered email address.
 

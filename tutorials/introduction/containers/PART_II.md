@@ -29,7 +29,7 @@ IDOL components running in Docker containers need access to an external License 
 
 In a containerized deployment, IDOL License Server receives requests from external machines. The default configuration locks the server down to accept requests from `localhost` only, so you need to modify it to add additional host names as required. The following configuration assumes you use the host name `idol-docker-host` for your WSL environment.
 
-Edit the file `idol.common.cfg` under `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64`, then restart License Server:
+Edit the file `idol.common.cfg` under `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64`:
 
 ```diff
 [AdminRole]
@@ -45,6 +45,10 @@ StandardRoles=query,servicestatus
 
 > NOTE: For full details on setting client access, please read the [License Server Reference](https://www.microfocus.com/documentation/idol/IDOL_24_4/LicenseServer_24.4_Documentation/Help/Content/Configuration/AuthorizationRoles/_ACI_Clients.htm).
 
+Now, restart License Server.
+
+> TIP: To manage Windows Services, run the **Services** system tool.  Look for the service you created, named "OpenText IDOL License Server 24.4.0".
+
 ### Verify remote access
 
 The system running IDOL License Server must be accessible (on port `20000`, by default) from the system running Docker. In your WSL environment, test access from the Linux command line, as follows.
@@ -53,6 +57,14 @@ The system running IDOL License Server must be accessible (on port `20000`, by d
 $ curl $(hostname).local:20000/a=getversion
 <?xml version='1.0' encoding='UTF-8' ?><autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'><action>GETVERSION</action><response>SUCCESS</response><responsedata>...
 ```
+
+> TIP: If the convenience `$(hostname).local` does not resolve correctly on your machine, use the command to find your Windows machine IP address:
+  >
+  > ```bsh
+  > $ ip route show | grep -i default | awk '{ print $3}'
+  > 172.18.96.1
+  > $ curl 172.18.96.1:20000/a=getversion
+  > ```
 
 > TIP: Install an XML formatter to better display the server responses. See this [tip](../../appendix/TIPS.md#xml-formatting) for details.
 

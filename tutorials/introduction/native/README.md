@@ -71,6 +71,14 @@ First you start IDOL License Server. Go to `C:\OpenText\LicenseServer_24.4.0_WIN
 
 This action opens a terminal window. To confirm IDOL License Server is running you can:
 
+- check the `license.log` file, looking for success statements like:
+
+  ```log
+  27/07/2024 06:13:32 LICENSE: Found license key extension file versionkey.dat
+  27/07/2024 06:13:32 LICENSE: Using license details from licensekey.dat
+  27/07/2024 06:13:32 LICENSE: License for License Server is valid
+  ```
+
 - check the `logs/application.log`, looking for success statements like:
 
   ```log
@@ -97,6 +105,13 @@ This action opens a terminal window. To confirm IDOL License Server is running y
 If License Server is not running, check that:
 
 - port 20000 in not already use.
+
+  > TIP: On Windows, use the command `netstat -na | find "20000"`.  If the port is already in use, you will see entries like:
+  > 
+  > ```sh
+  > TCP    0.0.0.0:20000          0.0.0.0:0              LISTENING
+  > TCP    [::]:20000             [::]:0                 LISTENING
+  > ```
   
 - your `licensekey.dat` file exists in the `C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64` folder.
   

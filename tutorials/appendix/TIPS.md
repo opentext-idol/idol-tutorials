@@ -32,10 +32,18 @@ Compare the output:
   <?xml version='1.0' encoding='UTF-8' ?><autnresponse xmlns:autn='http://schemas.autonomy.com/aci/'><action>GETVERSION</action><response>SUCCESS</response><responsedata>...
   ```
 
+  > TIP: If the convenience `$(hostname).local` does not resolve correctly on your machine, use the command to find your Windows machine IP address:
+  >
+  > ```bsh
+  > $ ip route show | grep -i default | awk '{ print $3}'
+  > 172.18.96.1
+  > $ curl 172.18.96.1:20000/a=getversion
+  > ```
+
 - With:
   
   ```bsh
-  $ curl localhost:20000/a=getversion | xmllint --format -
+  $ curl $(hostname).local:20000/a=getversion | xmllint --format -
     % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                    Dload  Upload   Total   Spent    Left  Speed
   100  1181  100  1181    0     0  1185k      0 --:--:-- --:--:-- --:--:-- 1153k

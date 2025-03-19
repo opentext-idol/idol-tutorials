@@ -113,7 +113,7 @@ Make the following changes:
     + LICENSESERVER_IP=172.18.96.1
     ```
 
-    > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_WINDOWS_WSL.md#network-access).
+    > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_WINDOWS_WSL.md#access-windows-host-from-wsl-guest).
 
 1. Set the target IDOL container versions in the same `.env` file.  The latest IDOL release is 24.4.  We will introduce another variable to set the version for IDOL Data Admin to 24.3:
 

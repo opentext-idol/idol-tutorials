@@ -86,37 +86,38 @@ To view your host Windows file system from Ubuntu, go to `/mnt/c/`.
 
 ### Network access
 
+The following steps are used to verify access between WSL guest and Windows host.
+
 #### Access Windows host from WSL guest
 
 To find your Windows IP address as seen from WSL, run the following command from the Ubuntu command line:
 
 ```sh
-$ ping $(hostname).local -c 1
-PING MY_HOSTNAME.opentext.net (172.18.96.1) 56(84) bytes of data.
+$ ip route show | grep -i default | awk '{ print $3}'
+172.18.96.1
 ```
 
-Client apps running on WSL Ubuntu can communicate with servers running on Windows at this IP address (that is, `172.18.96.1`).
+Client apps running on WSL Ubuntu can communicate with servers running on Windows at this IP address.  Make a note of it.
 
 #### Access WSL guest from Windows host
 
-To find your WSL IP address as seen from Windows, run the following commands from the Ubuntu command line:
+To find your WSL IP address as seen from Windows, run the following command from the Ubuntu command line:
 
 ```sh
-$ sudo apt-get install net-tools
-$ ifconfig | grep -A1 eth0 | grep "inet "
-    inet 172.18.109.25  netmask 255.255.240.0  broadcast 172.18.111.255
+$ ip addr show | grep -A1 eth0 | grep inet | awk '{ print $2}'
+172.18.109.25/20
 ```
 
 Client apps running on Windows can communicate with servers running on WSL Ubuntu at this IP address (that is, `172.18.109.25`).
 
-> TIP: For convenience, you may want to set this IP address to a named host in your Windows `hosts` file. With administrator privileges, edit `C:\Windows\System32\drivers\etc\hosts` as follows:
->
-> ```ini
-> # IDOL Tutorial
-> 172.18.109.25 idol-docker-host    # WSL
-> ```
->
-> Save and close the `hosts` file.
+For convenience, please set this IP address to a named host in your Windows `hosts` file. With administrator privileges, edit `C:\Windows\System32\drivers\etc\hosts` as follows:
+
+```ini
+# IDOL Tutorial
+172.18.109.25 idol-docker-host    # WSL
+```
+
+Save and close the `hosts` file.
 
 ## Next steps
 
