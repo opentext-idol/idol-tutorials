@@ -46,14 +46,14 @@ for dir_path, dir_names, file_names in os.walk(".."):
         )
 
         if not os.path.isfile(link_path):
-          report[file_path].append(f"ERROR - FILE NOT FOUND: {link}")
+          report[file_path].append(f'ERROR - FILE NOT FOUND: {link}')
 
         else:
           if "\\" in link: 
-            report[file_path].append(f"WARNING - WINDOWS STYLE SEPARATOR: {link}")
+            report[file_path].append(f'WARNING - WINDOWS STYLE SEPARATOR: {link}')
           
           if not (link.startswith("./") or link.startswith("../")): 
-            report[file_path].append(f"WARNING - MISSING RELATIVE PATH AT START: {link}")
+            report[file_path].append(f'WARNING - MISSING RELATIVE PATH AT START: {link}')
 
           passed += 1
         
@@ -64,6 +64,7 @@ print('='*len(result_line))
 
 for file_path in report.keys():
   if len(report[file_path]) > 0:
+    print('')
     print('-'*len(file_path))
     print(file_path)
     print('-'*len(file_path))

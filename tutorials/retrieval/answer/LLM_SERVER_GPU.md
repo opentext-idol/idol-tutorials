@@ -98,15 +98,15 @@ docker compose up -d
 Watch the logs to look for the following lines to tell you the GPU is in use:
 
 ```sh
-$ docker logs llama-llamacpp-server-1 -f
+$ docker compose logs
 ...
-ggml_cuda_init: found 1 CUDA devices:
-  Device 0: NVIDIA T600 Laptop GPU, compute capability 7.5, VMM: yes
-llm_load_tensors: ggml ctx size =    0.27 MiB
-llm_load_tensors: offloading 12 repeating layers to GPU
-llm_load_tensors: offloaded 12/33 layers to GPU
-llm_load_tensors:        CPU buffer size =  4169.52 MiB
-llm_load_tensors:      CUDA0 buffer size =  2362.81 MiB
+llamacpp-server-1  | ggml_cuda_init: found 1 CUDA devices:
+llamacpp-server-1  |   Device 0: NVIDIA T600 Laptop GPU, compute capability 7.5, VMM: yes
+llamacpp-server-1  | llm_load_tensors: ggml ctx size =    0.27 MiB
+llamacpp-server-1  | llm_load_tensors: offloading 12 repeating layers to GPU
+llamacpp-server-1  | llm_load_tensors: offloaded 12/33 layers to GPU
+llamacpp-server-1  | llm_load_tensors:        CPU buffer size =  4169.52 MiB
+llamacpp-server-1  | llm_load_tensors:      CUDA0 buffer size =  2362.81 MiB
 ```
 
 ## Optimization
@@ -115,31 +115,39 @@ These `.gguf`-format, quantized LLMs allow for partial "offloading" of processin
 
 ### Measurements
 
-Running a series of test prompts with **Mistral 7B**, I see the following speeds (predicted tokens per second), when changing the number of GPU layers configured:
+Best speed (prompt and predicted tokens per second) for each model with associated `LLAMA_ARG_N_GPU_LAYERS` setting.
 
-`LLAMA_ARG_N_GPU_LAYERS` | Mistral 7B | Llama 3B | Llama 1B
+Model | Layers offloaded to GPU | Prompt TPS | Predicted TPS
 --- | --- | --- | ---
-3 | 6.8 | 18.0 | 30.9
-6 | 10.3 | 20.3 | 35.0
-12 | 12.8 | 22.4 | 41.9
-24 | 12.8 | 22.1 | 50.6
-48 | 11.3 | 24.0 | 50.2
+Llama 1B | 16 of 16 (100%) | 209.7 | 54.5
+Llama 3B | 21 of 28 (75%) | 95.4 | 26.2
+Mistral 7B | 19 of 32 (60%) | 40.2 | 14.4
 
-> TABLE: Predicted tokens per second observed for three LLMs with different GPU settings.
+> TABLE: Processing speed (prompt and predicted tokens per second) observed for three LLMs with GPU enabled.
+
+For comparison, the same speeds running with CPU only:
+
+Model | Prompt TPS | Predicted TPS
+--- | --- | ---
+Llama 1B | 157.1 | 55.3
+Llama 3B | 50.9 | 21.9
+Mistral 7B | 20.6 | 11.6
+
+> TABLE: Processing speed (prompt and predicted tokens per second) observed for three LLMs without GPU enabled.
 
 ### Discussion
 
-For comparison, we can compare the best speed with GPU from the above table against the observed predicted token rates for these same models running with CPU only:
+For comparison, we can look at the relative speed increase from enabling GPU by comparing the above two tables:
 
-Mode | Mistral 7B | Llama 3B | Llama 1B
---- | --- | --- | ---
-GPU (best) | 12.8 | 24.0 | 50.6
-CPU only | 11.6 | 24.2 | 58.9
-Change | +10% | -1% | -14%
+GPU (best) / CPU only | Prompt TPS | Predicted TPS
+--- | --- | ---
+Llama 1B | 133% | 99%
+Llama 3B | 187% | 120%
+Mistral 7B | 195% | 124%
 
-> TABLE: Predicted tokens per second observed for three LLMs with GPU enabled and CPU only, with percentage change in speed from enabling GPU.
+> TABLE: Relative change observed in processing speed (prompt and predicted tokens per second) observed for three LLMs with GPU enabled.
 
-So, there is no evidence that enabling GPU speeds up these models on the author's system.
+So, on this laptop, the best speed is for Llama 1B, where there is limited speed-up thanks to enabling GPU. If you prefer to use a larger model, GPU can give a more significant increase in speed.
 
 ## Next step
 

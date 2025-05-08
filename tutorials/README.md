@@ -1,8 +1,8 @@
-# IDOL Tutorials
+# Knowledge Discovery Tutorials
 
-A set of guides to introduce you to the Intelligent Data Operating Layer (IDOL), a software platform for enterprise search and unstructured data analysis.
+A set of guides to introduce you to the Knowledge Discovery (formerly IDOL), a software platform for enterprise search and unstructured data analysis.
 
-These tutorials are intended as a step-by-step guide to walk you through common setup steps for an IDOL system, introducing you to key concepts as we go. There is much more to learn from the documentation and the IDOL user community. See the links [below](#learn-more).
+These tutorials are intended as a step-by-step guide to walk you through common setup steps for a Knowledge Discovery system, introducing you to key concepts as we go. There is much more to learn from the documentation and the Knowledge Discovery user community. See the links [below](#learn-more).
 
 ---
 
@@ -14,20 +14,20 @@ These tutorials are intended as a step-by-step guide to walk you through common 
   - [Your first installation](#your-first-installation)
   - [End-to-end deployment with containers](#end-to-end-deployment-with-containers)
 - [Showcase lessons](#showcase-lessons)
+  - [Administration](#administration)
   - [Search and Question Answering](#search-and-question-answering)
   - [Ingest and enrichment](#ingest-and-enrichment)
   - [Investigate](#investigate)
-  - [Administration](#administration)
 - [Learn more](#learn-more)
   - [Rich media](#rich-media)
-  - [Embedded IDOL](#embedded-idol)
+  - [Embedded Knowledge Discovery](#embedded-knowledge-discovery)
   - [Useful links](#useful-links)
 
 ---
 
 ## Taster
 
-A quick first look at an IDOL system. Watch a demonstration video where IDOL is used to provide answers to natural language questions from a corpus of unstructured documents.
+A quick first look at a Knowledge Discovery system. Watch a demonstration video where Knowledge Discovery is used to provide answers to natural language questions from a corpus of unstructured documents.
 
 [Watch](https://www.youtube.com/watch?v=QEAejsJc8ws&list=PLlUdEXI83_Xoq5Fe2iUnY8fjV9PuX61FA&index=45).
 
@@ -37,13 +37,13 @@ A quick first look at an IDOL system. Watch a demonstration video where IDOL is 
 
 ### Software access
 
-To use IDOL software, you must have an active entitlement with the [Software Licensing and Downloads](https://sld.microfocus.com/mysoftware/index) portal.
+To use Knowledge Discovery software, you must have an active entitlement with the [Software Licensing and Downloads](https://sld.microfocus.com/mysoftware/index) portal.
 
 ### System requirements
 
-IDOL software can be installed on Windows, Linux, on-prem, in the cloud, and in containers.
+Knowledge Discovery software can be installed on Windows, Linux, on-prem, in the cloud, and in containers.
 
-The easiest option for most people trying IDOL for the first time is to use a Windows laptop. So, these tutorials assume that is what you are using.
+The easiest option for most people trying Knowledge Discovery for the first time is to use a Windows laptop. So, these tutorials assume that is what you are using.
 
 > NOTE: For Linux users, there will be notes like this along the way for relevant changes.
 
@@ -58,45 +58,49 @@ You will also need:
 - A text editor.
 - Administrator privileges to install software.
 
-> NOTE: Sizing IDOL for your own production tasks depends greatly on your use case. Please discuss your needs with your OpenText account manager.
+> NOTE: Sizing Knowledge Discovery for your own production tasks depends greatly on your use case. Please discuss your needs with your OpenText account manager.
 
 ## Introduction
 
-An IDOL system collects your source content, using analytics to build an index of useful data that you can search and analyze.
+A Knowledge Discovery system collects your source content, using analytics to build an index of useful data that you can search and analyze.
 
 ![idol-workflow](./figs/idol-workflow.png)
 
-This introduction is in two parts, first a *native* installation of two essential IDOL components on your Windows machine, then second an end-to-end containerized deployment using Docker.
+This introduction is in two parts, first a *native* installation of two essential Knowledge Discovery components on your Windows machine, then second an end-to-end containerized deployment using Docker.
 
 ### Your first installation
 
-Generate a license key then download, install and run IDOL Content, the search index at the core of your IDOL system.
+Generate a license key then download, install and run Knowledge Discovery Content, the search index at the core of your Knowledge Discovery system.
 
-Get started with [IDOL Content](./introduction/native/README.md).
+Get started with [Knowledge Discovery Content](./introduction/native/README.md).
 
 ### End-to-end deployment with containers
 
-Use the official IDOL container repository to simplify installation of larger IDOL systems. Use Docker to set up a multi-component, end-to-end system from ingest with NiFi to search with IDOL Find.
+Use the official Knowledge Discovery container repository to simplify installation of larger Knowledge Discovery systems. Use Docker to set up a multi-component, end-to-end system from ingest with NiFi to search with Knowledge Discovery Find.
 
-Get started with [IDOL containers](./introduction/containers/README.md).
+Get started with [Knowledge Discovery containers](./introduction/containers/README.md).
 
 ## Showcase lessons
 
-Dip into any of the following lesson series to develop your IDOL knowledge and try out more features.
+Dip into any of the following lesson series to develop your Knowledge Discovery knowledge and try out more features.
+
+### Administration
+
+Learn how to monitor your Knowledge Discovery system and perform maintenance tasks, such as update your containerized Knowledge Discovery software.
+
+Get started with selected [administrative tasks](./admin/README.md).
 
 ### Search and Question Answering
 
 Do you want an answer, not a list of search results?  Excited about what you can do with LLMs and *your* data?
 
-Get started with [IDOL Answer](./retrieval/answer/README.md).
+Get started with [Knowledge Discovery Answer](./retrieval/answer/README.md).
 
 ### Ingest and enrichment
 
-Use IDOL NiFi processors to do more with your data. Collect securely, enrich, ingest and view.
+Use Knowledge Discovery processors with Apache NiFi to do more with your data. Collect securely, enrich, ingest and view.
 
-> NOTE: NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2014](https://web.archive.org/web/20171207172647/https://www.nsa.gov/news-features/press-room/press-releases/2014/nifi-announcement.shtml).
-
-> COMING SOON!
+Get started with new [ingest flows](./ingest/README.md).
 
 <!-- 
 - [NiFi Process Groups](./ingestion/nifi-process-group/README.md)
@@ -120,38 +124,30 @@ Within the above, showcase some enrichment tasks
     - Create a custom grammar
       - quotes, build to solution for Don
     - Use the custom grammar in NiFi
-- [ ] OCR, with analyze media
+- [x] OCR, with analyze media
  -->
 
 ### Investigate
 
-Install and run Discover, the new investigative application that combines IDOL's search and entity enrichment with a graph database to help you do more with your data.
+Install and run Discover, the new investigative application that combines Knowledge Discovery's search and entity enrichment with a graph database to help you do more with your data.
+
+<!-- Get started with [Knowledge Discovery Discover](./discover/README.md). -->
 
 > COMING SOON!
-
-### Administration
-
-Learn how to monitor your IDOL system and perform maintenance tasks. Scale up your IDOL system, from distributed ingest to query speed optimization.
-
-> COMING SOON!
-
-<!-- 
-  - [ ] Bind-mounting lesson: Bind-mount content.cfg, change log level and also bind-mount logs folder/
- -->
 
 ## Learn more
 
 ### Rich media
 
-IDOL Media Server includes a wide range of image, video and audio analytics to enrich your data as part of an ingest pipeline. Media Server is also used as a stand-alone solution. For more details, see this dedicated tutorial project: <https://github.com/opentext-idol/idol-rich-media-tutorials>
+Knowledge Discovery Media Server includes a wide range of image, video and audio analytics to enrich your data as part of an ingest pipeline. Media Server is also used as a stand-alone solution. For more details, see this dedicated tutorial project: <https://github.com/opentext-idol/idol-rich-media-tutorials>
 
-### Embedded IDOL
+### Embedded Knowledge Discovery
 
-IDOL servers and components can be embedded in your third-party applications with an OEM agreement. For more details on embedding specific IDOL capabilities into stand-alone solution and applications using the IDOL SDKs, see this dedicated tutorial project: <https://github.com/opentext-idol/idol-oem-tutorials>
+Knowledge Discovery servers and components can be embedded in your third-party applications with an OEM agreement. For more details on embedding specific Knowledge Discovery capabilities into stand-alone solution and applications using the Knowledge Discovery SDKs, see this dedicated tutorial project: <https://github.com/opentext-idol/idol-oem-tutorials>
 
 ### Useful links
 
-- Read more tips on working with IDOL products in [IDOL Expert](https://www.microfocus.com/documentation/idol/IDOL_24_4/IDOLServer_24.4_Documentation/Guides/html/expert/Content/IDOLExpert_Welcome.htm).
-- For details of the latest changes to IDOL, please see the [Release Notes](https://www.microfocus.com/documentation/idol/IDOL_24_4/IDOLReleaseNotes_24.4_Documentation/idol/Content/_Introduction.htm).
-- Full administration guides are available for all IDOL products on the [IDOL documentation site](https://www.microfocus.com/documentation/idol/).
-- To learn more about the suite of IDOL products, visit [opentext.com/idol](https://www.opentext.com/products/knowledge-discovery).
+- Read more tips on working with Knowledge Discovery products in the [Expert](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/expert/Content/IDOLExpert_Welcome.htm) documentation.
+- For details of the latest changes to Knowledge Discovery, please see the [Release Notes](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLReleaseNotes_25.2_Documentation/idol/Content/_Introduction.htm).
+- Full administration guides are available for all Knowledge Discovery products on the [Knowledge Discovery documentation site](https://www.microfocus.com/documentation/idol/).
+- To learn more about the suite of Knowledge Discovery products, visit [opentext.com/idol](https://www.opentext.com/products/knowledge-discovery).

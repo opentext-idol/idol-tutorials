@@ -2,9 +2,9 @@
 
 In this lesson, you will:
 
-- Explore the `data-admin` IDOL container deployment.
-- Configure and run IDOL containers.
-- Log in to and configure IDOL Data Admin.
+- Explore the `data-admin` Knowledge Discovery container deployment.
+- Configure and run Knowledge Discovery containers.
+- Log in to and configure Knowledge Discovery Data Admin.
 
 ---
 
@@ -13,9 +13,9 @@ In this lesson, you will:
 - [Introducing the `data-admin` deployment](#introducing-the-data-admin-deployment)
   - [Setup](#setup)
   - [Deploy](#deploy)
-- [First look at IDOL Data Admin](#first-look-at-idol-data-admin)
-  - [IDOL Data Admin settings](#idol-data-admin-settings)
-  - [IDOL Data Admin users](#idol-data-admin-users)
+- [First look at Knowledge Discovery Data Admin](#first-look-at-knowledge-discovery-data-admin)
+  - [Knowledge Discovery Data Admin settings](#knowledge-discovery-data-admin-settings)
+  - [Knowledge Discovery Data Admin users](#knowledge-discovery-data-admin-users)
   - [First look at Data Admin](#first-look-at-data-admin)
 - [Conclusions](#conclusions)
 - [Next step](#next-step)
@@ -24,7 +24,7 @@ In this lesson, you will:
 
 ## Answer system types
 
-IDOL Answer Server has five types of system, supporting different question types.
+Knowledge Discovery Answer Server has five types of system, supporting different question types.
 
 1. **Answer Bank** is a trusted store of reference questions and answers, which you can add and administer. Use Answer Bank for answers to questions such as:
 
@@ -36,9 +36,9 @@ IDOL Answer Server has five types of system, supporting different question types
    - What is the population of the USA?
    - What is the average June temperature in Antarctica?
 
-1. **Passage Extractor** links to a store of trusted documents that contain information that might be useful for answering questions, *i.e.* your IDOL Content index. When no trusted answer can be found from Answer Bank or Fact Bank, the Passage Extractor queries IDOL Content for relevant documents. It attempts to extract short sentences or paragraphs that contain pertinent answers. Use a Passage Extractor to answer general questions.
+1. **Passage Extractor** links to a store of trusted documents that contain information that might be useful for answering questions, *i.e.* your Knowledge Discovery Content index. When no trusted answer can be found from Answer Bank or Fact Bank, the Passage Extractor queries Knowledge Discovery Content for relevant documents. It attempts to extract short sentences or paragraphs that contain pertinent answers. Use a Passage Extractor to answer general questions.
 
-1. **RAG** (Retrieval Augmented Generation) uses a large language model (LLM) to generate answers from trusted documents in your system. When a user asks a question, the RAG module queries IDOL Content for relevant documents. It provides the original question and relevant content from these candidate documents in a prompt to an external LLM, which generates the answer.
+1. **RAG** (Retrieval Augmented Generation) uses a large language model (LLM) to generate answers from trusted documents in your system. When a user asks a question, the RAG module queries Knowledge Discovery Content for relevant documents. It provides the original question and relevant content from these candidate documents in a prompt to an external LLM, which generates the answer.
 
     > NOTE: The RAG system performs an equivalent "fallback" function to **Passage Extraction** and may offer better results depending on the LLM you choose. It may also require GPU to run in good time.
 
@@ -46,13 +46,13 @@ IDOL Answer Server has five types of system, supporting different question types
 
 ## Data Admin
 
-IDOL Data Admin allows you to set up and maintain an Answer Bank system, a store of reference questions and answers in a dynamic FAQ, to provide concise answers to natural language questions.
+Knowledge Discovery Data Admin allows you to set up and maintain an Answer Bank system, a store of reference questions and answers in a dynamic FAQ, to provide concise answers to natural language questions.
 
-> NOTE: Data Admin can also be used to manage an IDOL search system to optimize the search experience for your end users. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/DataAdmin_24.4_Documentation/admin/Content/Introduction.htm) for details.
+> NOTE: Data Admin can also be used to manage a Knowledge Discovery search system to optimize the search experience for your end users. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/DataAdmin_25.2_Documentation/admin/Content/Introduction.htm) for details.
 
 ## Introducing the `data-admin` deployment
 
-Within the IDOL Container project, the `data-admin` directory includes files to define an end-to-end IDOL question answering system. Some of these components will be similar to what you have seen before, with Content, View and Community but here we have in addition Answer Server and its related components, as well as a dedicated user interface called "IDOL Data Admin".
+Within the Knowledge Discovery Container project, the `data-admin` directory includes files to define an end-to-end Knowledge Discovery question answering system. Some of these components will be similar to what you have seen before, with Content, View and Community but here we have in addition Answer Server and its related components, as well as a dedicated user interface called "Knowledge Discovery Data Admin".
 
 ```mermaid
 flowchart TB
@@ -64,17 +64,17 @@ flowchart TB
 
   subgraph internal[Docker Containers]
     direction LR
-    passageextractor-agentstore[IDOL PassageExtractor AgentStore]
-    answerbank-agentstore[IDOL AnswerBank AgentStore]
+    passageextractor-agentstore[PassageExtractor AgentStore]
+    answerbank-agentstore[AnswerBank AgentStore]
     factbank-postgres[Fact Bank SQL]
-    passageextractor-content[IDOL Content]
-    answerserver[IDOL Answer Server]
-    qms-agentstore[IDOL QMS AgentStore]
-    qms[IDOL QMS]
-    dataadmin-statsserver[IDOL Stats]
-    dataadmin-viewserver[IDOL View]
-    dataadmin-community[IDOL Community]
-    dataadmin[IDOL Data Admin]
+    passageextractor-content[Content]
+    answerserver[Answer Server]
+    qms-agentstore[QMS AgentStore]
+    qms[QMS]
+    dataadmin-statsserver[Stats]
+    dataadmin-viewserver[View]
+    dataadmin-community[Community]
+    dataadmin[Data Admin]
   end
 
   users --- dataadmin
@@ -90,7 +90,7 @@ flowchart TB
   answerserver --- factbank-postgres
 ```
 
-> NOTE: This out-of-the-box deployment does not contain a NiFi instance for document ingestion.  Adding that will involve combining elements you have already seen from `basic-idol` and will be covered in a later lesson.
+> NOTE: This out-of-the-box deployment does not contain a NiFi instance for document ingestion. Adding that will involve combining elements you have already seen from `basic-idol` and will be covered in a later lesson.
 
 ### Setup
 
@@ -105,7 +105,7 @@ code .
 
 Make the following changes:
 
-1. Edit the `.env` file in `/opt/idol/idol-containers-toolkit/data-admin` to set the IP address of your IDOL License Server. For example:
+1. Edit the `.env` file in `/opt/idol/idol-containers-toolkit/data-admin` to set the IP address of your Knowledge Discovery License Server. For example:
 
     ```diff
     # External licenserver host
@@ -113,26 +113,17 @@ Make the following changes:
     + LICENSESERVER_IP=172.18.96.1
     ```
 
-    > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_WINDOWS_WSL.md#access-windows-host-from-wsl-guest).
+    > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_UBUNTU_WSL.md#access-windows-host-from-wsl-guest).
 
-1. Set the target IDOL container versions in the same `.env` file.  The latest IDOL release is 24.4.  We will introduce another variable to set the version for IDOL Data Admin to 24.3:
-
-    ```diff
-    # Version of IDOL images to use
-    - IDOL_SERVER_VERSION=24.3
-    + IDOL_SERVER_VERSION=24.4
-    + IDOL_DATA_ADMIN_VERSION=24.3
-    ```
-
-    > NOTE: If you upgrade in the future, you must ensure that the version of your external IDOL License Server matches the version of your containers.
-
-1. Edit the `docker-compose.yml` file in `/opt/idol/idol-containers-toolkit/data-admin` to apply the above version setting:
+1. Set the target Knowledge Discovery container versions in the same `.env` file. The latest Knowledge Discovery release is 25.2.
 
     ```diff
-    idol-dataadmin:
-    - image: ${IDOL_REGISTRY}/dataadmin:${IDOL_SERVER_VERSION}
-    + image: ${IDOL_REGISTRY}/dataadmin:${IDOL_DATA_ADMIN_VERSION}
+    # Version of Knowledge Discovery images to use
+    - IDOL_SERVER_VERSION=25.1
+    + IDOL_SERVER_VERSION=25.2
     ```
+
+    > NOTE: If you upgrade in the future, you must ensure that the version of your external Knowledge Discovery License Server matches the version of your containers.
 
 ### Deploy
 
@@ -142,7 +133,7 @@ To launch the system, navigate to the project folder:
 cd /opt/idol/idol-containers-toolkit/data-admin
 ```
 
-It is again recommended to create a deployment script, as in the [introductory lesson](../../introduction/containers/DOCKER_DEPLOY.md#keeping-track-of-compose-files). For example:
+It is again recommended to create a deployment script, as in the [introductory lesson](../../introduction/containers/PART_III.md#keeping-track-of-compose-files). For example:
 
 ```sh
 touch deploy.sh
@@ -174,12 +165,12 @@ Start the deployment project with:
 Monitor the start of the Data Admin container with:
 
 ```sh
-docker logs data-admin-idol-dataadmin-1 -f
+./deploy.sh logs -f idol-dataadmin
 ```
 
 Wait for the log message "APPLICATION STARTED".
 
-## First look at IDOL Data Admin
+## First look at Knowledge Discovery Data Admin
 
 When the system is running, point your web browser to <http://idol-docker-host:8080/>.
 
@@ -199,9 +190,9 @@ On first logging in, you must enter the temporary credentials: `admin` / `admin`
 > exit
 > ```
 
-### IDOL Data Admin settings
+### Knowledge Discovery Data Admin settings
 
-On logging in for the first time, you have the opportunity to review the various components connected to IDOL Data Admin.
+On logging in for the first time, you have the opportunity to review the various components connected to Knowledge Discovery Data Admin.
 
 These are already pre-configured except the optional external search engine. Add a search URL and click **ENABLE SEARCH ENGINE**:
 
@@ -218,13 +209,13 @@ Next, scroll up and click **SAVE CHANGES**, confirm, then click **Next**.
 
 ![ida-save-changes](./figs/ida-save-changes.png)
 
-### IDOL Data Admin users
+### Knowledge Discovery Data Admin users
 
 Remember that your initial login was as a temporary user called "admin". On the next screen, you must add at least one new administrator-level user, for example called "idol", then log out and log in a that new user.
 
 ![ida-new-admin](./figs/ida-new-admin.png)
 
-> NOTE: If you prefer, you can alternatively create your own users from [IDOL Community](http://idol-docker-host:9030/action=admin#page/users). IDOL Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/DataAdmin_24.4_Documentation/admin/Content/Setup/UserRoles.htm) for details.
+> NOTE: If you prefer, you can alternatively create your own users from [Knowledge Discovery Community](http://idol-docker-host:9030/action=admin#page/users). Knowledge Discovery Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/DataAdmin_25.2_Documentation/admin/Content/Setup/UserRoles.htm) for details.
 
 ### First look at Data Admin
 
@@ -232,11 +223,11 @@ Log out and log in again as your new Administrator-level user, *e.g.* "idol", to
 
 ![ida-landing-page](./figs/ida-landing-page.png)
 
-This administrative user interfaces allows you to manage the contents of data indexed in IDOL servers to optimize the search experience for your end users. You can set up and maintain reference questions and answers, manage synonyms and create and modify promotions. For full details, read the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_4/DataAdmin_24.4_Documentation/admin/Content/Introduction.htm).
+This administrative user interfaces allows you to manage the contents of data indexed in Knowledge Discovery servers to optimize the search experience for your end users. You can set up and maintain reference questions and answers, manage synonyms and create and modify promotions. For full details, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/DataAdmin_25.2_Documentation/admin/Content/Introduction.htm).
 
 ## Conclusions
 
-You have an understanding of the components in an IDOL question answering system. You have set up a containerized deployment including the IDOL Data Admin user interface.
+You have an understanding of the components in a Knowledge Discovery question answering system. You have set up a containerized deployment including the Knowledge Discovery Data Admin user interface.
 
 ## Next step
 

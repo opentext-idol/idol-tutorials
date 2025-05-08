@@ -50,8 +50,8 @@ services:
 ```
 
 > NOTE: Uncomment your preferred model from the three above for your first tests.
-
-> NOTE: For complete information about "LLaMA.cpp" server, see the [documentation on GitHub](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md).
+>
+> For full information about "LLaMA.cpp" server, see the [documentation on GitHub](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md).
 
 ## Start the LLM Server
 
@@ -66,7 +66,7 @@ docker compose up -d
 Monitor the logs with:
 
 ```sh
-docker logs llama-llamacpp-server-1 -f
+docker compose logs -f llamacpp-server
 ```
 
 Press `Ctrl+C` to stop following the logs.
@@ -194,13 +194,13 @@ You should now have three models downloaded:
 
 Tests show the following speed comparison:
 
-Model | Predicted tokens / seconds
---- | ---
-Mistral 7B | 11.6
-Llama 3B | 24.2
-Llama 1B | 58.9
+Model | Prompt TPS | Predicted TPS
+--- | --- | ---
+Llama 1B | 157.1 | 55.3
+Llama 3B | 50.9 | 21.9
+Mistral 7B | 20.6 | 11.6
 
-> TABLE: Predicted tokens per second observed for three LLMs.
+> TABLE: Processing speed (prompt and predicted tokens per second) observed for three LLMs.
 
 Those tests were performed with a range of questions, including:
 
@@ -212,13 +212,13 @@ Those tests were performed with a range of questions, including:
 
 - **Llama 1B**: "Neil Armstrong was the first man to walk on the moon, on July 20, 1969, during the Apollo 11 mission." (`1.0s`)
 
-> TIP: Try out your own questions to judge which model's answers you find most useful.
+> TIP: Try out your own questions to judge which model's answers you find most useful. Compare with other LLMs online, *e.g.* OpenAI's `gpt-4o-mini` model responds to the same question with, "The first man on the moon was Neil Armstrong, who set foot on the lunar surface on July 20, 1969, during NASA's Apollo 11 mission."
 
 ## Optionally enable GPU acceleration
 
 If you have access to a GPU, optionally follow [these steps](./LLM_SERVER_GPU.md) to set up GPU acceleration for your server.
 
-> IMPORTANT: Unless you have access to a large GPU, this is unlikely to result in a significant speed up.
+> NOTE: Unless you have access to a large GPU, this is unlikely to result in a significant speed up.
 
 ## Next step
 

@@ -2,33 +2,28 @@
 
 In this lesson, you will:
 
-- Make changes to your Docker deployment, including learning how to edit a containerized IDOL component configuration file.
-- Modify your NiFi flow to add an additional processor.
-- Ingest some sample enterprise documents.
-- Edit your IDOL Find configuration file to better explore those documents.
+- Learn how to keep track of multi-file docker configurations.
+- Open ports to make each Knowledge Discovery component accessible.
+- Mount a shared folder for document ingestion.
+- Mount a containerized Knowledge Discovery component configuration file to make and preserve edits.
 
 ---
 
-- [Modify IDOL container deployment](#modify-idol-container-deployment)
-- [Ingest documents with NiFi](#ingest-documents-with-nifi)
-  - [Prepare sample data for ingest](#prepare-sample-data-for-ingest)
-  - [Follow the ingestion](#follow-the-ingestion)
-  - [See your documents in IDOL Content](#see-your-documents-in-idol-content)
-  - [Understanding ingest](#understanding-ingest)
-- [Explore documents in IDOL Find](#explore-documents-in-idol-find)
-  - [Filter by metadata](#filter-by-metadata)
-  - [Search](#search)
-- [Edit the IDOL Find configuration file](#edit-the-idol-find-configuration-file)
-  - [Copy out configuration files](#copy-out-configuration-files)
-  - [Mount external configuration files](#mount-external-configuration-files)
-  - [Update the configuration file](#update-the-configuration-file)
+- [Modify Knowledge Discovery container deployment](#modify-knowledge-discovery-container-deployment)
+- [Keeping track of compose files](#keeping-track-of-compose-files)
+- [Make selected Knowledge Discovery component ports accessible](#make-selected-knowledge-discovery-component-ports-accessible)
+- [Mount a shared folder for ingest](#mount-a-shared-folder-for-ingest)
+  - [Filename format encoding](#filename-format-encoding)
+- [Modify Knowledge Discovery component configurations](#modify-knowledge-discovery-component-configurations)
+  - [Updating configuration files](#updating-configuration-files)
+    - [Update to include file metadata](#update-to-include-file-metadata)
   - [Redeploy and validate](#redeploy-and-validate)
 - [Conclusions](#conclusions)
 - [Next steps](#next-steps)
 
 ---
 
-## Modify IDOL container deployment
+## Modify Knowledge Discovery container deployment
 
 Remember that, to edit files under WSL Linux, we recommend [VS Code](https://code.visualstudio.com). To open the `basic-idol` folder contents for editing, type:
 
@@ -39,235 +34,222 @@ code .
 
 The default `basic-idol` system is *almost* exactly what we need now... but you can make some modifications to help you understand the system, including mounting a shared folder where you can copy sample data to index.
 
-Follow these [docker deployment steps](./DOCKER_DEPLOY.md) to make the following instructional changes:
+## Keeping track of compose files
 
-1. Keep track of multi-file docker configurations.
-1. Open ports to make each IDOL component accessible.
-1. Mount a shared folder for document ingestion.
-1. Mount a containerized IDOL component configuration file to make and preserve edits.
-
-## Ingest documents with NiFi
-
-With your IDOL system now running and configured, you are now ready to start ingesting data.
-
-### Prepare sample data for ingest
-
-This repository includes a `data` folder containing some sample enterprise files to ingest. Copy the directory `Retail` into your shared folder `C:\OpenText\hotfolder`.
-
-### Follow the ingestion
-
-Open NiFi at <http://idol-docker-host:8001/nifi/> (using the direct link this time, rather than the reverse proxy) and note that the processors are automatically started.
-
-Monitor some of the files as they pass from processor to processor:
-
-- To stop a processor to temporarily block some files in the queue, right-click on the processor tile, then click **Stop**:
-
-    ![nifi-list-queue](./figs/nifi-stop-processor.png)
-
-- Right-click the link comping in to that processor, then click **List queue**:
-
-    ![nifi-list-queue](./figs/nifi-list-queue.png)
-
-- Click the **eye icon** for any queued document:
-
-    ![nifi-view-queue](./figs/nifi-view-queue.png)
-
-- A new tab opens, showing the document metadata and content for this file, including any PII detections:
-
-    ![nifi-view-document](./figs/nifi-view-document.png)
-
-    > TIP: To monitor documents flowing through NiFi, you must connect to NiFi by using an explicit IP address, as instructed in this tutorial, not using `localhost`. If you are using WSL and following this tutorial to the letter, you will have no problem. You have already found your WSL (guest) IP address in the [WSL guide](./SETUP_WINDOWS_WSL.md#network-access) and possibly set a friendly host name for it (`idol-docker-host`) in your Windows `hosts` file.
-
-If you stopped a processor, restart it (right-click, then **Start**) to allow those queued files to be processed.
-
-### See your documents in IDOL Content
-
-As in the first lesson, use IDOL Admin for Content to view the data index.
-
-Use [test action](http://idol-docker-host:9100/a=admin#page/console/test-action) to run a query on the data.
-
-This query to search for documents related to "retail sales" and return a contextual summary of each document:
-
-```url
-action=query&text=retail%20sales&summary=context&print=none
-```
-
-![retail-sales-query](./figs/retail-sales-query.png)
-
-### Understanding ingest
-
-Now is a good point to pause and review what we've done for clarity. How did your files actually get from your filesystem to IDOL Content?
-
-1. In the setup, you [configured a mounted disk](./DOCKER_DEPLOY.md#mount-a-shared-folder) that is visible to the container running NiFi at `/idol-ingest`.
-
-   - The `docker-compose.bindmount.yml` file defines the local directory for a volume:
-
-      ```yml
-      volumes:
-        idol-ingest-volume:
-          driver_opts:
-            device: /mnt/c/OpenText/hotfolder
-      ```
-
-   - That volume is mounted into the NiFi container in `docker-compose.yml`:
-
-      ```yml
-      services:
-        idol-nifi:
-          volumes:
-            - idol-ingest-volume:/idol-ingest
-      ```
-
-1. In the "Basic IDOL" NiFi flow, the FileSystem Connector is pre-configured to look at this mounted folder for files.
-
-    - Navigate to the "GetFileSystem" processor to view its configuration:
-      ![nifi-get-files-config](./figs/nifi-get-files-config.png)
-
-    - Click **ADVANCED** and go to the **BROWSE** tab to see the connector's view of that folder:
-      ![nifi-get-files-browse](./figs/nifi-get-files-browse.png)
-
-1. After flowing through the various IDOL processors in NiFi, files get to the "PutIDOL" processor, which sends them to IDOL Content (in batches) to the container with hostname `idol-content` on port `9100`.
-
-    - The container host is defined in `docker-compose.yml`, which also points to the mounted configuration directory:
-
-      ```yml
-      services:
-        idol-content: 
-          volumes:
-            - ./content/cfg:/content/cfg
-      ```
-
-    - The IDOL Content configuration file `content/cfg/original-content-cfg` defines the server port:
-
-      ```ini
-      [Server]
-      Port=9100
-      ```
-
-    - The **PutIDOL** processor properties reference this port, as well as the target **Default** database:
-
-      ![nifi-put-idol](./figs/nifi-put-idol.png)
-
-## Explore documents in IDOL Find
-
-Log in to Find on <http://idol-docker-host:8000/> (using the direct link this time, rather than the reverse proxy). The default credentials are `admin` / `admin`.
-
-> NOTE: To create your own users, go to IDOL Community <http://idol-docker-host:9030/action=admin#page/users>. Find users need one or more of the "FindAdmin", "FindBI" and "FindUser" roles. See the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Find_24.4_Documentation/admin/Content/User_Roles.htm) for details.
-
-The initial view of the topic map shows a summary of the key terms in your document set:
-
-![find-topic-map](./figs/find-topic-map.png)
-
-### Filter by metadata
-
-For example:
-
-- application name, or
-
-  ![find-filter-app-name](./figs/find-filter-app-name.png)
-
-- word count
-  
-  ![find-filter-word-count](./figs/find-filter-word-count.png)
-
-### Search
-
-For example, for "sales process" to retrieve relevant documents:
-
-![find-search](./figs/find-search.png)
-
-In the **List** tab, click on an item in the result list to show a near-native HTML rendering of the original document. In this way, IDOL allows you to view documents directly in the Find application, without having to have the viewing software installed for each file type in your index.
-
-You can explore some of the other tabs and filters to get a feeling for using the Find interface.
-
-> NOTE: To learn more about Find, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Find_24.4_Documentation/admin/Content/Introduction.htm).
-
-## Edit the IDOL Find configuration file
-
-You have already modified an IDOL component configuration file. You used IDOL Content as an example and this process applies to all IDOL servers. However, IDOL Find is a bit different. Find (and other UIs you will see in later lessons) is a Java application, with a `.json` file as the primary means of modifying its behavior.
-
-### Copy out configuration files
-
-With the Docker system running, use the Linux command line to make a local copy of the IDOL container configuration directory:
+You will find that you need to reference your list of `.yml` files whenever you run commands for your system with `docker compose`, which can be a source of confusion. To simplify things, I recommend creating a `deploy.sh` script, for example:
 
 ```sh
-$ cd /opt/idol/idol-containers-toolkit/basic-idol
-$ mkdir find
-$ docker cp basic-idol-idol-find-1:/opt/find/home/config_basic.json find/
-Successfully copied 10.8kB to /opt/idol/idol-containers-toolkit/basic-idol/find/
+touch deploy.sh
+chmod +x deploy.sh
 ```
 
-### Mount external configuration files
+Add the following content:
 
-Edit the file `basic-idol/docker-compose.yml` to mount the external config directory:
+```sh
+docker compose \
+  -f docker-compose.yml \
+  "$@"
+```
+
+Now, you can use this to conveniently control your deployment with the standard `docker compose` options, for example:
+
+- Start all containers (and rebuild any changes): `./deploy.sh up -d`
+- Stop all containers (without destroying anything): `./deploy.sh stop`
+- Stop one containers: `./deploy.sh stop idol-content`
+- Take down all containers: `./deploy.sh down`
+
+> NOTE: For full details on the verbs available for `docker compose`, see the [docker documentation](https://docs.docker.com/compose/reference/).
+
+## Make selected Knowledge Discovery component ports accessible
+
+By default, in the `basic-idol` deployment, only the NiFi and Knowledge Discovery Find use interfaces are accessible. The following modification exposes all component ports, for example allowing you to see the admin interface for Content as you did in the first lesson.
+
+- First, stop the current system with:
+
+    ```sh
+    ./deploy.sh stop
+    ```
+
+- This modification has already been made for us and can be used by referencing a second `.yml` file in the `deploy.sh` script:
+
+    ```diff
+    docker compose \
+      -f docker-compose.yml \
+    + -f docker-compose.expose-ports.yml \
+      "$@"
+    ```
+
+    > NOTE: Docker compose allows server configurations to be slit across files. This can be done group together optional functionality for easy enabling and disabling. This additional file includes modifiers to expose ports, *e.g.*:
+    >
+    > ```yml
+    > idol-content:
+    > ports:
+    >   - 9100-9102:9100-9102
+    > ```
+
+- Restart your system with:
+
+    ```sh
+    ./deploy.sh up -d
+    ```
+
+When the containers start, you can point to the admin interface for Content on <http://idol-docker-host:9100/a=admin>.
+
+## Mount a shared folder for ingest
+
+Next, you can run another system modification to configure a shared folder where you can place documents for ingest.
+
+- First, stop and destroy the current system with:
+
+    ```sh
+    ./deploy.sh down
+    ```
+
+- Next, create a shared folder location in your Windows system: `C:\OpenText\hotfolder`.
+
+- Now edit the file `docker-compose.bindmount.yml` to define your own folder location:
+
+    ```diff
+    volumes:
+      idol-ingest-volume:
+    - # driver: local
+    +   driver: local
+        driver_opts:
+          type: none
+    -     device: /path/to/idol-ingest/bind
+    +     device: /mnt/c/OpenText/hotfolder
+          o: bind
+    ```
+
+    > NOTE: If you are using WSL, you already know that your Windows paths are accessible from WSL via the `/mnt/` parent directory from the [WSL guide](./SETUP_UBUNTU_WSL.md#file-system-access).
+
+- To run with these changes to the Docker volume `idol-ingest-volume`, you must first remove the existing volume:
+
+    ```sh
+    docker volume rm basic-idol_idol-ingest-volume
+    ```
+
+- Modify your `deploy.sh` script to make use of the additional `.yml` file:
+  
+    ```diff
+    docker compose \
+      -f docker-compose.yml \
+      -f docker-compose.expose-ports.yml \
+    + -f docker-compose.bindmount.yml \
+      "$@"
+    ```
+
+- Finally, launch the modified system with:
+
+    ```sh
+    ./deploy.sh up -d
+    ```
+
+- You can now check the mounted volume with:
+
+    ```sh
+    $ docker volume inspect basic-idol_idol-ingest-volume
+    [
+        {
+            ...
+            "Name": "basic-idol_idol-ingest-volume",
+            "Options": {
+                "device": "/mnt/c/OpenText/hotfolder",
+                "o": "bind",
+                "type": "none"
+            },
+            "Scope": "local"
+        }
+    ]
+    ```
+
+### Filename format encoding
+
+Depending on your environment, you may see issues with filenames containing unicode characters that stop you being able to ingest content from this file share.
+
+When you mount a disk for ingest with the FileSystem Connector, depending on your environment you may see issues with file names containing unicode characters that stop you being able to ingest content.
+
+- Verify the locale of your `idol-nifi` container:
+
+    ```sh
+    $ cd /opt/idol/idol-containers-toolkit/basic-idol
+    $ docker exec -it basic-idol-idol-nifi-1 bash
+    [nifi@912b67752a6e nifi-current]$ locale
+    LANG=C.utf8
+    ...
+    [nifi@912b67752a6e nifi-current]$ exit
+    ```
+
+- If the system is not setup with a UTF-8 locale, like `C.utf8` shown above, make the following change  your docker compose file:
+
+    ```diff
+    idol-nifi:
+      <<: *common-server
+      image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose > nifi-minimal or nifi-full
+      environment:
+    +   - LANG=C.UTF-8
+    +   - LC_ALL=C.UTF-8
+    ```
+
+- Restart your NiFi container to apply the changes:
+
+    ```sh
+    cd /opt/idol/idol-containers-toolkit/basic-idol
+    ./deploy.sh down idol-nifi
+    ./deploy.sh up -d
+    ```
+
+## Modify Knowledge Discovery component configurations
+
+Each Knowledge Discovery component includes a configuration file that you can modify to change how the component runs.
+
+Knowledge Discovery containers ship with their configuration files included. In order to persist any edits to these files, you must extract the configuration files outside the container. Follow these steps to do so, for `idol-content`, then return here.
+
+Get [started](../../admin/CONTAINER_STATE.md#preserve-a-knowledge-discovery-component-configuration).
+
+### Updating configuration files
+
+Knowledge Discovery components are highly configurable. Most configuration settings are made via the `.cfg` files you have already seen.
+
+Each component has dedicated documentation to describe available configuration settings, *e.g.* read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Configuration/_ACI_Config.htm) for Knowledge Discovery Content. These include settings that effect authorization, encryption, caching for efficiency savings and scheduling for maintenance task, to name a few.
+
+A common area for configuration change relates to how you index your data. The Knowledge Discovery index includes specialized field type definitions to optimize query speed and/or to allow convenient filtering, such as filtering on labels ("parametrics" or "facets"), numeric ranges, dates, *etc.*
+
+> NOTE: For full details on Knowledge Discovery index field types, see the [Expert](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm) documentation.
+
+#### Update to include file metadata
+
+Depending on your data, enrichment setup and use cases, you can expect to have different metadata properties on your documents.
+
+The sample files we are using in this tutorial are Microsoft Office formats, which have some useful metadata fields baked in.
+
+One is **APPNAME**, which we would like to be able to filter on. To enable this, add an additional pattern to the *parametric*-type field list.
+
+Edit the file `basic-idol/content/cfg/original.content.cfg`:
 
 ```diff
-idol-find:
-  image: ${IDOL_REGISTRY}/find:${IDOL_SERVER_VERSION}
-  labels:
-    <<: *common-labels
-  environment:
-    - IDOL_UI_CFG=config_basic.json # this controls the configuration of Find
-+ volumes:
-+   - ./find/config_basic.json:/opt/find/home/config_basic.json:ro # this mounts an external cfg file
-  depends_on:
-    - idol-community
-    - idol-view
+[SetParametricFields]
+- PropertyFieldCSVs=,*/PII_*/VALUE*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
++ PropertyFieldCSVs=*/APPNAME,*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
 ```
-
-### Update the configuration file
-
-You might have noticed that Find automatically displays any *parametric*- and *numeric*-type fields found in the source documents. To change the behavior of this display, you can edit the configuration file `fieldsInfo` section.
-
-One common change is to provide a friendly name for a given field. For example, look at the `PII_NAME/VALUE` field, which is shown as just **VALUE** by default in Find. Use the following example to add an entry for it:
-
-```diff
-"fieldsInfo" : {
-  ...
-  "longitude" : {
-    "type" : "number",
-    "advanced" : true,
-    "names" : [ "NODE_PLACE/LON", "LON" ],
-    "values" : [ ]
-+ },
-+ "educed_person_name" : {
-+   "advanced" : true,
-+   "names" : [ "PII_NAME/VALUE" ]
-  }
-}
-```
-
-> NOTE: For full options on the `fieldsInfo` configuration section, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Find_24.4_Documentation/admin/Content/ConfigFile/ConfigureFriendlyNamesParametric.htm).
 
 ### Redeploy and validate
 
-Next you stop and start the IDOL Find container to pick up these changes.
+Next you stop and start the Knowledge Discovery Content container to pick up these changes.
 
 ```sh
-./deploy.sh stop idol-find
+./deploy.sh stop idol-content
 ./deploy.sh up -d
 ```
 
-Open IDOL Find and log in again to see the field name under **FILTERS** has changed to **EDUCED PERSON NAME**.
+Open the admin interface for Content onto the [configuration view](http://idol-docker-host:9100/a=admin#page/config/SetParametricFields) to see that your change has been applied:
 
-![find-filter-educed-name](./figs/find-filter-educed-name.png)
-
-> NOTE: For details on other available configuration options, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/IDOL_24_4/Find_24.4_Documentation/admin/Content/Introduction.htm).
-
-> NOTE: The IDOL Find source code is available on [GitHub](https://github.com/opentext-idol/find), where you can find detailed instructions to set up your own development environment to build your own custom changes into the application.
+![content-config-param](./figs/content-config-param.png)
 
 ## Conclusions
 
-You have now set up and used an end-to-end IDOL system.
-
-You understand how to modify a containerized IDOL deployment. You can mount external volumes and update configuration files for IDOL components, including Find. You have explored a NiFi ingest chain to ingest documents and can search for your documents in Find.
-
-> REMINDER: To stop (but not destroy) your IDOL deployment, run:
->
-> ```sh
-> /opt/idol/idol-containers-toolkit/basic-idol/deploy.sh stop
-> ```
+You are now familiar with key concepts of deploying Knowledge Discovery containers with modifications, including the key steps to extract, modify and apply Knowledge Discovery component configuration file changes.
 
 ## Next steps
 
-Explore some advanced IDOL configurations, in the [showcase section](../../README.md#showcase-lessons).
+Next, you are ready to ingest your data. Go to [Part IV](./PART_IV.md).

@@ -10,7 +10,7 @@
     {
       "id": "INITIAL",
       "pre": {
-        "response": "Welcome to IDOL Find chat!\nAsk me a question. I can access all your enterprise data to help you find an answer.",
+        "response": "Welcome to Find chat!\nAsk me a question. I can access all your enterprise data to help you find an answer.",
         "lua": "initialize_session"
       },
       "trigger": {

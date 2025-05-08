@@ -68,6 +68,7 @@ print('='*len(result_line))
 
 for file_path in report.keys():
   if len(report[file_path]) > 0:
+    print('')
     print('-'*len(file_path))
     print(file_path)
     print('-'*len(file_path))

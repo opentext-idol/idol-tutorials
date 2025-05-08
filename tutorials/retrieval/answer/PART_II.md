@@ -5,13 +5,13 @@ The **RAG** process combined a search (retrieval) engine with a large language m
 In this lesson, you will:
 
 - Install an LLM server and download a local model.
-- Configure IDOL Answer Server with a RAG system.
-- Ingest a sample document into IDOL Content.
-- Get answers from your document using IDOL Data Admin.
+- Configure Knowledge Discovery Answer Server with a RAG system.
+- Ingest a sample document into Knowledge Discovery Content.
+- Get answers from your document using Knowledge Discovery Data Admin.
 
 ---
 
-- [RAG (Retrieval Augmented Generation) with IDOL Answer Server](#rag-retrieval-augmented-generation-with-idol-answer-server)
+- [RAG (Retrieval Augmented Generation) with Knowledge Discovery Answer Server](#rag-retrieval-augmented-generation-with-knowledge-discovery-answer-server)
 - [LLM selection and hardware requirements](#llm-selection-and-hardware-requirements)
   - [What's in a name?](#whats-in-a-name)
 - [Local LLM setup](#local-llm-setup)
@@ -33,17 +33,17 @@ In this lesson, you will:
 
 ---
 
-## RAG (Retrieval Augmented Generation) with IDOL Answer Server
+## RAG (Retrieval Augmented Generation) with Knowledge Discovery Answer Server
 
-IDOL Answer Server's RAG system converts your question into a query to retrieve relevant documents. Selected text from these documents is then sent as "context" along with your question as a prompt to the external LLM. This allows the LLM to answer questions based on your data. IDOL Answer Server can then return the answer with reference documents for validation.
+Knowledge Discovery Answer Server's RAG system converts your question into a query to retrieve relevant documents. Selected text from these documents is then sent as "context" along with your question as a prompt to the external LLM. This allows the LLM to answer questions based on your data. Knowledge Discovery Answer Server can then return the answer with reference documents for validation.
 
 ```mermaid
 flowchart TB
 
 user(User)
 
-answer[IDOL Answer Server]
-content[(IDOL Content)]
+answer[Answer Server]
+content[(Content)]
 
 llm-svr["LLM Server (BYOM)"]
 
@@ -57,7 +57,9 @@ answer-- Question with context --> llm-svr
 llm-svr-- Answer -->answer
 ```
 
-IDOL Answer Server's RAG architecture is open to your LLM of choice ("Bring Your Own Model"), which can be hosted locally, or as a remote service.  Remote LLM services may incur a cost and could expose your data to third parties.  For this guide, we will set up a local system.
+Knowledge Discovery Answer Server's RAG architecture is open to your LLM of choice ("Bring Your Own Model"), which can be hosted locally, or as a remote service. Remote LLM services may incur a cost and could expose your data to third parties. For this guide, we will set up a local system.
+
+> NOTE: If you have a remote LLM Server already, you can skip to [Configure an Answer Server RAG system](#configure-an-answer-server-rag-system).
 
 ## LLM selection and hardware requirements
 
@@ -97,11 +99,11 @@ Create your (free) account here: <https://huggingface.co/join>:
 
 1. Give your token a memorable name and grant **Read** access. Save the token value somewhere safe, you will not be able to see it again.
 
-With this token you can download local models and supporting files to set up your system.  You will need:
+With this token you can download local models and supporting files to set up your system. You will need:
 
 1. a **model file** (the "LLM"), used to generate answers,
 1. a **model server**, which provides an API that lets you ask questions, and
-1. a **tokenizer**, used to determine the amount of contextual information (relevant text retrieved by IDOL) that can be passed to the LLM along with your question, and so enable you to get an answer based on your own data.
+1. a **tokenizer**, used to determine the amount of contextual information (relevant text retrieved by Knowledge Discovery) that can be passed to the LLM along with your question, and so enable you to get an answer based on your own data.
 
 ### Download an LLM
 
@@ -113,17 +115,17 @@ Download the model files directly from Hugging Face with the links below:
 
 ### Set up a local LLM server
 
-IDOL Answer's RAG system requires an HTTP server to provide a set of APIs that allow interaction with a downloaded LLM. There are a growing number of options available, many of which conveniently integrate with Hugging Face and can be deployed with Docker.
+Knowledge Discovery Answer's RAG system requires an HTTP server to provide a set of APIs that allow interaction with a downloaded LLM. There are a growing number of options available, many of which conveniently integrate with Hugging Face and can be deployed with Docker.
 
 For a quick and easy setup on your Windows laptop, follow [these steps](./LLM_SERVER.md) to install "LLaMA.cpp" as an example LLM server.
 
 > NOTE: [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) is the opensource engine behind the popular (and free for personal use) desktop application [LM Studio](https://lmstudio.ai/), which also has a [server mode](https://lmstudio.ai/docs/api/server).
-
-> NOTE: For production deployments, also consider using [vLLM](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html#deploying-with-docker). We won't use it here because vLLM does not currently support quantized LLMs.
+>
+> For production deployments, also consider using [vLLM](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html#deploying-with-docker). We won't use it here because vLLM does not currently support quantized LLMs.
 
 ### Download local tokenizer files
 
-IDOL Answer's RAG system requires a "tokenizer" in order to determine the amount of contextual information that can be passed to an LLM for question answering.
+Knowledge Discovery Answer's RAG system requires a "tokenizer" in order to determine the amount of contextual information that can be passed to an LLM for question answering.
 
 This project includes a helper script that will download the appropriate tokenizer for your LLM.
 
@@ -142,8 +144,8 @@ HUGGINGFACE_API_TOKEN = "<YOUR_TOKEN>"
 ```
 
 > NOTE: This tokenizer is common to the three models suggested above, so you only need to set this up once.
-
-> TIP: You noted down your Hugging Face token string earlier; it begins with `hf_`. This token is required by the `mistralai` project to access their tokenizer.
+>
+> You noted down your Hugging Face token string earlier; it begins with `hf_`. This token is required by the `mistralai` project to access their tokenizer.
 
 Install Python dependencies:
 
@@ -178,7 +180,7 @@ ValueError: Invalid token passed!
 
 Edit your Answer Server configuration file `/opt/idol/idol-containers-toolkit/data-admin/answerserver/answerserver.cfg`:
 
-1. Allow access to IDOL Admin from outside the container:
+1. Allow access to the admin interface from outside the container:
 
     ```diff
     [Service]
@@ -228,7 +230,7 @@ Edit your Answer Server configuration file `/opt/idol/idol-containers-toolkit/da
 
 Each LLM accepts a maximum prompt size (measured in tokens). For Llama 3.2 models, the upper limit is [128K tokens](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct). However, prompt processing accounts for a significant fraction of the LLM response time, so using the full available prompt size is not practical here.
 
-With IDOL Answer Server, this prompt size limit is managed using the `PromptTokenLimit` parameter.  With the same example question, varying this parameter has the following effect on response time:
+With Knowledge Discovery Answer Server, this prompt size limit is managed using the `PromptTokenLimit` parameter. With the same example question, varying this parameter has the following effect on response time:
 
 `PromptTokenLimit` | **Ask** response time / seconds
 --- | ---
@@ -238,17 +240,17 @@ With IDOL Answer Server, this prompt size limit is managed using the `PromptToke
 4000 | 19.6
 5000 | 27.5
 
-> TABLE: IDOL Answer Server **Ask** action response times (in seconds) for RAG with three LLMs.
+> TABLE: Knowledge Discovery Answer Server **Ask** action response times (in seconds) for RAG with three LLMs.
 
-To balance speed with usefulness, consider the rule-of-thumb that [100 tokens is approximately 75 words](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them). For example, setting this 2,000-token limit will allow IDOL Answer Server to provide up to roughly 1,500 words of relevant information to the LLM for RAG.
+To balance speed with usefulness, consider the rule-of-thumb that [100 tokens is approximately 75 words](https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them). For example, setting this 2,000-token limit will allow Knowledge Discovery Answer Server to provide up to roughly 1,500 words of relevant information to the LLM for RAG.
 
-To maximize the relevancy of a 1,500 word prompt, text is intelligently summarized from the best-matching documents in the IDOL Content index. Use the `ACIMaxResults` parameter to limit how many of those best-matching documents to use when building this summary prompt.
+To maximize the relevancy of a 1,500 word prompt, text is intelligently summarized from the best-matching documents in the Knowledge Discovery Content index. Use the `ACIMaxResults` parameter to limit how many of those best-matching documents to use when building this summary prompt.
 
 ### LLM interaction
 
 The above configuration references two external files:
 
-- `prompt_template.txt`: combines the users question and the text from relevant documents retrieved by IDOL into a single prompt for the LLM.
+- `prompt_template.txt`: combines the users question and the text from relevant documents retrieved by Knowledge Discovery into a single prompt for the LLM.
 - `llamacpp_server.py`: defines functions for Answer Server to call out to the LLaMA.cpp server you have set up.
 
 Both files are included in this tutorial repository. Copy them into your docker project in the same folder as your tokenizer files:
@@ -257,21 +259,28 @@ Both files are included in this tutorial repository. Copy them into your docker 
 /opt/idol/idol-containers-toolkit/data-admin/answerserver/rag/
 ```
 
+> NOTE: You are free to experiment with the prompt template file but note that:
+>
+> - the `{{context}}` and `{{question}}` placeholders are expected by Answer Server, and
+> - the `Question:` prefix is used by the included `.py` script to split the prompt correctly for use with the chat completions API call.
+>
+> If you are using an external LLM API service, you will need to review their documentation to modify this python script accordingly.
+
 The `.py` script expects properties from some environment variables to run. Add them to your docker environment with:
 
 1. Add the following lines to `/opt/idol/idol-containers-toolkit/data-admin/.env`:
 
     ```ini
-    # RAG System parameters for IDOL Answer Server
+    # RAG System parameters for Knowledge Discovery Answer Server
     IDOL_LLM_ENDPOINT=http://<YOUR_WSL_IP_ADDRESS>:8888/v1/chat/completions # llama.cpp server
     # IDOL_LLM_MODEL=/models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
     # IDOL_LLM_MODEL=/models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
     IDOL_LLM_MODEL=/models/Llama-3.2-1B-Instruct-Q4_K_M.gguf
     ```
 
-    > NOTE: You have already found your WSL (guest) IP address in the [WSL guide](../../introduction/containers/SETUP_WINDOWS_WSL.md#network-access), where the value shown was `172.18.109.25`.
-
-    > NOTE: Uncomment your preferred model from the three above for your first tests.  Ensure that this matches the model you have enabled in your LLM server.
+    > NOTE: You have already found your WSL (guest) IP address in the [WSL guide](../../introduction/containers/SETUP_UBUNTU_WSL.md#network-access), where the value shown was `172.18.109.25`.
+    >
+    > Uncomment your preferred model from the three above for your first tests. Ensure that this matches the model you have enabled in your LLM server.
 
 1. Add these new files and environment variables to your deployment by editing `/opt/idol/idol-containers-toolkit/data-admin/docker-compose.yml` as follows:
 
@@ -299,16 +308,16 @@ cd /opt/idol/idol-containers-toolkit/data-admin
 Check the logs to see the RAG system is created without errors:
 
 ```sh
-$ docker logs data-admin-idol-answerserver-1 -f
+$ ./deploy.sh logs -f idol-answerserver
 ...
-30/08/2024 08:33:36 [1] 30-Normal: Created answer system 'RAG' (type: rag)
+idol-answerserver-1  | 30/08/2024 08:33:36 [1] 30-Normal: Created answer system 'RAG' (type: rag)
 ```
 
 ## Get an answer from a sample document
 
 ### Index a sample document
 
-Open IDOL Admin for Content at <http://localhost:9100/action=admin#page/console/index> and do the following:
+Open the admin interface for Content at <http://localhost:9100/action=admin#page/console/index> and do the following:
 
 1. Under "Choose Data", select the "Text" radio button. For simplicity, add the existing sample document "Thought for the Day".
 
@@ -342,7 +351,7 @@ You can now retrieve your document with a query:
 
 ### Generate an answer from your documents
 
-Open IDOL Admin for Answer Server at <http://localhost:12000/action=admin#page/console/test-action> and do the following:
+Open the admin interface for Answer Server at <http://localhost:12000/action=admin#page/console/test-action> and do the following:
 
 1. Paste the following action:
 
@@ -368,7 +377,7 @@ Ensure that your LLM server is running and that your `.env` file correctly refer
 
 #### Under the hood with RAG
 
-When we run the Answer Server **Ask** action, you know that behind-the-scenes IDOL Content is being used to return relevant text as context for the LLM.
+When we run the Answer Server **Ask** action, you know that behind-the-scenes Knowledge Discovery Content is being used to return relevant text as context for the LLM.
 
 Let's see exactly how this works:
 
@@ -384,7 +393,7 @@ Let's see exactly how this works:
     managements responsibility
     ```
 
-1. a query action has sent to IDOL Content:
+1. a query action has sent to Knowledge Discovery Content:
 
     ```url
     action=query&text=managements responsibility&expandQuery=true
@@ -406,7 +415,7 @@ Let's see exactly how this works:
 
     > REMINDER: See [above](#considerations-for-prompt-size) for discussion on parameters affecting the prompt size.
 
-To see the IDOL Content query being run, try out one of *the most useful* IDOL component actions: [Get Request Log](http://idol-docker-host:9100/a=grl):
+To see the Knowledge Discovery Content query being run, try out one of *the most useful* Knowledge Discovery component actions: [Get Request Log](http://idol-docker-host:9100/a=grl):
 
 ![content-grl](./figs/content-grl.png)
 
@@ -414,13 +423,13 @@ From this view, you can click on any action to re-run it and view the response:
 
 ![content-query](./figs/content-query.png)
 
-This behind the scenes use of the powerful IDOL Content query is what provides the key to making use of your data with generative AI.
+This behind the scenes use of the powerful Knowledge Discovery Content query is what provides the key to making use of your data with generative AI.
 
 ### Ask questions in Data Admin
 
-To complete this lesson, now try to ask the same question from the IDOL Data Admin user interface.
+To complete this lesson, now try to ask the same question from the Knowledge Discovery Data Admin user interface.
 
-Log in again to IDOL Data Admin on <http://idol-docker-host:8080/>, with your new user, *e.g.* "idol".
+Log in again to Knowledge Discovery Data Admin on <http://idol-docker-host:8080/>, with your new user, *e.g.* "idol".
 
 From the **Search** page, try the same question "What is management's responsibility?"
 
@@ -428,12 +437,12 @@ From the **Search** page, try the same question "What is management's responsibi
 
 ## Conclusions
 
-You have created a generative-AI-enabled question answering system on your own laptop using IDOL Answer's RAG system.  You understand the chain of events from question to query to answer.
+You have created a generative-AI-enabled question answering system on your own laptop using Knowledge Discovery Answer's RAG system. You understand the chain of events from question to query to answer.
 
 ## Next step
 
-Extend this containerized deployment to add NiFi and index more data to interrogate with IDOL Answer Server.
+Extend this containerized deployment to add NiFi and index more data to interrogate with Knowledge Discovery Answer Server.
 
 Go to [Part III](./PART_III.md).
 
-Alternatively, explore other advanced IDOL configurations in the [showcase section](../../README.md#showcase-lessons).
+Alternatively, explore other advanced Knowledge Discovery configurations in the [showcase section](../../README.md#showcase-lessons).

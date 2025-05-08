@@ -11,7 +11,7 @@
 
 ## Install Docker Engine
 
-> NOTE: The following steps assume a Linux system using the `apt-get` package manager. For the `yum` package manager, see the [alternative yum steps](./DOCKER_LINUX_YUM.md). For other Linux systems, refer to the official guide <https://docs.docker.com/engine/install/>.
+> NOTE: The following steps assume a Linux system using the `apt-get` package manager. For other Linux systems, refer to the official guide <https://docs.docker.com/engine/install/>.
 
 To connect to the Docker repository, run the included `apt-source-docker.sh` script, which contains the lines:
 

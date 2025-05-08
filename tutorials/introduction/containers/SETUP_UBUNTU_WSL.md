@@ -97,7 +97,7 @@ $ ip route show | grep -i default | awk '{ print $3}'
 172.18.96.1
 ```
 
-Client apps running on WSL Ubuntu can communicate with servers running on Windows at this IP address.  Make a note of it.
+Client apps running on WSL Ubuntu can communicate with servers running on Windows at this IP address. Make a note of it.
 
 #### Access WSL guest from Windows host
 
@@ -113,7 +113,7 @@ Client apps running on Windows can communicate with servers running on WSL Ubunt
 For convenience, please set this IP address to a named host in your Windows `hosts` file. With administrator privileges, edit `C:\Windows\System32\drivers\etc\hosts` as follows:
 
 ```ini
-# IDOL Tutorial
+# Knowledge Discovery Tutorial
 172.18.109.25 idol-docker-host    # WSL
 ```
 

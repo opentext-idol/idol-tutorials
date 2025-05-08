@@ -1,6 +1,6 @@
-# Run IDOL License Server as a service
+# Run Knowledge Discovery License Server as a service
 
-In this tip, you can optionally set up IDOL License Server as a service under Windows or Linux.
+In this tip, you can optionally set up Knowledge Discovery License Server as a service under Windows or Linux.
 
 ---
 
@@ -22,8 +22,8 @@ In this tip, you can optionally set up IDOL License Server as a service under Wi
 On Windows, open Windows Command Prompt in administrator mode by right-clicking and selecting **Run as administrator**. Type the following commands:
 
 ```cmd
-> cd C:\OpenText\LicenseServer_24.4.0_WINDOWS_X86_64
-> licenseserver.exe -install -servicename OT_IDOL_License_Server -displayname "OpenText IDOL License Server 24.4.0"
+> cd C:\OpenText\LicenseServer_25.2.0_WINDOWS_X86_64
+> licenseserver.exe -install -servicename OT_KD_License_Server -displayname "OpenText Knowledge Discovery License Server 25.2.0"
 Successfully installed "licenseserver.exe" as a service.
 ```
 
@@ -36,7 +36,7 @@ Check the service is running. Click <http://localhost:20000/action=getversion> t
   <action>GETVERSION</action>
   <response>SUCCESS</response>
   <responsedata>
-    <autn:version>24.4.0</autn:version>
+    <autn:version>25.2.0</autn:version>
     ...
   </responsedata>
 </autnresponse>
@@ -47,11 +47,11 @@ Check the service is running. Click <http://localhost:20000/action=getversion> t
 To remove the service, run the following command in administrator mode:
 
 ```cmd
-> sc delete OT_IDOL_License_Server
+> sc delete OT_KD_License_Server
 [SC] DeleteService SUCCESS
 ```
 
-> NOTE: For more details on Windows service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_4/LicenseServer_24.4_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_WindowsServices.htm).
+> NOTE: For more details on Windows service setup for Knowledge Discovery components, see the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/LicenseServer_25.2_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_WindowsServices.htm).
 
 ## Linux
 
@@ -98,7 +98,7 @@ Check the service is running:
 
 ```sh
 $ sudo systemctl status licenseserver
-● licenseserver.service - IDOL License Server
+● licenseserver.service - Knowledge Discovery License Server
      Loaded: loaded (/lib/systemd/system/licenseserver.service; enabled; vendor preset: enabled)
      Active: active (running) since Tue 2024-08-20 14:44:43 UTC; 2s ago
    Main PID: 14542 (licenseserver.e)
@@ -108,7 +108,7 @@ $ sudo systemctl status licenseserver
      CGroup: /system.slice/licenseserver.service
              └─14542 /opt/idol/licenseserver/licenseserver.exe -configfile /opt/idol/licenseserver/licenseserver.cfg
 
-Aug 20 14:44:43 td-idol-enterprise systemd[1]: Started IDOL License Server.
+Aug 20 14:44:43 td-idol-enterprise systemd[1]: Started Knowledge Discovery License Server.
 ```
 
 Check License Server is contactable on port `20000`:
@@ -124,7 +124,7 @@ $ curl localhost:20000/a=getversion | xmllint --format -
   <response>SUCCESS</response>
 ```
 
-> NOTE: For more details on Linux service setup for IDOL components, see the [documentation](https://www.microfocus.com/documentation/idol/IDOL_24_4/LicenseServer_24.4_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_LinuxStartup.htm).
+> NOTE: For more details on Linux service setup for Knowledge Discovery components, see the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/LicenseServer_25.2_Documentation/Help/Content/Shared_Admin/Installation/_ADM_Install_LinuxStartup.htm).
 
 ---
 

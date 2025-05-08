@@ -1,27 +1,27 @@
 # PART III - Combine with NiFi ingest
 
-As previously noted, the out-of-the-box `data-admin` deployment does not contain a NiFi instance for document ingestion.  Adding that will enable you to index any files into your system and build your own great demos with IDOL Answer Server!
+As previously noted, the out-of-the-box `data-admin` deployment does not contain a NiFi instance for document ingestion. Adding that will enable you to index any files into your system and build your own great demos with Knowledge Discovery Answer Server!
 
 In this lesson, you will:
 
 - Combining elements you have already seen from `basic-idol` into this deployment.
 - Ingest more sample documents with NiFi.
-- Get answers from your new documents using IDOL Find.
+- Get answers from your new documents using Knowledge Discovery Find.
 
 ---
 
 - [Borrowing from `basic-idol`](#borrowing-from-basic-idol)
   - [Sample data folder](#sample-data-folder)
   - [NiFi container](#nifi-container)
-  - [IDOL Content configuration](#idol-content-configuration)
-  - [IDOL View Server configuration](#idol-view-server-configuration)
-  - [IDOL Find](#idol-find)
+  - [Knowledge Discovery Content configuration](#knowledge-discovery-content-configuration)
+  - [Knowledge Discovery View Server configuration](#knowledge-discovery-view-server-configuration)
+  - [Knowledge Discovery Find](#knowledge-discovery-find)
 - [Restart the modified `data-admin` deployment](#restart-the-modified-data-admin-deployment)
   - [Follow the ingestion](#follow-the-ingestion)
-  - [Confirm documents are indexed into IDOL Content](#confirm-documents-are-indexed-into-idol-content)
-- [Try IDOL Find for question answering](#try-idol-find-for-question-answering)
+  - [Confirm documents are indexed into Knowledge Discovery Content](#confirm-documents-are-indexed-into-knowledge-discovery-content)
+- [Try Knowledge Discovery Find for question answering](#try-knowledge-discovery-find-for-question-answering)
   - [Configure Find for question answering](#configure-find-for-question-answering)
-  - [Ask a question in IDOL Find](#ask-a-question-in-idol-find)
+  - [Ask a question in Knowledge Discovery Find](#ask-a-question-in-knowledge-discovery-find)
 - [Conclusions](#conclusions)
 - [Next step](#next-step)
 
@@ -33,9 +33,9 @@ In order to replicate the data ingestion and viewing set up from the previous le
 
 1. the sample data folder with our documents to be ingested,
 1. the NiFi container,
-1. the IDOL Content configuration file with our custom parametric field setup,
-1. the IDOL View Server configuration, using NiFi to retrieve documents, and
-1. the IDOL Find container with view configuration.
+1. the Knowledge Discovery Content configuration file with our custom parametric field setup,
+1. the Knowledge Discovery View Server configuration, using NiFi to retrieve documents, and
+1. the Knowledge Discovery Find container with view configuration.
 
 ### Sample data folder
 
@@ -64,7 +64,7 @@ Copy over the `nifi` configuration folder:
 cp -r ../basic-idol/nifi .
 ```
 
-Edit the IDOL Content hostname in `nifi/flow/basic.json`:
+Edit the Knowledge Discovery Content hostname in `nifi/flow/basic.json`:
 
 ```diff
 - "Host": "idol-content",
@@ -103,9 +103,9 @@ idol-nifi:
     - 11000:11000
 ```
 
-### IDOL Content configuration
+### Knowledge Discovery Content configuration
 
-In the previous lesson, we created a configuration file mount point to enable some edits.  Let's replicate that here.
+In the previous lesson, we created a configuration file mount point to enable some edits. Let's replicate that here.
 
 ```sh
 cp -r ../basic-idol/content/cfg passageextractor_content/
@@ -122,9 +122,9 @@ idol-passageextractor-content:
 +   - ./passageextractor_content/cfg:/content/cfg
 ```
 
-### IDOL View Server configuration
+### Knowledge Discovery View Server configuration
 
-In `docker-compose.yml`, remove the mounted IDOL View Server configuration to roll back to defaults:
+In `docker-compose.yml`, remove the mounted Knowledge Discovery View Server configuration to roll back to defaults:
 
 ```diff
 idol-dataadmin-viewserver:
@@ -136,7 +136,7 @@ idol-dataadmin-viewserver:
 -   - ./viewserver/startup_tasks.sh:/view/prestart_scripts/002_startup_tasks.sh
 ```
 
-Restart IDOL View Server and copy out the default configuration files.
+Restart Knowledge Discovery View Server and copy out the default configuration files.
 
 ```sh
 ./deploy.sh down idol-dataadmin-viewserver
@@ -144,7 +144,7 @@ Restart IDOL View Server and copy out the default configuration files.
 ```
 
 ```sh
-$ docker cp data-admin-idol-dataadmin-viewserver-1:/view/cfg viewserver/
+$ docker cp data-admin-idol-dataadmin-viewserver-1:/view/cfg ./viewserver/
 Successfully copied 11.8kB to /opt/idol/tutorial/idol-containers-toolkit/data-admin/viewserver/
 ```
 
@@ -174,14 +174,14 @@ Edit Agent Store and Document Store host details in your `viewserver/cfg/view.cf
 DocumentStorePort=9100
 ```
 
-Restart IDOL View Server:
+Restart Knowledge Discovery View Server:
 
 ```sh
 ./deploy.sh down idol-dataadmin-viewserver
 ./deploy.sh up -d
 ```
 
-### IDOL Find
+### Knowledge Discovery Find
 
 Copy over the sample data "hot folder" configuration:
 
@@ -189,7 +189,7 @@ Copy over the sample data "hot folder" configuration:
 cp -r ../basic-idol/find .
 ```
 
-Edit the IDOL server host names in `find/config_basic.json`:
+Edit the Knowledge Discovery server host names in `find/config_basic.json`:
 
 ```diff
 - "Host": "idol-community",
@@ -206,7 +206,7 @@ Edit the IDOL server host names in `find/config_basic.json`:
 + "Host": "idol-dataadmin-viewserver",
 ```
 
-Enable and configure IDOL AnswerServer:
+Enable and configure Knowledge Discovery AnswerServer:
 
 ```diff
 "answerServer" : {
@@ -249,7 +249,7 @@ idol-find:
 
 ## Restart the modified `data-admin` deployment
 
-Stop and destroy the existing IDOL Content instance:
+Stop and destroy the existing Knowledge Discovery Content instance:
 
 ```sh
 ./deploy.sh down idol-passageextractor-content
@@ -266,28 +266,28 @@ Launch the updated deployment script to start all the new containers:
 Monitor the NiFi startup logs with:
 
 ```sh
-docker logs data-admin-idol-nifi-1 -f
+./deploy.sh logs -f idol-nifi
 ```
 
 Open NiFi at <http://idol-docker-host:8001/nifi/> and note that the processors are automatically started.
 
-### Confirm documents are indexed into IDOL Content
+### Confirm documents are indexed into Knowledge Discovery Content
 
-Access IDOL Content via the IDOL Admin interface on <http://idol-docker-host:9100/a=admin>.
+Access Knowledge Discovery Content via the Knowledge Discovery Admin interface on <http://idol-docker-host:9100/a=admin>.
 
 To make your documents immediately searchable, trigger synchronization with the **Sync** command:
 
 ![content-sync](./figs/content-sync.png)
 
-## Try IDOL Find for question answering
+## Try Knowledge Discovery Find for question answering
 
-You have already seen how to use IDOL Data Admin for question answering but you can now also see how to connect IDOL Find to Answer Server to do the same thing.
+You have already seen how to use Knowledge Discovery Data Admin for question answering but you can now also see how to connect Knowledge Discovery Find to Answer Server to do the same thing.
 
 ### Configure Find for question answering
 
 Log in to Find on <http://idol-docker-host:8000/>. The default credentials are `admin` / `lLuJBjv38ADR`.
 
-> NOTE: This default password has been set up in IDOL Community by the start-up script `data-admin/community/poststart_tasks.sh`.
+> NOTE: This default password has been set up in Knowledge Discovery Community by the start-up script `data-admin/community/poststart_tasks.sh`.
 
 From the cog menu, select **Settings**:
 
@@ -303,7 +303,7 @@ Scroll down to fill in the **Answer Server** configuration as follows:
 
 Scroll up to click **Save changes** and then confirm.
 
-### Ask a question in IDOL Find
+### Ask a question in Knowledge Discovery Find
 
 From the top left hamburger menu, select **Search**:
 
@@ -323,8 +323,8 @@ With NiFi set up to index files into your Answer Server system, you now have the
 
 ## Next step
 
-Set up conversations with IDOL Answer Server to enable a chat-style interaction in IDOL Find.
+Set up conversations with Knowledge Discovery Answer Server to enable a chat-style interaction in Knowledge Discovery Find.
 
 Go to [Part IV](./PART_IV.md).
 
-Alternatively, explore other advanced IDOL configurations in the [showcase section](../../README.md#showcase-lessons).
+Alternatively, explore other advanced Knowledge Discovery configurations in the [showcase section](../../README.md#showcase-lessons).

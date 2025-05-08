@@ -1,18 +1,18 @@
 # Introduction
 
-An introduction to containerized IDOL deployments.
+An introduction to containerized Knowledge Discovery deployments.
 
-After completing this tutorial, you will have a working end-to-end system, from ingest with NiFi to search with IDOL Find.
+After completing this tutorial, you will have a working end-to-end system, from ingest with NiFi to search with Knowledge Discovery Find.
 
-## PART I - IDOL containers with Docker
+## PART I - Knowledge Discovery containers with Docker
 
-Set up your machine for Docker and download the IDOL Containers Toolkit.
+Set up your machine for Docker and download the Knowledge Discovery Containers Toolkit.
 
 Start [here](./PART_I.md).
 
 ## PART II - Configure and run the `basic-idol` deployment
 
-Re-configure IDOL License Server for remote access, and deploy your first end-to-end IDOL system.
+Re-configure Knowledge Discovery License Server for remote access, and deploy your first end-to-end Knowledge Discovery system.
 
 Start [here](./PART_II.md).
 
@@ -22,6 +22,12 @@ Make some targeted changes to your deployment and configuration files to ingest,
 
 Start [here](./PART_III.md).
 
+## PART IV - Ingest your documents for search
+
+With your Knowledge Discovery system now running and configured, you are finally ready to start ingesting data. Explore the indexed content with Knowledge Discovery Find.
+
+Start [here](./PART_IV.md).
+
 ## Next steps
 
-Explore some advanced IDOL configurations, in the [showcase section](../../README.md#showcase-lessons).
+Explore some advanced Knowledge Discovery configurations, in the [showcase section](../../README.md#showcase-lessons).
