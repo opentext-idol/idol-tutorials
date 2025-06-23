@@ -10,7 +10,7 @@ except:
   verbose = False
 
 def findDocsLinks(_text):
-  pattern = r'\!\[.*\]\((.*)\)'
+  pattern = r'!\[[^\]]*\]\((.*?)(?=\"|\))'
   match_list = []
   for match in re.findall(pattern, _text):
     match_list.append(match)

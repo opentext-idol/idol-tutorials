@@ -1,6 +1,6 @@
 # PART II - Answer questions with RAG
 
-The **RAG** process combined a search (retrieval) engine with a large language model (LLM) to generate answers from trusted documents in your system.
+The **RAG** process combined a search (retrieval) engine with a Large Language Model (LLM) to generate answers from trusted documents in your system.
 
 In this lesson, you will:
 

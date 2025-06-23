@@ -1,6 +1,6 @@
 # Set up an LLM server
 
-Set up [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) as an easy example of a local LLM Server, with optional GPU acceleration.
+Set up [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) as an easy example of a local LLM Server, with optional GPU acceleration.
 
 ---
 
@@ -37,7 +37,7 @@ Enter the following into your `docker-compose.yml` file:
 ```yml
 services:
   llamacpp-server:
-    image: ghcr.io/ggerganov/llama.cpp:server
+    image: ghcr.io/ggml-org/llama.cpp:server
     ports:
       - 8888:8080
     volumes:
@@ -51,7 +51,7 @@ services:
 
 > NOTE: Uncomment your preferred model from the three above for your first tests.
 >
-> For full information about "LLaMA.cpp" server, see the [documentation on GitHub](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md).
+> For full information about "LLaMA.cpp" server, see the [documentation on GitHub](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md).
 
 ## Start the LLM Server
 

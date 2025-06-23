@@ -1,6 +1,6 @@
 # Set up an LLM server with GPU acceleration
 
-Reconfigure the [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) server for GPU acceleration.
+Reconfigure the [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) server for GPU acceleration.
 
 ---
 
@@ -74,8 +74,8 @@ services:
 +         devices:
 +           - driver: nvidia
 +             capabilities: [gpu]
-+   image: ghcr.io/ggerganov/llama.cpp:server-cuda
--   image: ghcr.io/ggerganov/llama.cpp:server
+-   image: ghcr.io/ggml-org/llama.cpp:server
++   image: ghcr.io/ggml-org/llama.cpp:server-cuda
     ports:
       - 8888:8080
     volumes:

@@ -77,6 +77,8 @@ idol-nifi:
 -   - "/opt/nifi/scripts/basic-idol-entrypoint.sh"
 ```
 
+> TIP: With your NiFI configuration now outside the container, you can edit its configuration without the container running. Suggested changes are given in the [appendix](../../appendix/TIPS.md#nifi-settings).
+
 ## Mount the external state
 
 Finally, redeploy the Knowledge Discovery NiFi container to pick up these changes:

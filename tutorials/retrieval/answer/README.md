@@ -12,7 +12,7 @@ Start [here](./PART_I.md).
 
 ## PART II - Answer questions with RAG
 
-Set up **RAG** (Retrieval Augmented Generation), which uses a large language model (LLM) to generate answers by querying your Knowledge Discovery Content for relevant trusted documents.
+Set up **RAG** (Retrieval Augmented Generation), which uses a Large Language Model (LLM) to generate answers by querying your Knowledge Discovery Content for relevant trusted documents.
 
 Start [here](./PART_II.md).
 
@@ -24,13 +24,13 @@ Start [here](./PART_III.md).
 
 ## PART IV - Conversations
 
-Set up conversations with Knowledge Discovery Answer Server to enable a chat-style interaction.
+Set up conversations with Knowledge Discovery Answer Server to enable a chat-style interaction. With follow-up questions that preserve context, users can obtain more specific answers.
 
 Start [here](./PART_IV.md).
 
 ## PART V - Answer questions with Answer Bank
 
-Use Knowledge Discovery Data Admin to create and administer a trusted store of reference questions and answers.
+Use Knowledge Discovery Data Admin to create and administer a trusted store of curated answers, an intelligent FAQ.
 
 <!-- Start [here](./PART_V.md). -->
 

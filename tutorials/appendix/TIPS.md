@@ -5,6 +5,9 @@
 - [Command line response formatting](#command-line-response-formatting)
   - [XML formatting](#xml-formatting)
   - [JSON formatting](#json-formatting)
+- [NiFi settings](#nifi-settings)
+  - [Memory allocation](#memory-allocation)
+  - [Restarting](#restarting)
 - [End](#end)
 
 ---
@@ -91,6 +94,28 @@ Compare the output:
     }
   }
   ```
+
+## NiFi settings
+
+### Memory allocation
+
+Consider making the following change to `nifi/conf/bootstrap.conf`, to increase the maximum amount of system memory for Java:
+
+```diff
+- java.arg.3=-Xmx2048m
++ java.arg.3=-Xmx4096m
+```
+
+### Restarting
+
+Consider making the following change to `nifi/conf/nifi.properties`, so that NiFi does not automatically launch your processors on startup:
+
+```diff
+- nifi.flowcontroller.autoResumeState=true
++ nifi.flowcontroller.autoResumeState=false
+```
+
+This may be useful for debugging if something goes wrong.
 
 ---
 

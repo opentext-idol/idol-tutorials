@@ -18,6 +18,12 @@ Add the components for audio, image and video processing to your Knowledge Disco
 
 [Get started](./rich-media/README.md).
 
+## Vector search
+
+Generate embeddings for ingested files and perform vectorized queries. 
+
+[Get started](./vector-search/README.md).
+
 ## Next steps
 
 Explore some advanced Knowledge Discovery configurations, in the [showcase section](../README.md#showcase-lessons).

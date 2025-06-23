@@ -35,7 +35,7 @@ The following actions use the `docker` command to monitor all containers on your
     d6d30910bedd   microfocusidolserver/agentstore:25.2                  "./run_idol.sh"          27 hours ago   Up 27 hours (healthy)              0.0.0.0:9050-9052->9050-9052/tcp, :::9050-9052->9050-9052/tcp, 9100-9102/tcp                            basic-idol-idol-agentstore-1
     bf5613d92c70   microfocusidolserver/categorisation-agentstore:25.2   "./run_idol.sh"          27 hours ago   Up 27 hours (healthy)              9050-9052/tcp, 9100-9102/tcp, 9183/tcp, 0.0.0.0:9180-9182->9180-9182/tcp, :::9180-9182->9180-9182/tcp   basic-idol-idol-categorisation-agentstore-1
     6d7de1d2ea74   microfocusidolserver/content:25.2                     "./run_idol.sh"          27 hours ago   Up 27 hours (healthy)              0.0.0.0:9100-9102->9100-9102/tcp, :::9100-9102->9100-9102/tcp                                           basic-idol-idol-content-1
-    8e0fa448f356   ghcr.io/ggerganov/llama.cpp:server                    "/llama-server"          2 weeks ago    Up 12 seconds (health: starting)   0.0.0.0:8888->8080/tcp, :::8888->8080/tcp                                                               llama-llamacpp-server-1
+    8e0fa448f356   ghcr.io/ggml-org/llama.cpp:server                    "/llama-server"          2 weeks ago    Up 12 seconds (health: starting)   0.0.0.0:8888->8080/tcp, :::8888->8080/tcp                                                               llama-llamacpp-server-1
     ```
 
 - See which container services are running in your project:
@@ -44,7 +44,7 @@ The following actions use the `docker` command to monitor all containers on your
     $ cd /opt/idol/llama
     $ ./deploy.sh ps
     NAME                      IMAGE                                COMMAND           SERVICE           CREATED       STATUS                             PORTS
-    llama-llamacpp-server-1   ghcr.io/ggerganov/llama.cpp:server   "/llama-server"   llamacpp-server   2 weeks ago   Up 17 seconds (health: starting)   0.0.0.0:8888->8080/tcp, :::8888->8080/tcp
+    llama-llamacpp-server-1   ghcr.io/ggml-org/llama.cpp:server   "/llama-server"   llamacpp-server   2 weeks ago   Up 17 seconds (health: starting)   0.0.0.0:8888->8080/tcp, :::8888->8080/tcp
     ```
 
 ### Monitor hardware usage per container

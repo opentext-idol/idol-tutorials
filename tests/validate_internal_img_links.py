@@ -36,6 +36,7 @@ for dir_path, dir_names, file_names in os.walk(".."):
     with open(file_path, 'r', encoding='utf8') as md_file:
       for link in findDocsLinks(md_file.read()):
         if link.startswith("http"): continue
+        if link == "path/to/image.ext": continue
         
         count += 1
 
