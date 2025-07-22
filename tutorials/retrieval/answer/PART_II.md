@@ -119,7 +119,7 @@ Knowledge Discovery Answer's RAG system requires an HTTP server to provide a set
 
 For a quick and easy setup on your Windows laptop, follow [these steps](./LLM_SERVER.md) to install "LLaMA.cpp" as an example LLM server.
 
-> NOTE: [LLaMA.cpp](https://github.com/ggerganov/llama.cpp) is the opensource engine behind the popular (and free for personal use) desktop application [LM Studio](https://lmstudio.ai/), which also has a [server mode](https://lmstudio.ai/docs/api/server).
+> NOTE: [LLaMA.cpp](https://github.com/ggml-org/llama.cpp) is the opensource engine behind the popular (and free for personal use) desktop application [LM Studio](https://lmstudio.ai/), which also has a [server mode](https://lmstudio.ai/docs/api/server).
 >
 > For production deployments, also consider using [vLLM](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html#deploying-with-docker). We won't use it here because vLLM does not currently support quantized LLMs.
 
