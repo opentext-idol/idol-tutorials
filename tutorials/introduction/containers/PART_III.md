@@ -185,7 +185,7 @@ When you mount a disk for ingest with the FileSystem Connector, depending on you
     ```diff
     idol-nifi:
       <<: *common-server
-      image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose > nifi-minimal or nifi-full
+      image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
       environment:
     +   - LANG=C.UTF-8
     +   - LC_ALL=C.UTF-8

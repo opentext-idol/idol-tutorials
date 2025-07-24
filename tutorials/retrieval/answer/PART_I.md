@@ -24,7 +24,7 @@ In this lesson, you will:
 
 ## Answer system types
 
-Knowledge Discovery Answer Server has five types of system, supporting different question types.
+Knowledge Discovery Answer Server has multiple answering-system types, providing complementary ways to support a range of questions.  In the following tutorial, we will make use of the following systems:
 
 1. **Answer Bank** is a trusted store of reference questions and answers, which you can add and administer. Use Answer Bank for answers to questions such as:
 
@@ -36,11 +36,9 @@ Knowledge Discovery Answer Server has five types of system, supporting different
    - What is the population of the USA?
    - What is the average June temperature in Antarctica?
 
-1. **Passage Extractor** links to a store of trusted documents that contain information that might be useful for answering questions, *i.e.* your Knowledge Discovery Content index. When no trusted answer can be found from Answer Bank or Fact Bank, the Passage Extractor queries Knowledge Discovery Content for relevant documents. It attempts to extract short sentences or paragraphs that contain pertinent answers. Use a Passage Extractor to answer general questions.
+1. **RAG** (Retrieval Augmented Generation) uses a Large Language Model (LLM) to generate answers from trusted documents in your system. When a user asks a question, the RAG module queries Knowledge Discovery Content for relevant documents. It provides the original question and relevant content from these candidate documents in a prompt to an external LLM, which generates the answer.
 
-1. **RAG** (Retrieval Augmented Generation) uses a large language model (LLM) to generate answers from trusted documents in your system. When a user asks a question, the RAG module queries Knowledge Discovery Content for relevant documents. It provides the original question and relevant content from these candidate documents in a prompt to an external LLM, which generates the answer.
-
-    > NOTE: The RAG system performs an equivalent "fallback" function to **Passage Extraction** and may offer better results depending on the LLM you choose. It may also require GPU to run in good time.
+    > NOTE: The RAG system is considered a replacement for the **Passage Extraction** and  **Passage Extraction LLM** and may offer better results depending on the LLM you choose.  All three methods can provide a "fallback" function where a curated answer is not available from Answer Bank or Fact Bank.
 
 1. **Conversation** maintains context across multiple questions, allowing you to set up an interactive virtual assistant.
 
@@ -115,15 +113,33 @@ Make the following changes:
 
     > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_UBUNTU_WSL.md#access-windows-host-from-wsl-guest).
 
-1. Set the target Knowledge Discovery container versions in the same `.env` file. The latest Knowledge Discovery release is 25.2.
+1. The same `.env` file is used to specify the Knowledge Discovery version(s).  Use the latest, currently 25.2, for the server and add a specific version for the Data Admin user interface, as follows:
 
-    ```diff
+    ```ini
     # Version of Knowledge Discovery images to use
-    - IDOL_SERVER_VERSION=25.1
-    + IDOL_SERVER_VERSION=25.2
+    IDOL_SERVER_VERSION=25.2
+    IDOL_DATA_ADMIN_VERSION=24.3
     ```
 
     > NOTE: If you upgrade in the future, you must ensure that the version of your external Knowledge Discovery License Server matches the version of your containers.
+
+1. Edit the file `basic-idol/docker-compose.yml` to change the referenced parameter for `idol-dataadmin`:
+
+    ```diff
+    idol-dataadmin:
+    - image: ${IDOL_REGISTRY}/find:${IDOL_SERVER_VERSION}
+    + image: ${IDOL_REGISTRY}/find:${IDOL_DATA_ADMIN_VERSION}
+    ```
+
+1. Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images.  Edit the file `basic-idol/docker-compose.yml` to select your preferred version:
+
+    ```diff
+    idol-nifi:
+    - image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose nifi-minimal or nifi-full
+    + image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
+    ```
+
+    > NOTE: To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
 
 ### Deploy
 

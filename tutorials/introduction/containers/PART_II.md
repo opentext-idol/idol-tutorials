@@ -138,7 +138,7 @@ code .
 
 Make the following changes:
 
-- Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set the IP address of your Knowledge Discovery License Server. For example:
+1. Edit the `.env` file in `/opt/idol/idol-containers-toolkit/basic-idol` to set the IP address of your Knowledge Discovery License Server. For example:
 
     ```diff
     # External licenserver host
@@ -146,9 +146,9 @@ Make the following changes:
     + LICENSESERVER_IP=172.18.96.1
     ```
 
-    > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](./SETUP_UBUNTU_WSL.md#network-access).
+    > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_UBUNTU_WSL.md#access-windows-host-from-wsl-guest).
 
-- Check the target Knowledge Discovery version. The same `.env` file is used to specify the Knowledge Discovery version, currently 25.2:
+1. Check the target Knowledge Discovery version. The same `.env` file is used to specify the Knowledge Discovery version, currently 25.2:
 
     ```ini
     # Version of Knowledge Discovery images to use
@@ -156,6 +156,16 @@ Make the following changes:
     ```
 
     > NOTE: If you upgrade in the future, you must ensure that the version of your external Knowledge Discovery License Server matches the version of your containers.
+
+1. Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images.  Edit the file `basic-idol/docker-compose.yml` to select your preferred version:
+
+    ```diff
+    idol-nifi:
+    - image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose nifi-minimal or nifi-full
+    + image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
+    ```
+
+    > NOTE: To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
 
 ### Deploy
 

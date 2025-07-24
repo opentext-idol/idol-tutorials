@@ -272,4 +272,4 @@ You now understand how to license and run Knowledge Discovery Content and the ba
 
 Check out the [News Spectrum](http://news-spectrum.com/) demo, which uses Knowledge Discovery's query summary to help you review key topics and trends in world news.
 
-Try the next tutorial, which introduces containerized deployment for easy multi-component installation [here](../containers/README.md).
+Try the [next tutorial](../containers/README.md), which introduces containerized deployment for easy multi-component installation.

@@ -75,7 +75,7 @@ Add the following service to your `docker-compose.yml` file:
 
 ```yml
 idol-nifi:
-  image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION}
+  image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
   extra_hosts: *external-licenseserver-host
   shm_size: 256m
   environment:

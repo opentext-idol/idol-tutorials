@@ -45,22 +45,22 @@ Updating your target Knowledge Discovery containers, is as simple as changing th
 
 ### Mixed version environment
 
-If you wish to deploy a mixed version system, *e.g.* to use a specific version of Find, you can:
+If you wish to deploy a mixed version system, *e.g.* to use a specific version of Data Admin, you can:
 
 - Add a new parameter to the `.env` file:
   
     ```diff
-    # Version of Knowledge Discovery images to use
-    IDOL_SERVER_VERSION=25.2
-    +IDOL_UI_VERSION=25.2
+      # Version of Knowledge Discovery images to use
+      IDOL_SERVER_VERSION=25.2
+    + IDOL_DATA_ADMIN_VERSION=24.3
     ```
 
 - Change the referenced parameter in your `docker-compose.yml` file:
 
     ```diff
-    idol-find:
-    -  image: ${IDOL_REGISTRY}/find:${IDOL_SERVER_VERSION}
-    + image: ${IDOL_REGISTRY}/find:${IDOL_UI_VERSION}
+    idol-dataadmin:
+    - image: ${IDOL_REGISTRY}/dataadmin:${IDOL_SERVER_VERSION}
+    + image: ${IDOL_REGISTRY}/dataadmin:${IDOL_DATA_ADMIN_VERSION}
     ```
 
 ## Persisting state before the upgrade

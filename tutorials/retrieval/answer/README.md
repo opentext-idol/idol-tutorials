@@ -8,31 +8,29 @@ After completing this tutorial, you will have a working end-to-end question answ
 
 Explore and deploy an end-to-end question-answering Knowledge Discovery system.
 
-Start [here](./PART_I.md).
+Start [Part I](./PART_I.md).
 
 ## PART II - Answer questions with RAG
 
 Set up **RAG** (Retrieval Augmented Generation), which uses a Large Language Model (LLM) to generate answers by querying your Knowledge Discovery Content for relevant trusted documents.
 
-Start [here](./PART_II.md).
+Start [Part II](./PART_II.md).
 
 ## PART III - Combine with NiFi ingest
 
 Extend this containerized deployment to add NiFi and index more data to interrogate with Knowledge Discovery Answer Server.
 
-Start [here](./PART_III.md).
+Start [Part III](./PART_III.md).
 
 ## PART IV - Conversations
 
 Set up conversations with Knowledge Discovery Answer Server to enable a chat-style interaction. With follow-up questions that preserve context, users can obtain more specific answers.
 
-Start [here](./PART_IV.md).
+Start [Part IV](./PART_IV.md).
 
 ## PART V - Answer questions with Answer Bank
 
 Use Knowledge Discovery Data Admin to create and administer a trusted store of curated answers, an intelligent FAQ.
-
-<!-- Start [here](./PART_V.md). -->
 
 > COMING SOON!
 

@@ -43,7 +43,7 @@ To use Knowledge Discovery software, you must have an active entitlement with th
 
 Knowledge Discovery software can be installed on Windows, Linux, on-prem, in the cloud, and in containers.
 
-The easiest option for most people trying Knowledge Discovery for the first time is to use a Windows laptop. So, these tutorials assume that is what you are using.
+Most people trying Knowledge Discovery for the first time will have access to a Windows laptop, so these tutorials assume that is what you are using.
 
 > NOTE: For Linux users, there will be notes like this along the way for relevant changes.
 
@@ -51,20 +51,20 @@ Your Windows laptop will need at least the following spare capacity:
 
 - 4 CPU cores, 8 GB RAM and 50 GB disk.
 
+> NOTE: Sizing Knowledge Discovery for your own production tasks depends greatly on your use case. Please discuss your needs with your OpenText account manager.
+
 For Windows users, you must be running Windows 11, or Windows 10 (Build 19041 or higher).
 
 You will also need:
 
-- A text editor.
 - Administrator privileges to install software.
-
-> NOTE: Sizing Knowledge Discovery for your own production tasks depends greatly on your use case. Please discuss your needs with your OpenText account manager.
+- A text editor, for example [VS Code](https://code.visualstudio.com/download).
 
 ## Introduction
 
 A Knowledge Discovery system collects your source content, using analytics to build an index of useful data that you can search and analyze.
 
-![idol-workflow](./figs/idol-workflow.png)
+![idol-workflow](./figs/kd-workflow.png)
 
 This introduction is in two parts, first a *native* installation of two essential Knowledge Discovery components on your Windows machine, then second an end-to-end containerized deployment using Docker.
 

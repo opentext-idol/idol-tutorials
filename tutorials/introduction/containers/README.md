@@ -8,25 +8,25 @@ After completing this tutorial, you will have a working end-to-end system, from 
 
 Set up your machine for Docker and download the Knowledge Discovery Containers Toolkit.
 
-Start [here](./PART_I.md).
+Start [Part I](./PART_I.md).
 
 ## PART II - Configure and run the `basic-idol` deployment
 
 Re-configure Knowledge Discovery License Server for remote access, and deploy your first end-to-end Knowledge Discovery system.
 
-Start [here](./PART_II.md).
+Start [Part II](./PART_II.md).
 
 ## PART III - Modify the deployment for your data
 
 Make some targeted changes to your deployment and configuration files to ingest, enrich and search against a set of sample enterprise documents.
 
-Start [here](./PART_III.md).
+Start [Part III](./PART_III.md).
 
 ## PART IV - Ingest your documents for search
 
 With your Knowledge Discovery system now running and configured, you are finally ready to start ingesting data. Explore the indexed content with Knowledge Discovery Find.
 
-Start [here](./PART_IV.md).
+Start [Part IV](./PART_IV.md).
 
 ## Next steps
 
