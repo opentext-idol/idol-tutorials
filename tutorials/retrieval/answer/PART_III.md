@@ -94,6 +94,8 @@ idol-nifi:
     - "/opt/nifi/scripts/basic-idol-entrypoint.sh"
 ```
 
+> NOTE: Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images. To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
+
 Add the following service to your `docker-compose.expose-ports.yml` file:
 
 ```yml

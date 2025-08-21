@@ -131,16 +131,6 @@ Make the following changes:
     + image: ${IDOL_REGISTRY}/find:${IDOL_DATA_ADMIN_VERSION}
     ```
 
-1. Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images.  Edit the file `data-admin/docker-compose.yml` to select your preferred version:
-
-    ```diff
-    idol-nifi:
-    - image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose nifi-minimal or nifi-full
-    + image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
-    ```
-
-    > NOTE: To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
-
 ### Deploy
 
 To launch the system, navigate to the project folder:

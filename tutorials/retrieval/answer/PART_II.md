@@ -149,17 +149,31 @@ HUGGINGFACE_API_TOKEN = "<YOUR_TOKEN>"
 
 Install Python dependencies:
 
-```sh
-sudo apt install python3-pip
-pip install transformers sentencepiece protobuf
-```
+- Go to the `rag` directory:
+  
+    ```sh
+    cd /opt/idol/idol-containers-toolkit/data-admin/answerserver/rag
+    ```
 
-Run the included script:
+- Create a virtual environment:
 
-```sh
-cd/opt/idol/idol-containers-toolkit/data-admin/answerserver/rag
-python3 download_tokenizer_files.py
-```
+    ```sh
+    sudo apt install python3.12-venv
+    python3 -m venv idol-answer-env
+    source idol-answer-env/bin/activate
+    ```
+
+- Install dependencies:
+
+    ```sh
+    pip install transformers sentencepiece protobuf
+    ```
+
+- Run the included script:
+
+    ```sh
+    python3 download_tokenizer_files.py
+    ```
 
 This should produce a folder called `tokenizer_cache`, with the following contents:
 
@@ -167,6 +181,8 @@ This should produce a folder called `tokenizer_cache`, with the following conten
 $ ls tokenizer_cache/
 special_tokens_map.json  tokenizer.json  tokenizer.model  tokenizer_config.json
 ```
+
+> NOTE: To deactivate your virtual environment, run `deactivate`.  To reactivate, return to the folder `/opt/idol/idol-containers-toolkit/data-admin/answerserver/rag` and run `source idol-answer-env/bin/activate`.
 
 #### Possible errors
 
