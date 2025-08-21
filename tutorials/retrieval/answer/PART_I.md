@@ -123,7 +123,7 @@ Make the following changes:
 
     > NOTE: If you upgrade in the future, you must ensure that the version of your external Knowledge Discovery License Server matches the version of your containers.
 
-1. Edit the file `basic-idol/docker-compose.yml` to change the referenced parameter for `idol-dataadmin`:
+1. Edit the file `data-admin/docker-compose.yml` to change the referenced parameter for `idol-dataadmin`:
 
     ```diff
     idol-dataadmin:
@@ -131,7 +131,7 @@ Make the following changes:
     + image: ${IDOL_REGISTRY}/find:${IDOL_DATA_ADMIN_VERSION}
     ```
 
-1. Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images.  Edit the file `basic-idol/docker-compose.yml` to select your preferred version:
+1. Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images.  Edit the file `data-admin/docker-compose.yml` to select your preferred version:
 
     ```diff
     idol-nifi:
