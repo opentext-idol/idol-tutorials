@@ -12,7 +12,8 @@ This guide assumes you have already familiarized yourself with Knowledge Discove
 
 ---
 
-- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+  - [Create `rich-media` container](#create-rich-media-container)
 - [Installation](#installation)
 - [Configure processing in NiFi](#configure-processing-in-nifi)
   - [Create a rich media processing group](#create-a-rich-media-processing-group)
@@ -33,9 +34,29 @@ This guide assumes you have already familiarized yourself with Knowledge Discove
 
 ---
 
-## Prerequisites
+## Setup
 
-This guide assumes you have completed the [preserve NiFi state tutorial](../preserve-state/README.md). We will use the `basic-idol` deployment, as an example starting point.
+This guide assumes you have completed the [preserve NiFi state tutorial](../preserve-state/README.md). We will use the `basic-idol` deployment as an example starting point.
+
+> NOTE: Before continuing, ensure that all other tutorial instances, including `basic-idol` are shut down.
+
+### Create `rich-media` container
+
+We will be modifying the `basic-idol` deployment for this tutorial. To begin, make a copy of your `basic-idol` directory and rename it `rich-media`:
+
+```sh
+cp -r /opt/idol/idol-containers-toolkit/basic-idol /opt/idol/idol-containers-toolkit/rich-media
+```
+
+Change the name of this new container in `rich-media/docker.compose.yml`:
+
+```diff
+  x-common-labels: &common-labels
+- docker-compose/instance: ${INSTANCE:-basic-idol}
++ docker-compose/instance: ${INSTANCE:-rich-media}
+
+  x-common-server: &common-server
+```
 
 ## Installation
 
@@ -46,7 +67,7 @@ To obtain install media for rich media processing in NiFi, follow the steps show
 Extract the downloaded package:
 
 ```sh
-$ cd /opt/idol/idol-containers-toolkit/basic-idol
+$ cd /opt/idol/idol-containers-toolkit/rich-media
 $ unzip /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.2.0_LINUX_X86_64.zip -d ./temp
 Archive:  /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.2.0_LINUX_X86_64.zip
    creating: ./temp/NiFiMediaServer_25.2.0_LINUX_X86_64/
@@ -331,7 +352,7 @@ With your "AnalyzeMedia" processor stopped, open its configuration screen and in
 
 You have now practiced how to add additional Knowledge Discovery packages to NiFi and how to use processor groups to compartmentalize functionality.
 
-By adding KeyView file type detection and Knowledge Discovery media processing, you have enhanced the `basic-idol` to perform OCR on image files.
+By adding KeyView file type detection and Knowledge Discovery media processing, you have enhanced the `basic-idol` flow to perform OCR on image files.
 
 ## Next steps
 

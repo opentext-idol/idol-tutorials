@@ -127,11 +127,13 @@ Make the following changes:
 
     ```diff
     idol-dataadmin:
-    - image: ${IDOL_REGISTRY}/find:${IDOL_SERVER_VERSION}
-    + image: ${IDOL_REGISTRY}/find:${IDOL_DATA_ADMIN_VERSION}
+    - image: ${IDOL_REGISTRY}/dataadmin:${IDOL_SERVER_VERSION}
+    + image: ${IDOL_REGISTRY}/dataadmin:${IDOL_DATA_ADMIN_VERSION}
     ```
 
 ### Deploy
+
+> NOTE: Before deploying, ensure that all other tutorial instances, *e.g.* `basic-idol` are shut down.
 
 To launch the system, navigate to the project folder:
 

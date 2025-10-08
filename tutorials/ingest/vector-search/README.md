@@ -34,6 +34,8 @@ This guide assumes you have already familiarized yourself with Knowledge Discove
 
 This guide assumes you have used the `basic-idol` deployment. We will also be reusing one component from the `data-admin` deployment.
 
+> NOTE: Before continuing, ensure that all other tutorial instances, *e.g.* `basic-idol` are shut down.
+
 ### Create `vector-search` container
 
 We will be modifying the `basic-idol` deployment for this tutorial. To begin, make a copy of your `basic-idol` directory and rename it `vector-search`:
