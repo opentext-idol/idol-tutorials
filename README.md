@@ -15,16 +15,6 @@ Anyone with access to Knowledge Discovery software who wants to build enterprise
 - You can select from walkthroughs showcasing features and functions of the Knowledge Discovery platform.
 - You will become a confident Knowledge Discovery user, able to design your own solutions to meet customer requirements.
 
-## Obtaining tutorial materials
-
-Get a local copy of this tutorial to give you all the configuration files and sample media you will need. You can either clone this repository or download the `.zip` from [GitHub](https://github.com/opentext-idol/idol-tutorials).
-
-![github-download](./figs/github-download.png)
-
-The examples in this tutorial assume you store these materials under `C:\OpenText`. File paths and other resources are currently documented for Windows, but other supported platforms (for example, Linux) will work with appropriate modifications.
-
-You can stay on GitHub to follow the steps in this and further linked README files in your browser or, if you prefer to work with the downloaded files, see [these steps](./tutorials/appendix/MARKDOWN_READER.md) for some convenient offline reading options.
-
 ## Get started
 
 The tutorials start [here](./tutorials/README.md).

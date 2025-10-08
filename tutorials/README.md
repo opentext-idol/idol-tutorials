@@ -8,6 +8,8 @@ These tutorials are intended as a step-by-step guide to walk you through common 
 
 - [Taster](#taster)
 - [Getting started](#getting-started)
+  - [Obtaining tutorial materials](#obtaining-tutorial-materials)
+    - [Following this guide offline](#following-this-guide-offline)
   - [Software access](#software-access)
   - [System requirements](#system-requirements)
 - [Introduction](#introduction)
@@ -35,6 +37,18 @@ A quick first look at a Knowledge Discovery system. Watch a demonstration video 
 
 ## Getting started
 
+### Obtaining tutorial materials
+
+Get a local copy of this tutorial to give you all the configuration files and sample media you will need.  You can either clone this repository or download the `.zip` from [GitHub](https://github.com/opentext-idol/idol-tutorials).
+
+![github-download](./figs/github-download.png)
+
+In the following tutorials, we will assume these materials are stored under `C:\OpenText`.
+
+#### Following this guide offline
+
+You can stay on GitHub to follow the steps in this and further linked README files in your browser or, if you prefer to work with the downloaded files, see [these steps](./appendix/Markdown_reader.md) for some convenient offline reading options.
+
 ### Software access
 
 To use Knowledge Discovery software, you must have an active entitlement with the [Software Licensing and Downloads](https://sld.microfocus.com/mysoftware/index) portal.
@@ -45,7 +59,7 @@ Knowledge Discovery software can be installed on Windows, Linux, on-prem, in the
 
 Most people trying Knowledge Discovery for the first time will have access to a Windows laptop, so these tutorials assume that is what you are using.
 
-> NOTE: For Linux users, there will be notes like this along the way for relevant changes.
+> NOTE: For Linux users, there will be notes along the way for relevant changes.
 
 Your Windows laptop will need at least the following spare capacity:
 
