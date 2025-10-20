@@ -20,7 +20,7 @@ Add the components for audio, image and video processing to your Knowledge Disco
 
 ## Vector search
 
-Generate embeddings for ingested files and perform vectorized queries. 
+Generate embeddings for ingested files and perform vectorized queries.
 
 [Get started](./vector-search/README.md).
 

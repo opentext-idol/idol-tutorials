@@ -61,6 +61,7 @@ docker compose \
 Copy over the `nifi` configuration folder:
 
 ```sh
+cd /opt/idol/idol-containers-toolkit/data-admin
 cp -r ../basic-idol/nifi .
 ```
 
@@ -110,6 +111,7 @@ idol-nifi:
 In the previous lesson, we created a configuration file mount point to enable some edits. Let's replicate that here.
 
 ```sh
+cd /opt/idol/idol-containers-toolkit/data-admin
 cp -r ../basic-idol/content/cfg passageextractor_content/
 ```
 
@@ -185,13 +187,14 @@ Restart Knowledge Discovery View Server:
 
 ### Knowledge Discovery Find
 
-Copy over the sample data "hot folder" configuration:
+Copy over the `find` configuration folder:
 
 ```sh
+cd /opt/idol/idol-containers-toolkit/data-admin
 cp -r ../basic-idol/find .
 ```
 
-Edit the Knowledge Discovery server host names in `find/config_basic.json`:
+Edit the Knowledge Discovery server host names in `find/home/config_basic.json`:
 
 ```diff
 - "Host": "idol-community",
@@ -234,7 +237,7 @@ idol-find:
   environment:
     - IDOL_UI_CFG=config_basic.json # this controls the configuration of Find
   volumes:
-    - ./find/config_basic.json:/opt/find/home/config_basic.json:ro # this mounts an external cfg file
+    - ./find/home/config_basic.json:/opt/find/home/config_basic.json:ro # this mounts an external cfg file
   depends_on:
     - idol-answerserver
     - idol-dataadmin-community
