@@ -4,6 +4,8 @@ An introduction to containerized Knowledge Discovery deployments.
 
 After completing this tutorial, you will have a working end-to-end system, from ingest with NiFi to search with Knowledge Discovery Find.
 
+> NOTE: Official Knowledge Discovery software containers are distributed in a Docker repository. A personal key is required to access them. To request a key, contact OpenText support from the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index). Alternatively contact your OpenText Account Executive or Partner Manager.
+
 ## PART I - Knowledge Discovery containers with Docker
 
 Set up your machine for Docker and download the Knowledge Discovery Containers Toolkit.
