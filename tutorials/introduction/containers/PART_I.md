@@ -91,7 +91,7 @@ Before pulling changes to your local system, always ensure you have committed yo
 
 ### Log in to the Knowledge Discovery Docker repository
 
-Official Knowledge Discovery software containers are distributed in a Docker repository. A personal key is required to access them. To request a key, contact OpenText support from the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index).
+Official Knowledge Discovery software containers are distributed in a Docker repository. A personal key is required to access them. To request a key, contact OpenText support from the [Software Entitlements Portal](https://sld.microfocus.com/mysoftware/index). Alternatively contact your OpenText Account Executive or Partner Manager.
 
 Store your API key in a text file in your Linux home directory, for example `idol_docker_key.txt`, then log in with:
 
