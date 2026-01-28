@@ -116,31 +116,6 @@ Use Knowledge Discovery processors with Apache NiFi to do more with your data. C
 
 Get started with new [ingest flows](./ingest/README.md).
 
-<!-- 
-- [NiFi Process Groups](./ingestion/nifi-process-group/README.md)
-- [NiFi Ingest Showcase Examples](./ingestion/nifi-ingest-showcases/README.md)
-
-Connectors - Discuss multiple sources and show examples for:
-- [ ] xECM ingest
-- [ ] Documentum ingest
-- [ ] Dropbox ingest
-- [ ] Twitter ingest - stream and channel
-- [ ] Web ingest - Wookiepedia - <https://starwars.fandom.com/wiki/Main_Page> or <https://starwars.fandom.com/wiki/Special:Random>
-    - Grab Categories, title, long_title, content (in sections) and dates (created, last updated?)
-- [ ] ODBC ingest (Filr?)
-
-Within the above, showcase some enrichment tasks
-- [ ] Processor groups
-- [ ] KeyView extract and filter, route on filetype.
-- [ ] Eduction:
-    - Grab names from a document in NiFi
-      - Point to all available grammar packages
-    - Create a custom grammar
-      - quotes, build to solution for Don
-    - Use the custom grammar in NiFi
-- [x] OCR, with analyze media
- -->
-
 ### Investigate
 
 Install and run Discover, the new investigative application that combines Knowledge Discovery's search and entity enrichment with a graph database to help you do more with your data.
@@ -161,7 +136,7 @@ Knowledge Discovery servers and components can be embedded in your third-party a
 
 ### Useful links
 
-- Read more tips on working with Knowledge Discovery products in the [Expert](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/expert/Content/IDOLExpert_Welcome.htm) documentation.
-- For details of the latest changes to Knowledge Discovery, please see the [Release Notes](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLReleaseNotes_25.2_Documentation/idol/Content/_Introduction.htm).
+- Read more tips on working with Knowledge Discovery products in the [Expert](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/IDOLServer_25.4_Documentation/Guides/html/expert/Content/IDOLExpert_Welcome.htm) documentation.
+- For details of the latest changes to Knowledge Discovery, please see the [Release Notes](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/IDOLReleaseNotes_25.4_Documentation/idol/Content/_Introduction.htm).
 - Full administration guides are available for all Knowledge Discovery products on the [Knowledge Discovery documentation site](https://www.microfocus.com/documentation/idol/).
 - To learn more about the suite of Knowledge Discovery products, visit [opentext.com/idol](https://www.opentext.com/products/knowledge-discovery).

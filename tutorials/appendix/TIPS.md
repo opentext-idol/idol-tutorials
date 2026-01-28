@@ -53,7 +53,7 @@ Compare the output:
     <action>GETVERSION</action>
     <response>SUCCESS</response>
     <responsedata>
-      <autn:version>25.2.0</autn:version>
+      <autn:version>25.4.0</autn:version>
       ...
     </responsedata>
   </autnresponse>
@@ -88,7 +88,7 @@ Compare the output:
       "action": "GETVERSION",
       "response": "SUCCESS",
       "responsedata": {
-        "version": "25.2.0",
+        "version": "25.4.0",
         ...
       }
     }

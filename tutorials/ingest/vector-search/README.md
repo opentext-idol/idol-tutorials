@@ -62,15 +62,15 @@ Change the name of this new container in `vector-search/docker.compose.yml`:
 
 1. From the list of available files, select and download the following:
 
-    - `NiFiDocumentEmbeddings_25.2.0_LINUX_X86_64.zip`
+    - `NiFiDocumentEmbeddings_25.4.0_LINUX_X86_64.zip`
 
     ![get-idol-zip](./figs/get-idol-zip.png)
 
-    > NOTE: Make sure to download the same version you have already used for NiFi Ingest, *e.g.* `NiFiIngest_25.2.0_LINUX_X86_64.zip`.
+    > NOTE: Make sure to download the same version you have already used for NiFi Ingest, *e.g.* `NiFiIngest_25.4.0_LINUX_X86_64.zip`.
 
 ### Move processor files into NiFi container
 
-In the [lesson on NiFi state preservation](../preserve-state/README.md), you mounted the `nifi-current` directory externally. We will now move all necessary files for the `NiFiDocumentEmbeddings` processor into the appropriate locations of that mounted directory.
+In the [lesson on NiFi state preservation](../preserve-state/README.md), you mounted the `nifi/data` directory externally. We will now move all necessary files for the `NiFiDocumentEmbeddings` processor into the appropriate locations of that mounted directory.
 
 Move the required files into the NiFi extensions directory, *e.g.* if using NiFi 2:
 
@@ -78,17 +78,17 @@ Move the required files into the NiFi extensions directory, *e.g.* if using NiFi
 
   ```sh
   $ cd /opt/idol/idol-containers-toolkit/vector-search
-  $ unzip /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiDocumentEmbeddings_25.2.0_LINUX_X86_64.zip -d ./temp
-  Archive:  /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiDocumentEmbeddings_25.2.0_LINUX_X86_64.zip
-    creating: ./temp/NiFiDocumentEmbeddings_25.2.0_LINUX_X86_64/
+  $ unzip /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiDocumentEmbeddings_25.4.0_LINUX_X86_64.zip -d ./temp
+  Archive:  /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiDocumentEmbeddings_25.4.0_LINUX_X86_64.zip
+    creating: ./temp/NiFiDocumentEmbeddings_25.4.0_LINUX_X86_64/
     inflating...
   ```
 
 - Copy over the `.nar` files and libs:
 
   ```sh
-  cp ./temp/NiFiDocumentEmbeddings_25.2.0_LINUX_X86_64/*-nifi2.nar ./nifi/nifi-current/extensions/
-  cp -r ./temp/NiFiDocumentEmbeddings_25.2.0_LINUX_X86_64/lib/* ./nifi/nifi-current/NiFiIngest/libs/
+  cp ./temp/NiFiDocumentEmbeddings_25.4.0_LINUX_X86_64/*-nifi2.nar ./nifi/data/extensions/
+  cp -r ./temp/NiFiDocumentEmbeddings_25.4.0_LINUX_X86_64/lib/* ./nifi/data/NiFiIngest/libs/
   rm -rf ./temp
   ```
 
@@ -132,7 +132,7 @@ Property | Value | Comment
 **Model Name** | `sentence-transformers/multi-qa-MiniLM-L6-cos-v1` | This should be the model name exactly as it appears on Hugging Face.
 **Model Max Sequence Length** | `512` | This can sometimes be found on the model card, and is either 256 or 512 for most sentence-transformer models.
 **Model Sequence Overlap** | `0` | The overlapping sequences potentially allows improved retrieval but also increases the index size.
-**Model Minimum Final Sequence Length** | `257` | This should be half of **Model Max Sequence Length** value, plus one (see [documentation for QMS](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/QMS_25.2_Documentation/Help/Content/Configuration/Embeddings/ModelMinimumFinalSequenceLength.htm)).
+**Model Minimum Final Sequence Length** | `257` | This should be half of **Model Max Sequence Length** value, plus one (see [documentation for QMS](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/QMS_25.4_Documentation/Help/Content/Configuration/Embeddings/ModelMinimumFinalSequenceLength.htm)).
 **Embedding Precision** | `5` | This can be set to any value between 1 and 10. The higher the precision, the greater the processing load. For this tutorial, we will set it to 5, but feel free to experiment with other values.
 
 > NOTE: Setting **Embedding Precision** to 1 is not recommended, as all values end up being rounded to 0.1, 0.0, or -0.1.
@@ -145,7 +145,7 @@ Once you've validated this configuration, click **Enable**:
 
 ![nifi-enable](./figs/nifi-enable.png)
 
-> NOTE: The Document Embeddings service downloads this model from Hugging Face when the service starts. It then caches it for future use. The default cache directory is `~/.cache/huggingface/hub`, as described in the [reference guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/NiFiIngest_25.2_Documentation/Help/Content/Reference/ControllerServices/DocumentEmbeddingsServiceImpl.htm).
+> NOTE: The Document Embeddings service downloads this model from Hugging Face when the service starts. It then caches it for future use. The default cache directory is `~/.cache/huggingface/hub`, as described in the [reference guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/NiFiIngest_25.4_Documentation/Help/Content/Reference/ControllerServices/DocumentEmbeddingsServiceImpl.htm).
 >
 > ```sh
 > $ docker exec -it vector-search-idol-nifi-1 bash
@@ -225,7 +225,7 @@ Next, edit `vector-search/content/cfg/content.cfg` by adding the following field
   [SetHighlightFields] < "original.content.cfg" [SetHighlightFields]
 ```
 
-> NOTE: Other options for `DistanceMetric` are `Cosine` and `InnerProduct` (see the [reference guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Configuration/Properties/_IX_DistanceMetric.htm)). Because our model produces normalized embeddings, these metrics should all produce identical rankings (although there may be slight differences in performance). In this guide, we use the default `L2`.
+> NOTE: Other options for `DistanceMetric` are `Cosine` and `InnerProduct` (see the [reference guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/Configuration/Properties/_IX_DistanceMetric.htm)). Because our model produces normalized embeddings, these metrics should all produce identical rankings (although there may be slight differences in performance). In this guide, we use the default `L2`.
 
 Now, stop and restart Content in order to pick up the config changes.
 
@@ -324,7 +324,7 @@ Next, we configure QMS. Within `qms.cfg`, make the following changes:
     + EmbeddingPrecision=5
     ```
 
-    > NOTE: The embeddings generated for the query must be compatible with the embeddings generated for our ingested documents, so we will use the same model for both, with the same `ModelMaxSequenceLength` and `EmbeddingPrecision`. QMS downloads this model from Hugging Face when your first run a query. It then caches it for future use. The default cache directory is `~/.cache/huggingface/hub`, as described in the [reference guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/NiFiIngest_25.2_Documentation/Help/Content/Reference/ControllerServices/DocumentEmbeddingsServiceImpl.htm).
+    > NOTE: The embeddings generated for the query must be compatible with the embeddings generated for our ingested documents, so we will use the same model for both, with the same `ModelMaxSequenceLength` and `EmbeddingPrecision`. QMS downloads this model from Hugging Face when your first run a query. It then caches it for future use. The default cache directory is `~/.cache/huggingface/hub`, as described in the [reference guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/NiFiIngest_25.4_Documentation/Help/Content/Reference/ControllerServices/DocumentEmbeddingsServiceImpl.htm).
     >
     > ```sh
     > $ docker exec -it vector-search-idol-qms-1 bash
@@ -410,24 +410,6 @@ Action=query&Text=new%20southern%20us%20business&print=none
 ```
 
 ![content-search-results](./figs/content-search-results.gif)
-
-We can also highlight the differences between a standard query and a vector query by setting the parameter `QuerySummary=true`. This will return the most important terms and phrases in the result set.
-
-For the standard query, we do not see many meaningful terms in the query summary.
-
-```url
-action=query&text=new%20southern%20us%20business&QuerySummary=true
-```
-
-![normal-query-summary](./figs/normal-query-summary.png)
-
-But for the vector query, the results are more relevant.
-
-```url
-action=query&text=new%20southern%20us%20business&VectorConfig=MultiQAVector&querysummary=true
-```
-
-![vector-query-summary](./figs/vector-query-summary.png)
 
 ## Conclusions
 

@@ -39,8 +39,8 @@ Updating your target Knowledge Discovery containers, is as simple as changing th
 
 ```diff
 # Version of Knowledge Discovery images to use
--IDOL_SERVER_VERSION=25.1
-+IDOL_SERVER_VERSION=25.2
+-IDOL_SERVER_VERSION=25.3
++IDOL_SERVER_VERSION=25.4
 ```
 
 ### Mixed version environment
@@ -51,7 +51,7 @@ If you wish to deploy a mixed version system, *e.g.* to use a specific version o
   
     ```diff
       # Version of Knowledge Discovery images to use
-      IDOL_SERVER_VERSION=25.2
+      IDOL_SERVER_VERSION=25.4
     + IDOL_DATA_ADMIN_VERSION=24.3
     ```
 
@@ -88,18 +88,34 @@ You browser will download a file named for the process group, *e.g.* `Basic_IDOL
 
 Un-mount your saved NiFi state:
 
-```diff
+```ini
 idol-nifi:
-  volumes:
-    - idol-ingest-volume:/idol-ingest
--   - ./nifi/nifi-current:/opt/nifi/nifi-current
+    ...
+    volumes:
+      ...
+      # Example volume mounts to persist nifi data
+      ## These need to be copied from the container initially
+      # - ./nifi/data/conf:/opt/nifi/nifi-current/conf
+      # - ./nifi/data/extensions:/opt/nifi/nifi-current/extensions
+      # - ./nifi/data/idol_repository:/opt/nifi/nifi-current/idol_repository
+      ## The following entries are all initially empty directories that nifi will populate
+      # - ./nifi/data/data:/opt/nifi/nifi-current/data
+      # - ./nifi/data/run:/opt/nifi/nifi-current/run
+      # - ./nifi/data/state:/opt/nifi/nifi-current/state
+      # - ./nifi/data/keytool:/opt/nifi/nifi-current/keytool
+      # - ./nifi/data/content_repository:/opt/nifi/nifi-current/content_repository
+      # - ./nifi/data/database_repository:/opt/nifi/nifi-current/database_repository
+      # - ./nifi/data/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      # - ./nifi/data/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+    entrypoint:
+      ...
 ```
 
 > NOTE: This step assumes that you have already preserved your state following [this guide](../ingest/preserve-state/README.md).
 >
-> Consider renaming your old state to `nifi-current-bkp` before proceeding.
+> Consider renaming your old state to `nifi/data-bkp` before proceeding.
 
-If transitioning to Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images:
+If transitioning to Knowledge Discovery 25.2+, you can now select between NiFi 1 or NiFi 2 images:
 
 ```diff
 idol-nifi:
@@ -107,7 +123,7 @@ idol-nifi:
 + image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
 ```
 
-> NOTE: To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
+> NOTE: To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/IDOLServer_25.4_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
 
 ## Deploy the updated containers and verify
 
@@ -130,7 +146,7 @@ idol-nifi:
       <action>GETVERSION</action>
       <response>SUCCESS</response>
       <responsedata>
-        <autn:version>25.2.0</autn:version>
+        <autn:version>25.4.0</autn:version>
         ...
     ```
 
@@ -150,8 +166,8 @@ If your flow depends on any Knowledge Discovery extension packages (`.nar` files
 
 ```sh
 cd /opt/idol/idol-containers-toolkit/basic-idol
-cp -r ./temp/NiFiMediaServer_25.2.0_LINUX_X86_64/lib ./nifi/nifi-current/extensions/
-cp ./temp/NiFiMediaServer_25.2.0_LINUX_X86_64/*-nifi2.nar ./nifi/nifi-current/extensions/
+cp -r ./temp/NiFiMediaServer_25.4.0_LINUX_X86_64/lib ./nifi/data/extensions/
+cp ./temp/NiFiMediaServer_25.4.0_LINUX_X86_64/*-nifi2.nar ./nifi/data/extensions/
 ```
 
 > NOTE: Since version 25.2, all NiFi extensions offer both a NiFi 1 and a NiFi 2 version. Be sure to copy over the correct one.

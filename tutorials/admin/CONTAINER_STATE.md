@@ -69,14 +69,14 @@ content.cfg  idol.common.cfg  idol_ssl.cfg  original.content.cfg
 
 ### Mount external configuration files
 
-Edit the file `basic-idol/docker-compose.yml` to mount the external config directory:
+Edit the file `basic-idol/docker-compose.yml` to mount the external config directory, by uncommenting the following lines:
 
 ```diff
 idol-content:
   <<: *common-server
   image: ${IDOL_REGISTRY}/content:${IDOL_SERVER_VERSION}
 + volumes:
-+   - ./content/cfg:/content/cfg # this mounts an external cfg folder
++   - ./content/cfg:/content/cfg
 ```
 
 > NOTE: This mount replaces the original contents of the `/content/cfg` folder in the container with the (editable) files stored outside.
@@ -106,13 +106,13 @@ Successfully copied 25.6MB to /opt/idol/idol-containers-toolkit/basic-idol/conte
 
 ### Mount the external data
 
-In docker-compose
+In docker-compose, uncomment the following line:
 
 ```diff
 idol-content:
   volumes:
-    - ./content/cfg:/content/cfg # this mounts an external cfg folder
-+   - ./content/index:/content/index # this mounts an external index
+    - ./content/cfg:/content/cfg
++   - ./content/index:/content/index
 ```
 
 ### Redeploy with mounted index
@@ -140,7 +140,7 @@ Successfully copied 166kB to /opt/idol/idol-containers-toolkit/basic-idol/find/h
 
 ### Mount external home directory
 
-Edit the file `basic-idol/docker-compose.yml` to mount the external home directory:
+Edit the file `basic-idol/docker-compose.yml` to mount the external home directory.  Uncomment the following line:
 
 ```diff
 idol-find:

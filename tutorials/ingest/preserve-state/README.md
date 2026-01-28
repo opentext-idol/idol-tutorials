@@ -14,7 +14,8 @@ This guide assumes you have already familiarized yourself with Knowledge Discove
 ---
 
 - [Setup](#setup)
-- [Make a change](#make-a-change)
+- [Make a minor edit](#make-a-minor-edit)
+- [Update `idol-nifi` to use external folders](#update-idol-nifi-to-use-external-folders)
 - [Copy your NiFi state](#copy-your-nifi-state)
 - [Mount the external state](#mount-the-external-state)
 - [Verify](#verify)
@@ -27,57 +28,61 @@ This guide assumes you have already familiarized yourself with Knowledge Discove
 
 This guide assumes you are using the `basic-idol` deployment, as an example.
 
-## Make a change
+## Make a minor edit
 
-With your Docker system running, go to the [NiFi GUI](http://idol-docker-host:8001/nifi/) to work with your flow.
+Go to the [NiFi GUI](http://idol-docker-host:8001/nifi/) and make a small modification, *e.g.* add a note:
 
-Make the following change to reroute the "UpdateCounter" output to "UnregisterDocument", as show below:
+![nifi-add-note](./figs/nifi-add-note.gif)
 
-![nifi-change-flow.gif](./figs/nifi-change-flow.gif)
+## Update `idol-nifi` to use external folders
 
-> NOTE: This change will mean that successfully processed documents are unregistered, and will allow you to reprocess and re-index documents.
+Edit your docker compose file, *e.g.* `basic-idol/docker-compose.yml`, to mount external NiFi directories that we will set up shortly.  Uncomment the following lines:
+
+```ini
+idol-nifi:
+    ...
+    volumes:
+      ...
+      # Example volume mounts to persist nifi data
+      ## These need to be copied from the container initially
+      - ./nifi/data/conf:/opt/nifi/nifi-current/conf
+      - ./nifi/data/extensions:/opt/nifi/nifi-current/extensions
+      - ./nifi/data/idol_repository:/opt/nifi/nifi-current/idol_repository
+      ## The following entries are all initially empty directories that nifi will populate
+      - ./nifi/data/data:/opt/nifi/nifi-current/data
+      - ./nifi/data/run:/opt/nifi/nifi-current/run
+      - ./nifi/data/state:/opt/nifi/nifi-current/state
+      - ./nifi/data/keytool:/opt/nifi/nifi-current/keytool
+      - ./nifi/data/content_repository:/opt/nifi/nifi-current/content_repository
+      - ./nifi/data/database_repository:/opt/nifi/nifi-current/database_repository
+      - ./nifi/data/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - ./nifi/data/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+    entrypoint:
+      ...
+```
 
 ## Copy your NiFi state
 
-With your Docker system running, use the Linux command line to make a local copy of the NiFi directory:
+Create the target folder structure, including the above listed initially empty directories:
+
+```sh
+cd /opt/idol/idol-containers-toolkit/basic-idol
+mkdir ./nifi/data
+cd nifi/data
+mkdir data run state keytool content_repository database_repository flowfile_repository provenance_repository
+```
+
+With your Docker system running, use the Linux command line to make a local copy of selected NiFi directories:
 
 ```sh
 $ cd /opt/idol/idol-containers-toolkit/basic-idol
-$ docker cp basic-idol-idol-nifi-1:/opt/nifi/nifi-current ./nifi/
-Successfully copied 5.55GB to /opt/idol/idol-containers-toolkit/basic-idol/nifi/
+$ docker cp basic-idol-idol-nifi-1:/opt/nifi/nifi-current/conf ./nifi/data/conf
+Successfully copied 1.19MB to /opt/idol/idol-containers-toolkit/basic-idol/nifi/data/conf
+$ docker cp basic-idol-idol-nifi-1:/opt/nifi/nifi-current/extensions ./nifi/data/extensions
+Successfully copied 1.21GB to /opt/idol/idol-containers-toolkit/basic-idol/nifi/data/extensions
+$ docker cp basic-idol-idol-nifi-1:/opt/nifi/nifi-current/idol_repository ./nifi/data/idol_repository
+Successfully copied 138MB to /opt/idol/idol-containers-toolkit/basic-idol/nifi/data/idol_repository
 ```
-
-Check for a new directory `basic-idol/nifi/nifi-current` on your WSL Linux filesystem, containing the full NiFi state.
-
-```sh
-ls nifi/nifi-current/
-```
-
-Edit your docker compose file, *e.g.* `basic-idol/docker-compose.yml`, to mount the external NiFi directory:
-
-```diff
-idol-nifi:
-  image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
-  extra_hosts: *external-licenseserver-host
-  shm_size: 256m
-  environment:
-    - NIFI_WEB_PROXY_CONTEXT_PATH=/idol-nifi
-    - NIFI_WEB_HTTP_PORT=8081
-    - NIFI_SENSITIVE_PROPS_KEY=my_nifi_sensitive_props_key
--   - IDOL_NIFI_FLOWFILE=/opt/nifi/scripts/flow-basic-idol.json
-  volumes:
-    - idol-ingest-volume:/idol-ingest
-+   - ./nifi/nifi-current:/opt/nifi/nifi-current
--   - ./nifi/resources/import-flow.sh:/opt/nifi/scripts/import-flow.sh
--   - ./nifi/resources/basic-idol-entrypoint.sh:/opt/nifi/scripts/basic-idol-entrypoint.sh
--   - ./nifi/flow/basic.json:/opt/nifi/scripts/flow-basic-idol.json
-- entrypoint:
--   - sh
--   - -c
--   - "/opt/nifi/scripts/basic-idol-entrypoint.sh"
-```
-
-> TIP: With your NiFI configuration now outside the container, you can edit its configuration without the container running. Suggested changes are given in the [appendix](../../appendix/TIPS.md#nifi-settings).
 
 ## Mount the external state
 
@@ -95,6 +100,8 @@ Go to the [NiFi GUI](http://idol-docker-host:8001/nifi/) to verify that you stil
 ## Conclusions
 
 You have learned how to store the state of your NiFi instance, in order to preserve your configuration changes outside of the container.
+
+With your NiFi configuration now outside the container, you can edit its configuration without the container running. Suggested changes are given in the [appendix](../../appendix/TIPS.md#nifi-settings).
 
 ## Next steps
 

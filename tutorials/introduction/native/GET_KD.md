@@ -21,7 +21,7 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 
     ![get-license](./figs/get-license.png)
 
-1. On the "License Activation" screen, at the bottom left, select the check box, choose your preferred version (the latest is 25.2), then fill in the quantity to activate:
+1. On the "License Activation" screen, at the bottom left, select the check box, choose your preferred version (the latest is 25.4), then fill in the quantity to activate:
 
    ![eSoftware-selectLicense](./figs/eSoftware-selectLicense.png)
 
@@ -64,8 +64,8 @@ You can obtain software and licenses from the [Software Licensing and Downloads]
 
 1. From the list of available files, select and download the following (depending on your operating system), *e.g.*
 
-   - `LicenseServer_25.2.0_WINDOWS_X86_64.zip` or `LicenseServer_25.2.0_LINUX_X86_64.zip`, and
-   - `Content_25.2.0_WINDOWS_X86_64.zip` or `Content_25.2.0_LINUX_X86_64.zip`.
+   - `LicenseServer_25.4.0_WINDOWS_X86_64.zip` or `LicenseServer_25.4.0_LINUX_X86_64.zip`, and
+   - `Content_25.4.0_WINDOWS_X86_64.zip` or `Content_25.4.0_LINUX_X86_64.zip`.
 
     ![get-idol-zips](./figs/get-idol-zips.png)
 

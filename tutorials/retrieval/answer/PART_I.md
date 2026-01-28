@@ -46,7 +46,7 @@ Knowledge Discovery Answer Server has multiple answering-system types, providing
 
 Knowledge Discovery Data Admin allows you to set up and maintain an Answer Bank system, a store of reference questions and answers in a dynamic FAQ, to provide concise answers to natural language questions.
 
-> NOTE: Data Admin can also be used to manage a Knowledge Discovery search system to optimize the search experience for your end users. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/DataAdmin_25.2_Documentation/admin/Content/Introduction.htm) for details.
+> NOTE: Data Admin can also be used to manage a Knowledge Discovery search system to optimize the search experience for your end users. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/DataAdmin_25.4_Documentation/admin/Content/Introduction.htm) for details.
 
 ## Introducing the `data-admin` deployment
 
@@ -113,11 +113,11 @@ Make the following changes:
 
     > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_UBUNTU_WSL.md#access-windows-host-from-wsl-guest).
 
-1. The same `.env` file is used to specify the Knowledge Discovery version(s).  Use the latest, currently 25.2, for the server and add a specific version for the Data Admin user interface, as follows:
+1. The same `.env` file is used to specify the Knowledge Discovery version(s).  Use the latest, currently 25.4, for the server and add a specific version for the Data Admin user interface, as follows:
 
     ```ini
     # Version of Knowledge Discovery images to use
-    IDOL_SERVER_VERSION=25.2
+    IDOL_SERVER_VERSION=25.4
     IDOL_DATA_ADMIN_VERSION=24.3
     ```
 
@@ -223,7 +223,7 @@ Remember that your initial login was as a temporary user called "admin". On the 
 
 ![ida-new-admin](./figs/ida-new-admin.png)
 
-> NOTE: If you prefer, you can alternatively create your own users from [Knowledge Discovery Community](http://idol-docker-host:9030/action=admin#page/users). Knowledge Discovery Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/DataAdmin_25.2_Documentation/admin/Content/Setup/UserRoles.htm) for details.
+> NOTE: If you prefer, you can alternatively create your own users from [Knowledge Discovery Community](http://idol-docker-host:9030/action=admin#page/users). Knowledge Discovery Data Admin users need one or more of the "AnswerBankUser", "IDAUser" and "ISOAdmin" roles. See the [Data Admin Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/DataAdmin_25.4_Documentation/admin/Content/Setup/UserRoles.htm) for details.
 
 ### First look at Data Admin
 
@@ -231,7 +231,7 @@ Log out and log in again as your new Administrator-level user, *e.g.* "idol", to
 
 ![ida-landing-page](./figs/ida-landing-page.png)
 
-This administrative user interfaces allows you to manage the contents of data indexed in Knowledge Discovery servers to optimize the search experience for your end users. You can set up and maintain reference questions and answers, manage synonyms and create and modify promotions. For full details, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/DataAdmin_25.2_Documentation/admin/Content/Introduction.htm).
+This administrative user interfaces allows you to manage the contents of data indexed in Knowledge Discovery servers to optimize the search experience for your end users. You can set up and maintain reference questions and answers, manage synonyms and create and modify promotions. For full details, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/DataAdmin_25.4_Documentation/admin/Content/Introduction.htm).
 
 ## Conclusions
 

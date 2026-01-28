@@ -18,6 +18,8 @@ In this lesson, you will:
   - [Filter by metadata](#filter-by-metadata)
   - [Search](#search)
 - [Edit the Knowledge Discovery Find configuration file](#edit-the-knowledge-discovery-find-configuration-file)
+  - [Copy out Find's home directory](#copy-out-finds-home-directory)
+  - [Mount external home directory](#mount-external-home-directory)
   - [Update the configuration file](#update-the-configuration-file)
   - [Redeploy and validate](#redeploy-and-validate)
 - [Conclusions](#conclusions)
@@ -133,7 +135,7 @@ Now is a good point to pause and review what we've done for clarity. How did you
 
 Log in to Find on <http://idol-docker-host:8000/> (using the direct link this time, rather than the reverse proxy). The default credentials are `admin` / `admin`.
 
-> NOTE: To create your own users, go to Knowledge Discovery Community <http://idol-docker-host:9030/action=admin#page/users>. Find users need one or more of the "FindAdmin", "FindBI" and "FindUser" roles. See the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Find_25.2_Documentation/admin/Content/User_Roles.htm) for details.
+> NOTE: To create your own users, go to Knowledge Discovery Community <http://idol-docker-host:9030/action=admin#page/users>. Find users need one or more of the "FindAdmin", "FindBI" and "FindUser" roles. See the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Find_25.4_Documentation/admin/Content/User_Roles.htm) for details.
 
 The initial view of the topic map shows a summary of the key terms in your document set:
 
@@ -161,15 +163,36 @@ In the **List** tab, click on an item in the result list to show a near-native H
 
 You can explore some of the other tabs and filters to get a feeling for using the Find interface.
 
-> NOTE: To learn more about Find, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Find_25.2_Documentation/admin/Content/Introduction.htm).
+> NOTE: To learn more about Find, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Find_25.4_Documentation/admin/Content/Introduction.htm).
 
 ## Edit the Knowledge Discovery Find configuration file
 
 You have already modified a Knowledge Discovery component configuration file. You used Knowledge Discovery Content as an example and this process applies to all Knowledge Discovery servers. However, Knowledge Discovery Find is a bit different.
 
-Follow these steps to mount the application data, including configuration files outside the container, then return here.
+### Copy out Find's home directory
 
-Get [started](../../admin/CONTAINER_STATE.md#preserve-find-state).
+With the Docker system running, use the Linux command line to make a local copy of the Knowledge Discovery Find home directory:
+
+```sh
+$ cd /opt/idol/idol-containers-toolkit/basic-idol
+$ docker cp basic-idol-idol-find-1:/opt/find/home ./find/home
+Successfully copied 166kB to /opt/idol/idol-containers-toolkit/basic-idol/find/home
+```
+
+### Mount external home directory
+
+Edit the file `basic-idol/docker-compose.yml` to mount the external home directory.  Uncomment the following line:
+
+```diff
+idol-find:
+  image: ${IDOL_REGISTRY}/find:${IDOL_SERVER_VERSION}
+  labels:
+    <<: *common-labels
+  environment:
+    - IDOL_UI_CFG=config_basic.json # this controls the configuration of Find
++ volumes:
++   - ./find/home:/opt/find/home
+```
 
 ### Update the configuration file
 
@@ -193,7 +216,7 @@ One common change is to provide a friendly name for a given field. For example, 
 }
 ```
 
-> NOTE: For full options on the `fieldsInfo` configuration section, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Find_25.2_Documentation/admin/Content/ConfigFile/ConfigureFriendlyNamesParametric.htm).
+> NOTE: For full options on the `fieldsInfo` configuration section, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Find_25.4_Documentation/admin/Content/ConfigFile/ConfigureFriendlyNamesParametric.htm).
 
 ### Redeploy and validate
 
@@ -208,7 +231,7 @@ Open Knowledge Discovery Find and log in again to see the field name under **FIL
 
 ![find-filter-educed-name](./figs/find-filter-educed-name.png)
 
-> NOTE: For details on other available configuration options, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Find_25.2_Documentation/admin/Content/Introduction.htm).
+> NOTE: For details on other available configuration options, see the [Find Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Find_25.4_Documentation/admin/Content/Introduction.htm).
 >
 > The Knowledge Discovery Find source code is available on [GitHub](https://github.com/opentext-idol/find), where you can find detailed instructions to set up your own development environment to build your own custom changes into the application.
 

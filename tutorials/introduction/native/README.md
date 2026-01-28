@@ -37,10 +37,10 @@ Follow [these steps](./GET_KD.md) to obtain Knowledge Discovery software and you
 ### Install
 
 1. Extract your downloaded files into a new working folder (the following guide assumes this is `C:\OpenText` on Windows) to give you:
-   - `C:\OpenText\LicenseServer_25.2.0_WINDOWS_X86_64`, and
-   - `C:\OpenText\Content_25.2.0_WINDOWS_X86_64`
+   - `C:\OpenText\LicenseServer_25.4.0_WINDOWS_X86_64`, and
+   - `C:\OpenText\Content_25.4.0_WINDOWS_X86_64`
   
-1. Copy your license key `.dat` file into `C:\OpenText\LicenseServer_25.2.0_WINDOWS_X86_64` and rename it to `licensekey.dat`.
+1. Copy your license key `.dat` file into `C:\OpenText\LicenseServer_25.4.0_WINDOWS_X86_64` and rename it to `licensekey.dat`.
 
 1. On Windows, you might need to install the included Visual C++ Redistributable package. In the same Knowledge Discovery Content Server folder, right-click on `vcredist.exe`, then select 'Run as administrator'.
 
@@ -61,7 +61,7 @@ ServicePort=9102
 + Access-Control-Allow-Origin=*
 ```
 
-> NOTE: Each Knowledge Discovery component contains config sections for licensing, ports for communication and logging, as well as specialist configuration options that only apply to that specific component. For full details on the options for a particular component, see the corresponding Reference. For example, the [Knowledge Discovery Content Component Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/_ACI_Welcome.htm).
+> NOTE: Each Knowledge Discovery component contains config sections for licensing, ports for communication and logging, as well as specialist configuration options that only apply to that specific component. For full details on the options for a particular component, see the corresponding Reference. For example, the [Knowledge Discovery Content Component Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/_ACI_Welcome.htm).
 
 ## Run Knowledge Discovery
 
@@ -69,7 +69,7 @@ You are now ready to launch your Knowledge Discovery applications.
 
 ### Knowledge Discovery License Server
 
-First you start Knowledge Discovery License Server. Go to `C:\OpenText\LicenseServer_25.2.0_WINDOWS_X86_64`, and double-click `licenseserver.exe`.
+First you start Knowledge Discovery License Server. Go to `C:\OpenText\LicenseServer_25.4.0_WINDOWS_X86_64`, and double-click `licenseserver.exe`.
 
 This action opens a terminal window. To confirm Knowledge Discovery License Server is running you can:
 
@@ -96,13 +96,13 @@ This action opens a terminal window. To confirm Knowledge Discovery License Serv
     <action>GETVERSION</action>
     <response>SUCCESS</response>
     <responsedata>
-      <autn:version>25.2.0</autn:version>
+      <autn:version>25.4.0</autn:version>
       ...
     </responsedata>
   </autnresponse>
   ```
 
-> NOTE: To explore the API calls available for Knowledge Discovery License Server, see the [License Server Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/LicenseServer_25.2_Documentation/Help/Content/Actions/_ACI_Actions.htm).
+> NOTE: To explore the API calls available for Knowledge Discovery License Server, see the [License Server Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/LicenseServer_25.4_Documentation/Help/Content/Actions/_ACI_Actions.htm).
 
 #### Troubleshooting license server
 
@@ -117,7 +117,7 @@ If License Server is not running, check that:
   > TCP    [::]:20000             [::]:0                 LISTENING
   > ```
   
-- your `licensekey.dat` file exists in the `C:\OpenText\LicenseServer_25.2.0_WINDOWS_X86_64` folder.
+- your `licensekey.dat` file exists in the `C:\OpenText\LicenseServer_25.4.0_WINDOWS_X86_64` folder.
   
 If you are reusing an existing License Server, try deleting the `license` and `uid` folders, before starting again.
 
@@ -129,7 +129,7 @@ To set up License Server as a service on your Windows machine, follow [these ste
 
 ### Knowledge Discovery Content
 
-With Knowledge Discovery License Server running, you can now start Knowledge Discovery Content. Go to `C:\OpenText\Content_25.2.0_WINDOWS_X86_64`, and double-click `content.exe`.
+With Knowledge Discovery License Server running, you can now start Knowledge Discovery Content. Go to `C:\OpenText\Content_25.4.0_WINDOWS_X86_64`, and double-click `content.exe`.
 
 This action opens a terminal window. To confirm Knowledge Discovery Content is running, you can:
 
@@ -148,7 +148,7 @@ This action opens a terminal window. To confirm Knowledge Discovery Content is r
     <action>GETVERSION</action>
     <response>SUCCESS</response>
     <responsedata>
-      <autn:version>25.2.0</autn:version>
+      <autn:version>25.4.0</autn:version>
       ...
     </responsedata>
   </autnresponse>
@@ -158,7 +158,7 @@ This action opens a terminal window. To confirm Knowledge Discovery Content is r
 
 If Knowledge Discovery Content is not running:
 
-- Verify the host and port in use for License Server. If your License Server uses a port other than 20000, or you have installed License Server on another machine, update the host and port in `C:\OpenText\Content_25.2.0_WINDOWS_X86_64\idol.common.cfg`:
+- Verify the host and port in use for License Server. If your License Server uses a port other than 20000, or you have installed License Server on another machine, update the host and port in `C:\OpenText\Content_25.4.0_WINDOWS_X86_64\idol.common.cfg`:
   
   ```ini
   [License]
@@ -192,7 +192,7 @@ For Knowledge Discovery, a database means a logical group of indexed documents. 
 
 ![create-database](./figs/create-database.png)
 
-> NOTE: Read more about database creation in the [Knowledge Discovery Server Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Part%20-%20Administration/Administration/Create_a_New_Databas.htm?Highlight=Database).
+> NOTE: Read more about database creation in the [Knowledge Discovery Server Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/Part%20-%20Administration/Administration/Create_a_New_Databas.htm?Highlight=Database).
 
 ### Load sample documents
 
@@ -204,7 +204,7 @@ Open the **Index** tab, then under **What data do you want to index?**, select *
 
 The example document shown here gives us a first look at the Knowledge Discovery *IDX* document index format. This format defines a unique reference field, some metadata fields, as well as a block of plain text, the `DRECONTENT`.
 
-> NOTE: For more detail on the `.idx` format, see the [Knowledge Discovery Server Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Appendixes/IDX/IDX_Format.htm?Highlight=DREREFERENCE).
+> NOTE: For more detail on the `.idx` format, see the [Knowledge Discovery Server Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/Appendixes/IDX/IDX_Format.htm?Highlight=DREREFERENCE).
 
 The `demo.idx` file, in the same directory as this README, contains a small sample of Knowledge Discovery documents. These documents were generated by ChatGPT with the prompt "*Using the Knowledge Discovery IDX format, generate 10 example documents representing office documents*."
 
@@ -216,7 +216,7 @@ Choose the **Demo** database you just created, then click **Next**.
 
 ![select-database](./figs/select-database.png)
 
-Retain the default settings for **Kill Duplicates**, then click **Next**. You can read more about KillDuplicates in the [Knowledge Discovery Server Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Index%20Actions/IndexData/Parameters/_IX_KillDuplicates.htm).
+Retain the default settings for **Kill Duplicates**, then click **Next**. You can read more about KillDuplicates in the [Knowledge Discovery Server Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/Index%20Actions/IndexData/Parameters/_IX_KillDuplicates.htm).
 
 Under **Summary**, click **Index**.
 
@@ -262,7 +262,7 @@ The new response shows 10 documents, as well as a summary of the most common ter
 
 In this way you can start to build an understanding of your indexed documents.
 
-> NOTE: For full details on the available query options with Knowledge Discovery Content, see the [Knowledge Discovery Server Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Part%20-%20Results/Retrieval/Retrieval.htm)
+> NOTE: For full details on the available query options with Knowledge Discovery Content, see the [Knowledge Discovery Server Administration Guide](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/Part%20-%20Results/Retrieval/Retrieval.htm)
 
 ## Conclusions
 

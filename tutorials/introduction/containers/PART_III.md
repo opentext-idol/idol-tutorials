@@ -13,7 +13,6 @@ In this lesson, you will:
 - [Keeping track of compose files](#keeping-track-of-compose-files)
 - [Make selected Knowledge Discovery component ports accessible](#make-selected-knowledge-discovery-component-ports-accessible)
 - [Mount a shared folder for ingest](#mount-a-shared-folder-for-ingest)
-  - [Filename format encoding](#filename-format-encoding)
 - [Modify Knowledge Discovery component configurations](#modify-knowledge-discovery-component-configurations)
   - [Updating configuration files](#updating-configuration-files)
     - [Update to include file metadata](#update-to-include-file-metadata)
@@ -163,74 +162,63 @@ Next, you can run another system modification to configure a shared folder where
     ]
     ```
 
-### Filename format encoding
-
-Depending on your environment, you may see issues with filenames containing unicode characters that stop you being able to ingest content from this file share.
-
-When you mount a disk for ingest with the FileSystem Connector, depending on your environment you may see issues with file names containing unicode characters that stop you being able to ingest content.
-
-- Verify the locale of your `idol-nifi` container:
-
-    ```sh
-    $ cd /opt/idol/idol-containers-toolkit/basic-idol
-    $ docker exec -it basic-idol-idol-nifi-1 bash
-    [nifi@912b67752a6e nifi-current]$ locale
-    LANG=C.utf8
-    ...
-    [nifi@912b67752a6e nifi-current]$ exit
-    ```
-
-- If the system is not setup with a UTF-8 locale, like `C.utf8` shown above, make the following change  your docker compose file:
-
-    ```diff
-    idol-nifi:
-      <<: *common-server
-      image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
-      environment:
-    +   - LANG=C.UTF-8
-    +   - LC_ALL=C.UTF-8
-    ```
-
-- Restart your NiFi container to apply the changes:
-
-    ```sh
-    cd /opt/idol/idol-containers-toolkit/basic-idol
-    ./deploy.sh down idol-nifi
-    ./deploy.sh up -d
-    ```
-
 ## Modify Knowledge Discovery component configurations
 
 Each Knowledge Discovery component includes a configuration file that you can modify to change how the component runs.
 
-Knowledge Discovery containers ship with their configuration files included. In order to persist any edits to these files, you must extract the configuration files outside the container. Follow these steps to do so, for `idol-content`, then return here.
+> NOTE: For Knowledge Discovery Content, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/Content_25.4_Documentation/Help/Content/Configuration/_ACI_Config.htm) for full details. These include setting authorization, encryption, caching for efficiency savings and scheduling for maintenance task, to name a few.
 
-Get [started](../../admin/CONTAINER_STATE.md#preserve-a-knowledge-discovery-component-configuration).
+Knowledge Discovery containers ship with their configuration files included. In order to persist any edits to these files, you must extract the files outside the container. Let's do that now.
+
+### Copy out configuration files
+
+With the Docker system running, use the Linux command line to make a local copy of the Knowledge Discovery container configuration directory.
+
+```sh
+$ cd /opt/idol/idol-containers-toolkit/basic-idol
+$ docker cp basic-idol-idol-content-1:/content/cfg ./content/
+Successfully copied 33.8kB to /opt/idol/idol-containers-toolkit/basic-idol/content/
+```
+
+Check for a new directory `basic-idol/content/cfg` on your WSL Linux filesystem, containing several `.cfg` files.
+
+```sh
+$ ls content/cfg/
+content.cfg  idol.common.cfg  idol_ssl.cfg  original.content.cfg
+```
+
+### Mount external configuration files
+
+Edit the file `basic-idol/docker-compose.yml` to mount the external config directory, by uncommenting the following lines:
+
+```diff
+idol-content:
+  <<: *common-server
+  image: ${IDOL_REGISTRY}/content:${IDOL_SERVER_VERSION}
++ volumes:
++   - ./content/cfg:/content/cfg
+```
+
+> NOTE: This mount replaces the original contents of the `/content/cfg` folder in the container with the (editable) files stored outside.
 
 ### Updating configuration files
 
-Knowledge Discovery components are highly configurable. Most configuration settings are made via the `.cfg` files you have already seen.
+An important area of configuration change relates to how you index your data. The Knowledge Discovery index includes specialized field type definitions to optimize query speed and/or to allow convenient filtering, such as filtering on labels ("parametrics" or "facets"), numeric ranges, dates, *etc.*
 
-Each component has dedicated documentation to describe available configuration settings, *e.g.* read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/Content_25.2_Documentation/Help/Content/Configuration/_ACI_Config.htm) for Knowledge Discovery Content. These include settings that effect authorization, encryption, caching for efficiency savings and scheduling for maintenance task, to name a few.
-
-A common area for configuration change relates to how you index your data. The Knowledge Discovery index includes specialized field type definitions to optimize query speed and/or to allow convenient filtering, such as filtering on labels ("parametrics" or "facets"), numeric ranges, dates, *etc.*
-
-> NOTE: For full details on Knowledge Discovery index field types, see the [Expert](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm) documentation.
+> NOTE: For full details on Knowledge Discovery index field types, see the [Expert](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/IDOLServer_25.4_Documentation/Guides/html/expert/Content/IDOLExpert/Fields/Field_Properties.htm) documentation.
 
 #### Update to include file metadata
 
 Depending on your data, enrichment setup and use cases, you can expect to have different metadata properties on your documents.
 
-The sample files we are using in this tutorial are Microsoft Office formats, which have some useful metadata fields baked in.
-
-One is **APPNAME**, which we would like to be able to filter on. To enable this, add an additional pattern to the *parametric*-type field list.
+The sample files we are using in this tutorial are Microsoft Office formats, which have some useful metadata fields baked in.  One is **APPNAME**, which we would like to be able to filter on. To enable this, add an additional pattern to the *parametric*-type field list.
 
 Edit the file `basic-idol/content/cfg/original.content.cfg`:
 
 ```diff
 [SetParametricFields]
-- PropertyFieldCSVs=,*/PII_*/VALUE*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
-+ PropertyFieldCSVs=*/APPNAME,*/PII_*/VALUE,*/*_PARAM,*/IMPORTMAGICEXTENSION,*/AUTHOR,*/PARAM_*,*/DOCUMENT_KEYVIEW_CONTENTTYPE_STRING,*/DOCUMENT_METADATA_AUTHOR_STRING,*/DOCUMENT_METADATA_CREATOR_STRING,*/DOCUMENT_METADATA_FROM_STRING,*/DOCUMENT_METADATA_TO_STRING,*/DOCUMENT_METADATA_PRIORITY_STRING,*/DOCUMENT_METADATA_HASATTACHMENTS_BOOLEAN,*/CATEGORY_TITLE
+- PropertyFieldCSVs=*/PII_*/VALUE,...
++ PropertyFieldCSVs=*/APPNAME,*/PII_*/VALUE,...
 ```
 
 ### Redeploy and validate

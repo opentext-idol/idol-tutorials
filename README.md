@@ -2,7 +2,7 @@
 
 A growing set of guides to get you doing great things with Knowledge Discovery.
 
-For details of the latest changes to Knowledge Discovery in version 25.2, please see the [Release Notes](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLReleaseNotes_25.2_Documentation/idol/Content/_Introduction.htm).
+For details of the latest changes to Knowledge Discovery in version 25.4, please see the [Release Notes](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/IDOLReleaseNotes_25.4_Documentation/idol/Content/_Introduction.htm).
 
 ## Target audience
 

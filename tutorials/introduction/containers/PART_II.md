@@ -31,7 +31,7 @@ Knowledge Discovery components running in Docker containers need access to an ex
 
 In a containerized deployment, Knowledge Discovery License Server receives requests from external machines. The default configuration locks the server down to accept requests from `localhost` only, so you need to modify it to add additional host names as required. The following configuration assumes you use the host name `idol-docker-host` for your WSL environment.
 
-Edit the file `idol.common.cfg` under `C:\OpenText\LicenseServer_25.2.0_WINDOWS_X86_64`:
+Edit the file `idol.common.cfg` under `C:\OpenText\LicenseServer_25.4.0_WINDOWS_X86_64`:
 
 ```diff
 [AdminRole]
@@ -45,11 +45,11 @@ StandardRoles=query,servicestatus
 + Clients=localhost,idol-docker-host
 ```
 
-> NOTE: For full details on setting client access, please read the [License Server Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/LicenseServer_25.2_Documentation/Help/Content/Configuration/AuthorizationRoles/_ACI_Clients.htm).
+> NOTE: For full details on setting client access, please read the [License Server Reference](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/LicenseServer_25.4_Documentation/Help/Content/Configuration/AuthorizationRoles/_ACI_Clients.htm).
 
 Now, restart License Server.
 
-> TIP: To manage Windows Services, run the **Services** system tool. Look for the service you created, named "OpenText Knowledge Discovery License Server 25.2.0".
+> TIP: To manage Windows Services, run the **Services** system tool. Look for the service you created, named "OpenText Knowledge Discovery License Server 25.4.0".
 
 ### Verify remote access
 
@@ -117,13 +117,13 @@ flowchart TB
   view -- Highlight --- agent
 ```
 
-> NOTE: This deployment includes just a subset of the available Knowledge Discovery containers. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list.
+> NOTE: This deployment includes just a subset of the available Knowledge Discovery containers. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/IDOLServer_25.4_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list.
 
 ### What is NiFi?
 
-Apache NiFi is an open source tool built to automate the flow of data between systems. NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2014](https://web.archive.org/web/20171207172647/https://www.nsa.gov/news-features/press-room/press-releases/2014/nifi-announcement.shtml).
+Apache NiFi is an open source tool built to automate the flow of data between systems. NiFi was originally developed as "NiagaraFiles" by the United States National Security Agency and was open-sourced in [2014](https://en.wikipedia.org/wiki/Apache_NiFi).
 
-With Knowledge Discovery, NiFi is used primarily for ingestion (ETL = Extraction, Transform and Loading). NiFi has an intuitive drag & drop interface for configuration and is highly scalable. Knowledge Discovery ships components that are easily embedded into a NiFi flow as modular processors. For full details read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/NiFiIngest_25.2_Documentation/Help/Content/_FT_SideNav_Startup.htm).
+With Knowledge Discovery, NiFi is used primarily for ingestion (ETL = Extraction, Transform and Loading). NiFi has an intuitive drag & drop interface for configuration and is highly scalable. Knowledge Discovery ships components that are easily embedded into a NiFi flow as modular processors. For full details read the [KD NiFi Ingest documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/NiFiIngest_25.4_Documentation/Help/Content/_FT_SideNav_Startup.htm).
 
 ### Setup
 
@@ -148,24 +148,15 @@ Make the following changes:
 
     > NOTE: You must set this configuration to the IP address and not the host name. If you are using WSL, you already found your Windows (host) IP address in the [WSL guide](../../introduction/containers/SETUP_UBUNTU_WSL.md#access-windows-host-from-wsl-guest).
 
-1. Check the target Knowledge Discovery version. The same `.env` file is used to specify the Knowledge Discovery version, currently 25.2:
+1. Check the target Knowledge Discovery version. The same `.env` file is used to specify the Knowledge Discovery version, currently 25.4:
 
-    ```ini
+    ```diff
     # Version of Knowledge Discovery images to use
-    IDOL_SERVER_VERSION=25.2
+    - IDOL_SERVER_VERSION=24.3
+    + IDOL_SERVER_VERSION=25.4
     ```
 
     > NOTE: If you upgrade in the future, you must ensure that the version of your external Knowledge Discovery License Server matches the version of your containers.
-
-1. Starting from Knowledge Discovery 25.2, you can now select between NiFi 1 or NiFi 2 images.  Edit the file `basic-idol/docker-compose.yml` to select your preferred version:
-
-    ```diff
-    idol-nifi:
-    - image: ${IDOL_REGISTRY}/nifi-minimal:${IDOL_SERVER_VERSION} # choose nifi-minimal or nifi-full
-    + image: ${IDOL_REGISTRY}/nifi-ver2-minimal:${IDOL_SERVER_VERSION} # choose nifi-ver{1,2}-{minimal,full}
-    ```
-
-    > NOTE: To continue using NiFi 1, you must change the image name from `nifi-minimal` to `nifi-ver1-minimal`. See the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/IDOLServer_25.2_Documentation/Guides/html/gettingstarted/Content/Install_Run_IDOL/Containers/Docker/AvailableContainers.htm) for a full list of available containers.
 
 ### Deploy
 
@@ -177,8 +168,6 @@ docker compose up -d
 ```
 
 ![docker-up](./figs/docker-up.png)
-
-> NOTE: Ignore the deprecation warnings about the `version` attribute.
 
 Monitor the start of the NiFi container with:
 

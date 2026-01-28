@@ -65,7 +65,7 @@ $ ls /opt/idol/idol-containers-toolkit/data-admin/answerserver/conversation/find
 sample_transcript.txt  task_config.json  task_handlers.lua
 ```
 
-> NOTE: For full details of the conversation **task** configuration options, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/AnswerServer_25.2_Documentation/Help/Content/Manage%20Conversation/Conv_TaskConfiguration.htm).
+> NOTE: For full details of the conversation **task** configuration options, read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/AnswerServer_25.4_Documentation/Help/Content/Manage%20Conversation/Conv_TaskConfiguration.htm).
 >
 > Knowledge Discovery Answer Server ships with an interesting example Travel Agent chat bot, which you can copy out of the running container to explore:
 >

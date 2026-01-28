@@ -60,7 +60,7 @@ Change the name of this new container in `rich-media/docker.compose.yml`:
 
 ## Installation
 
-To obtain install media for rich media processing in NiFi, follow the steps shown in [the software download guide](../../introduction/native/GET_KD.md#download-knowledge-discovery-components) to download the package `NiFiMediaServer_25.2.0_WINDOWS_X86_64.zip`.
+To obtain install media for rich media processing in NiFi, follow the steps shown in [the software download guide](../../introduction/native/GET_KD.md#download-knowledge-discovery-components) to download the package `NiFiMediaServer_25.4.0_WINDOWS_X86_64.zip`.
 
 > NOTE: This is a separate package form the standalone Media Server application.
 
@@ -68,9 +68,9 @@ Extract the downloaded package:
 
 ```sh
 $ cd /opt/idol/idol-containers-toolkit/rich-media
-$ unzip /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.2.0_LINUX_X86_64.zip -d ./temp
-Archive:  /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.2.0_LINUX_X86_64.zip
-   creating: ./temp/NiFiMediaServer_25.2.0_LINUX_X86_64/
+$ unzip /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.4.0_LINUX_X86_64.zip -d ./temp
+Archive:  /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.4.0_LINUX_X86_64.zip
+   creating: ./temp/NiFiMediaServer_25.4.0_LINUX_X86_64/
    inflating...
 ```
 
@@ -79,8 +79,8 @@ Archive:  /mnt/c/Users/<WINDOWS_USER>/Downloads/NiFiMediaServer_25.2.0_LINUX_X86
 Move the required files into the NiFi extensions directory, *e.g.* if using NiFi 2:
 
 ```sh
-cp -r ./temp/NiFiMediaServer_25.2.0_LINUX_X86_64/lib ./nifi/nifi-current/extensions/
-cp ./temp/NiFiMediaServer_25.2.0_LINUX_X86_64/*-nifi2.nar ./nifi/nifi-current/extensions/
+cp -r ./temp/NiFiMediaServer_25.4.0_LINUX_X86_64/lib ./nifi/data/extensions/
+cp ./temp/NiFiMediaServer_25.4.0_LINUX_X86_64/*-nifi2.nar ./nifi/data/extensions/
 rm -rf ./temp
 ```
 
@@ -94,7 +94,7 @@ idol-nifi:
     - NIFI_WEB_PROXY_CONTEXT_PATH=/idol-nifi
     - NIFI_WEB_HTTP_PORT=8081
     - NIFI_SENSITIVE_PROPS_KEY=my_nifi_sensitive_props_key
-+   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH;/opt/nifi/nifi-current/extensions/lib
++   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH;/opt/nifi/data/extensions/lib
 ```
 
 Redeploy the Knowledge Discovery NiFi container to pick up these changes:
@@ -233,7 +233,7 @@ Follow these steps to configure the new "MediaServiceImpl" service:
 
     ![nifi-ms-create-kv-service](./figs/nifi-ms-create-kv-service.png)
 
-    > NOTE: Please read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/NiFiIngest_25.2_Documentation/Help/Content/Reference/ControllerServices/MediaServiceImpl.htm?Highlight=MediaServiceImpl) for full details on options for configuring the Media Service.
+    > NOTE: Please read the [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/NiFiIngest_25.4_Documentation/Help/Content/Reference/ControllerServices/MediaServiceImpl.htm?Highlight=MediaServiceImpl) for full details on options for configuring the Media Service.
 
 - Select the "KeyViewExportServiceImpl" and click **Add**.
 
@@ -274,7 +274,7 @@ Finally, configure the "AnalyzeMedia" processor for OCR:
     + Languages = all
     ```
 
-    > NOTE: Please read the Media Server [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.2/MediaServer_25.2_Documentation/Help/Content/Configuration/Analysis/OCR/_OCR.htm) for the full configuration options of OCR analysis.
+    > NOTE: Please read the Media Server [documentation](https://www.microfocus.com/documentation/idol/knowledge-discovery-25.4/MediaServer_25.4_Documentation/Help/Content/Configuration/Analysis/OCR/_OCR.htm) for the full configuration options of OCR analysis.
 
 ### Finish the rich media processing group
 
